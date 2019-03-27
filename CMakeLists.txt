@@ -3,4 +3,4 @@ project(C_AgentBasedModel)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(C_AgentBasedModel main.cpp agent.cpp agent.h)
+add_executable(C_AgentBasedModel src/main.cpp src/agent.cpp include/agent.h src/graph_building.cpp include/graph_building.h include/json.hpp)

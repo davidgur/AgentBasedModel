@@ -3,11 +3,9 @@
 //
 
 #include <iostream>
-#include "agent.h"
+#include "../include/agent.h"
 
 Agent::Agent() {
-    std::cout << "Default Agent created" << std::endl;
-
     this->exposed = false;
     this->vaccinated = false;
     this->grade = 0;
@@ -24,7 +22,6 @@ Agent::Agent(int id, int grade) {
     this->exposed = false;
     this->infected = false;
     this->recovered = false;
-    std::cout << "Agent with ID: " << this->id << " in grade " << this->grade << " created." << std::endl;
 }
 
 void Agent::add_to_connections(Agent *new_agent) {

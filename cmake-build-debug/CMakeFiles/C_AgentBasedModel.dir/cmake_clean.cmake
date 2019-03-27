@@ -1,10 +1,9 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/C_AgentBasedModel.dir/main.cpp.obj"
-  "CMakeFiles/C_AgentBasedModel.dir/agent.cpp.obj"
+  "CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o"
+  "CMakeFiles/C_AgentBasedModel.dir/src/agent.cpp.o"
+  "CMakeFiles/C_AgentBasedModel.dir/src/graph_building.cpp.o"
   "C_AgentBasedModel.pdb"
-  "C_AgentBasedModel.exe"
-  "C_AgentBasedModel.exe.manifest"
-  "libC_AgentBasedModel.dll.a"
+  "C_AgentBasedModel"
 )
 
 # Per-language clean rules from dependency scanning.

@@ -1,3 +1,1 @@
-"C:\Program Files\JetBrains\CLion 2018.2.5\bin\cmake\win\bin\cmake.exe" -E remove -f CMakeFiles\C_AgentBasedModel.dir/objects.a
-C:\MinGW\bin\ar.exe cr CMakeFiles\C_AgentBasedModel.dir/objects.a @CMakeFiles\C_AgentBasedModel.dir\objects1.rsp
-C:\MinGW\bin\g++.exe -g   -Wl,--whole-archive CMakeFiles\C_AgentBasedModel.dir/objects.a -Wl,--no-whole-archive  -o C_AgentBasedModel.exe -Wl,--out-implib,libC_AgentBasedModel.dll.a -Wl,--major-image-version,0,--minor-image-version,0 @CMakeFiles\C_AgentBasedModel.dir\linklibs.rsp
+/usr/bin/c++  -g   CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o CMakeFiles/C_AgentBasedModel.dir/src/agent.cpp.o CMakeFiles/C_AgentBasedModel.dir/src/graph_building.cpp.o  -o C_AgentBasedModel 

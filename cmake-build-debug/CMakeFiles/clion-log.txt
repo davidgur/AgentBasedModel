@@ -1,4 +1,4 @@
-"C:\Program Files\JetBrains\CLion 2018.2.5\bin\cmake\win\bin\cmake.exe" -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - MinGW Makefiles" "C:\Users\david\Desktop\Agent Based Model\C_AgentBasedModel"
+/home/david/.local/share/JetBrains/Toolbox/apps/CLion/ch-0/183.5429.37/bin/cmake/linux/bin/cmake -DCMAKE_BUILD_TYPE=Debug -G "CodeBlocks - Unix Makefiles" /home/david/Desktop/AgentBasedModel
 -- Configuring done
 -- Generating done
--- Build files have been written to: C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/cmake-build-debug
+-- Build files have been written to: /home/david/Desktop/AgentBasedModel/cmake-build-debug
