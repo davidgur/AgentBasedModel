@@ -1,18 +1,25 @@
 import csv
 import json
 
-with open('master_schedule.csv', 'r') as csvfile:
-    reader = csv.reader(csvfile)
+from pprint import pprint
 
-    period1_classes = [row[0].strip() for row in reader if row[0] != "" and row[0][0] != "Y" and row[0][3].isdigit()]
-    period2_classes = [row[1].strip() for row in reader if row[1] != "" and row[1][0] != "Y" and row[1][3].isdigit()]
-    period3_classes = [row[2].strip() for row in reader if row[2] != "" and row[2][0] != "Y" and row[2][3].isdigit()]
-    period4_classes = [row[3].strip() for row in reader if row[3] != "" and row[3][0] != "Y" and row[3][3].isdigit()]
-    period5_classes = [row[4].strip() for row in reader if row[4] != "" and row[4][0] != "Y" and row[4][3].isdigit()]
+with open('master_schedule.csv', 'r') as csvfile:
+    data = list(csv.reader(csvfile))
+
+    period1_classes = [row[0].strip() for row in data if row[0] != "" and row[0][0] != "Y" and row[0][3].isdigit()]
+    period2_classes = [row[1].strip() for row in data if row[1] != "" and row[1][0] != "Y" and row[1][3].isdigit()]
+    period3_classes = [row[2].strip() for row in data if row[2] != "" and row[2][0] != "Y" and row[2][3].isdigit()]
+    period4_classes = [row[3].strip() for row in data if row[3] != "" and row[3][0] != "Y" and row[3][3].isdigit()]
+    period5_classes = [row[4].strip() for row in data if row[4] != "" and row[4][0] != "Y" and row[4][3].isdigit()]
+
+pprint(period1_classes)
+pprint(period2_classes)
+pprint(period3_classes)
+pprint(period4_classes)
+pprint(period5_classes)
 
 period_1 = [[], [], [], []]
 period_2 = [[], [], [], []]
-# noinspection PyInterpreter
 period_3 = [[], [], [], []]
 period_4 = [[], [], [], []]
 period_5 = [[], [], [], []]
