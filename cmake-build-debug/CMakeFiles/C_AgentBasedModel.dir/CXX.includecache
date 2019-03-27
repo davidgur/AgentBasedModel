@@ -1,0 +1,28 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/agent.cpp
+iostream
+-
+agent.h
+C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/agent.h
+
+C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/agent.h
+vector
+-
+
+C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/main.cpp
+iostream
+-
+vector
+-
+random
+-
+agent.h
+C:/Users/david/Desktop/Agent Based Model/C_AgentBasedModel/agent.h
+
