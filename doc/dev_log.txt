@@ -9,3 +9,5 @@ Day 1:
 -> Create 4 vectors for agents
 -> Link agents with a "scale-free" network design
 -> Created json files for all courses and their respective periods and grades
+-> Assigned students to courses
+    -> Added fast trackers

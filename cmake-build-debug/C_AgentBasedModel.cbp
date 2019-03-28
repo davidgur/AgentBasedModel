@@ -87,6 +87,9 @@
 		<Unit filename="/home/david/Desktop/AgentBasedModel/include/agent.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/configure_agents.h">
+			<Option target="C_AgentBasedModel"/>
+		</Unit>
 		<Unit filename="/home/david/Desktop/AgentBasedModel/include/graph_building.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
@@ -94,6 +97,9 @@
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
 		<Unit filename="/home/david/Desktop/AgentBasedModel/src/agent.cpp">
+			<Option target="C_AgentBasedModel"/>
+		</Unit>
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/configure_agents.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
 		<Unit filename="/home/david/Desktop/AgentBasedModel/src/graph_building.cpp">

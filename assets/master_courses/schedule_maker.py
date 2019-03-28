@@ -1,3 +1,9 @@
+# schedule_maker.py
+# March 27, 2019
+# David Gurevich
+
+# Super ugly program that parses a CSV file with all the courses that run at a secondary school.
+
 import csv
 import json
 

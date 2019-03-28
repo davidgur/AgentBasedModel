@@ -6,7 +6,8 @@
 #include <algorithm>
 #include "../include/graph_building.h"
 
-void watts_strogatz_in_vector(std::vector<Agent> agent_vector) {
+
+std::vector<Agent> watts_strogatz_in_vector(std::vector<Agent> agent_vector) {
     const double beta = 4.0 / agent_vector.size();
 
     std::random_device rd;
@@ -39,9 +40,11 @@ void watts_strogatz_in_vector(std::vector<Agent> agent_vector) {
             }
         }
     }
+    return agent_vector;
 }
 
-void watts_strongatz_between_vectors(std::vector<Agent> agent_vector_1, std::vector<Agent> agent_vector_2) {
+agent_vector_pair
+watts_strongatz_between_vectors(std::vector<Agent> agent_vector_1, std::vector<Agent> agent_vector_2) {
     const double beta = 0.2 / (((double) agent_vector_1.size() + (double) agent_vector_2.size()) / 2);
 
     std::random_device rd;
@@ -60,4 +63,8 @@ void watts_strongatz_between_vectors(std::vector<Agent> agent_vector_1, std::vec
             }
         }
     }
+    agent_vector_pair retPair;
+    retPair.agent_vector_1 = agent_vector_1;
+    retPair.agent_vector_2 = agent_vector_2;
+    return retPair;
 }

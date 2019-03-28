@@ -150,6 +150,33 @@ src/agent.cpp.s:
 	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/src/agent.cpp.s
 .PHONY : src/agent.cpp.s
 
+src/configure_agents.o: src/configure_agents.cpp.o
+
+.PHONY : src/configure_agents.o
+
+# target to build an object file
+src/configure_agents.cpp.o:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/src/configure_agents.cpp.o
+.PHONY : src/configure_agents.cpp.o
+
+src/configure_agents.i: src/configure_agents.cpp.i
+
+.PHONY : src/configure_agents.i
+
+# target to preprocess a source file
+src/configure_agents.cpp.i:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/src/configure_agents.cpp.i
+.PHONY : src/configure_agents.cpp.i
+
+src/configure_agents.s: src/configure_agents.cpp.s
+
+.PHONY : src/configure_agents.s
+
+# target to generate assembly for a file
+src/configure_agents.cpp.s:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/src/configure_agents.cpp.s
+.PHONY : src/configure_agents.cpp.s
+
 src/graph_building.o: src/graph_building.cpp.o
 
 .PHONY : src/graph_building.o
@@ -216,6 +243,9 @@ help:
 	@echo "... src/agent.o"
 	@echo "... src/agent.i"
 	@echo "... src/agent.s"
+	@echo "... src/configure_agents.o"
+	@echo "... src/configure_agents.i"
+	@echo "... src/configure_agents.s"
 	@echo "... src/graph_building.o"
 	@echo "... src/graph_building.i"
 	@echo "... src/graph_building.s"

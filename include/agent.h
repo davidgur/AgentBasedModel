@@ -7,6 +7,7 @@
 
 
 #include <vector>
+#include <string>
 
 class Agent {
 public:
@@ -23,8 +24,15 @@ public:
 
     bool vaccinated;
 
+    bool fast_tracking;
+
     std::vector<Agent*> connections;
-    std::vector<int>   courses;
+
+    std::string p1;
+    std::string p2;
+    std::string p3;
+    std::string p4;
+    std::string p5;
 
     void add_to_connections(Agent *new_agent);
 };

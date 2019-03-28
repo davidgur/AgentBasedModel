@@ -17,6 +17,7 @@
 
 #include "../include/agent.h"
 #include "../include/graph_building.h"
+#include "../include/configure_agents.h"
 
 
 // Below data is from the YRDSB Monthly Enrolment Report for Secondary Schools (Westmount Collegiate Institute)
@@ -35,7 +36,8 @@ auto start_time = std::chrono::high_resolution_clock::now();
 
 void log(std::string to_print) {
     auto current_time = std::chrono::high_resolution_clock::now();
-    std::cout << "[" << std::chrono::duration_cast<std::chrono::seconds>(current_time - start_time).count() << "]\t";
+    std::cout << "[" << std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count()
+              << "]\t\t";
     std::cout << to_print << std::endl;
 }
 
@@ -73,17 +75,37 @@ int main() {
 
     // Create a network among the people in each grade (scale free network)
     log("Creating scale free network for each grade");
-    watts_strogatz_in_vector(grade9_agents);
-    watts_strogatz_in_vector(grade10_agents);
-    watts_strogatz_in_vector(grade11_agents);
-    watts_strogatz_in_vector(grade12_agents);
+    grade9_agents = watts_strogatz_in_vector(grade9_agents);
+    grade10_agents = watts_strogatz_in_vector(grade10_agents);
+    grade11_agents = watts_strogatz_in_vector(grade11_agents);
+    grade12_agents = watts_strogatz_in_vector(grade12_agents);
 
     // Create some (very few) connections for people in different grades
     log("Creating connections between different grades");
-    watts_strongatz_between_vectors(grade9_agents, grade10_agents);
-    watts_strongatz_between_vectors(grade10_agents, grade11_agents);
-    watts_strongatz_between_vectors(grade11_agents, grade12_agents);
+    agent_vector_pair grade9_grade10_pair = watts_strongatz_between_vectors(grade9_agents, grade10_agents);
+    grade9_agents = grade9_grade10_pair.agent_vector_1;
+    grade10_agents = grade9_grade10_pair.agent_vector_2;
 
+    agent_vector_pair grade10_grade11_pair = watts_strongatz_between_vectors(grade10_agents, grade11_agents);
+    grade10_agents = grade10_grade11_pair.agent_vector_1;
+    grade11_agents = grade10_grade11_pair.agent_vector_2;
+
+    agent_vector_pair grade11_grade12_pair = watts_strongatz_between_vectors(grade11_agents, grade12_agents);
+    grade11_agents = grade11_grade12_pair.agent_vector_1;
+    grade12_agents = grade11_grade12_pair.agent_vector_2;
+
+    // Assigning all students a timetable in their grade
+    log("Assigning students a timetable");
+    grade9_agents = place_students_in_classes(grade9_agents, 0);
+    grade10_agents = place_students_in_classes(grade10_agents, 1);
+    grade11_agents = place_students_in_classes(grade11_agents, 2);
+    grade12_agents = place_students_in_classes(grade12_agents, 3);
+
+    // Adding some fast-trackers
+    // Grade 10 --> Grade 11; Grade 11 --> Grade 12
+    log("Creating some fast trackers");
+    grade10_agents = create_fast_track(grade10_agents, 1);
+    grade11_agents = create_fast_track(grade11_agents, 2);
 
     return 0;
 }

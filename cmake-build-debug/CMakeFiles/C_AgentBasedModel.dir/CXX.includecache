@@ -9,6 +9,12 @@
 /home/david/Desktop/AgentBasedModel/include/agent.h
 vector
 -
+string
+-
+
+/home/david/Desktop/AgentBasedModel/include/configure_agents.h
+agent.h
+/home/david/Desktop/AgentBasedModel/include/agent.h
 
 /home/david/Desktop/AgentBasedModel/include/graph_building.h
 agent.h
@@ -25,4 +31,6 @@ chrono
 /home/david/Desktop/AgentBasedModel/include/agent.h
 ../include/graph_building.h
 /home/david/Desktop/AgentBasedModel/include/graph_building.h
+../include/configure_agents.h
+/home/david/Desktop/AgentBasedModel/include/configure_agents.h
 

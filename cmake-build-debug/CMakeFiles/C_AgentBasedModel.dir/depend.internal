@@ -4,11 +4,17 @@
 CMakeFiles/C_AgentBasedModel.dir/src/agent.cpp.o
  /home/david/Desktop/AgentBasedModel/include/agent.h
  /home/david/Desktop/AgentBasedModel/src/agent.cpp
+CMakeFiles/C_AgentBasedModel.dir/src/configure_agents.cpp.o
+ /home/david/Desktop/AgentBasedModel/include/agent.h
+ /home/david/Desktop/AgentBasedModel/include/configure_agents.h
+ /home/david/Desktop/AgentBasedModel/include/json.hpp
+ /home/david/Desktop/AgentBasedModel/src/configure_agents.cpp
 CMakeFiles/C_AgentBasedModel.dir/src/graph_building.cpp.o
  /home/david/Desktop/AgentBasedModel/include/agent.h
  /home/david/Desktop/AgentBasedModel/include/graph_building.h
  /home/david/Desktop/AgentBasedModel/src/graph_building.cpp
 CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o
  /home/david/Desktop/AgentBasedModel/include/agent.h
+ /home/david/Desktop/AgentBasedModel/include/configure_agents.h
  /home/david/Desktop/AgentBasedModel/include/graph_building.h
  /home/david/Desktop/AgentBasedModel/src/main.cpp
