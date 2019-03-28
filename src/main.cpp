@@ -8,16 +8,19 @@
  *
  * Author: David Gurevich
  * email: david@gurevich.ca
+ *
+ * ----------
+ * TODO: Write python application to generate a timetable. If possible, port it to C++ later on
  */
 
 
 #include <iostream>
+#include <fstream>
 #include <vector>
 #include <chrono>
 
 #include "../include/agent.h"
 #include "../include/graph_building.h"
-#include "../include/configure_agents.h"
 
 
 // Below data is from the YRDSB Monthly Enrolment Report for Secondary Schools (Westmount Collegiate Institute)
@@ -39,6 +42,25 @@ void log(std::string to_print) {
     std::cout << "[" << std::chrono::duration_cast<std::chrono::milliseconds>(current_time - start_time).count()
               << "]\t\t";
     std::cout << to_print << std::endl;
+}
+
+void export_data(std::vector<Agent> agent_vector, const std::string file_name) {
+    std::ofstream export_file;
+    export_file.open(file_name);
+    for (auto &student : agent_vector) {
+        export_file << "[AGENT " << student.grade << student.id << "]" << std::endl;
+        export_file << "\t" << student.p1 << std::endl;
+        export_file << "\t" << student.p2 << std::endl;
+        export_file << "\t" << student.p3 << std::endl;
+        export_file << "\t" << student.p4 << std::endl;
+        export_file << "\t" << student.p5 << std::endl;
+
+        export_file << "\t->connections" << std::endl;
+        for (auto &connection : student.connections) {
+            export_file << "\t" << connection->grade << connection->id << std::endl;
+        }
+
+    }
 }
 
 void populate_agent_vectors() {
@@ -107,5 +129,11 @@ int main() {
     grade10_agents = create_fast_track(grade10_agents, 1);
     grade11_agents = create_fast_track(grade11_agents, 2);
 
+    log("Exporting current data to file.");
+    export_data(grade9_agents, "grade9.txt");
+    export_data(grade10_agents, "grade10.txt");
+    export_data(grade11_agents, "grade11.txt");
+    export_data(grade12_agents, "grade12.txt");
+    log("Complete!");
     return 0;
 }
