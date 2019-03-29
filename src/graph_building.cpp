@@ -3,6 +3,7 @@
 //
 
 #include <random>
+#include <algorithm>
 #include "../include/graph_building.h"
 
 
