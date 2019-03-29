@@ -28,8 +28,6 @@ Agent::Agent(int id, int grade) {
     this->p3 = "";
     this->p4 = "";
     this->p5 = "";
-
-    this->fast_tracking = false;
 }
 
 void Agent::add_to_connections(Agent *new_agent) {

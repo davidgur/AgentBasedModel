@@ -24,8 +24,6 @@ public:
 
     bool vaccinated;
 
-    bool fast_tracking;
-
     std::vector<Agent*> connections;
 
     std::string p1;

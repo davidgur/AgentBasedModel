@@ -12,8 +12,8 @@ struct agent_vector_pair {
     std::vector<Agent> agent_vector_2;
 };
 
-std::vector<Agent> watts_strogatz_in_vector(std::vector<Agent> agent_vector);
+void watts_strogatz_in_vector(std::vector<Agent> &agent_vector);
 
-agent_vector_pair watts_strongatz_between_vectors(std::vector<Agent> agent_vector_1, std::vector<Agent> agent_vector_2);
+void watts_strongatz_between_vectors(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2);
 
 #endif //C_AGENTBASEDMODEL_GRAPH_BUILDING_H

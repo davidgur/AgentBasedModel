@@ -7,9 +7,13 @@
 
 #include "agent.h"
 
-std::vector<Agent> place_students_in_classes(std::vector<Agent> agent_vector, int grade);
+void place_student_in_class(std::string *student_period, int grade, int period);
 
-std::vector<Agent> create_fast_track(std::vector<Agent> agent_vector, int grade);
+template<typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator &g);
+
+template<typename Iter>
+Iter random_element(Iter start, Iter end);
 
 
 #endif //C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H

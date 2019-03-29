@@ -20,7 +20,6 @@
 #include <chrono>
 
 #include "../include/agent.h"
-#include "../include/graph_building.h"
 
 
 // Below data is from the YRDSB Monthly Enrolment Report for Secondary Schools (Westmount Collegiate Institute)
@@ -29,6 +28,8 @@ const int Grade9_Population = 292;
 const int Grade10_Population = 356;
 const int Grade11_Population = 372;
 const int Grade12_Population = 334;
+
+const int num_of_fast_trackers = 12;
 
 std::vector<Agent> grade9_agents;
 std::vector<Agent> grade10_agents;
@@ -47,7 +48,7 @@ void log(std::string to_print) {
 void export_data(std::vector<Agent> agent_vector, const std::string file_name) {
     std::ofstream export_file;
     export_file.open(file_name);
-    for (auto &student : agent_vector) {
+    for (auto const &student : agent_vector) {
         export_file << "[AGENT " << student.grade << student.id << "]" << std::endl;
         export_file << "\t" << student.p1 << std::endl;
         export_file << "\t" << student.p2 << std::endl;
@@ -97,37 +98,50 @@ int main() {
 
     // Create a network among the people in each grade (scale free network)
     log("Creating scale free network for each grade");
-    grade9_agents = watts_strogatz_in_vector(grade9_agents);
-    grade10_agents = watts_strogatz_in_vector(grade10_agents);
-    grade11_agents = watts_strogatz_in_vector(grade11_agents);
-    grade12_agents = watts_strogatz_in_vector(grade12_agents);
+    watts_strogatz_in_vector(grade9_agents);
+    watts_strogatz_in_vector(grade10_agents);
+    watts_strogatz_in_vector(grade11_agents);
+    watts_strogatz_in_vector(grade12_agents);
 
     // Create some (very few) connections for people in different grades
-    log("Creating connections between different grades");
-    agent_vector_pair grade9_grade10_pair = watts_strongatz_between_vectors(grade9_agents, grade10_agents);
-    grade9_agents = grade9_grade10_pair.agent_vector_1;
-    grade10_agents = grade9_grade10_pair.agent_vector_2;
-
-    agent_vector_pair grade10_grade11_pair = watts_strongatz_between_vectors(grade10_agents, grade11_agents);
-    grade10_agents = grade10_grade11_pair.agent_vector_1;
-    grade11_agents = grade10_grade11_pair.agent_vector_2;
-
-    agent_vector_pair grade11_grade12_pair = watts_strongatz_between_vectors(grade11_agents, grade12_agents);
-    grade11_agents = grade11_grade12_pair.agent_vector_1;
-    grade12_agents = grade11_grade12_pair.agent_vector_2;
+    log("Creating student links between different grades");
+    watts_strongatz_between_vectors(grade9_agents, grade10_agents);
+    watts_strongatz_between_vectors(grade10_agents, grade11_agents);
+    watts_strongatz_between_vectors(grade11_agents, grade12_agents);
 
     // Assigning all students a timetable in their grade
     log("Assigning students a timetable");
-    grade9_agents = place_students_in_classes(grade9_agents, 0);
-    grade10_agents = place_students_in_classes(grade10_agents, 1);
-    grade11_agents = place_students_in_classes(grade11_agents, 2);
-    grade12_agents = place_students_in_classes(grade12_agents, 3);
+    for (auto &student : grade9_agents) {
+        place_student_in_class(&student.p1, 0, 1);
+        place_student_in_class(&student.p2, 0, 2);
+        place_student_in_class(&student.p3, 0, 3);
+        place_student_in_class(&student.p4, 0, 4);
+        place_student_in_class(&student.p5, 0, 5);
+    }
 
-    // Adding some fast-trackers
-    // Grade 10 --> Grade 11; Grade 11 --> Grade 12
-    log("Creating some fast trackers");
-    grade10_agents = create_fast_track(grade10_agents, 1);
-    grade11_agents = create_fast_track(grade11_agents, 2);
+    for (auto &student : grade10_agents) {
+        place_student_in_class(&student.p1, 1, 1);
+        place_student_in_class(&student.p2, 1, 2);
+        place_student_in_class(&student.p3, 1, 3);
+        place_student_in_class(&student.p4, 1, 4);
+        place_student_in_class(&student.p5, 1, 5);
+    }
+
+    for (auto &student : grade11_agents) {
+        place_student_in_class(&student.p1, 2, 1);
+        place_student_in_class(&student.p2, 2, 2);
+        place_student_in_class(&student.p3, 2, 3);
+        place_student_in_class(&student.p4, 2, 4);
+        place_student_in_class(&student.p5, 2, 5);
+    }
+
+    for (auto &student : grade12_agents) {
+        place_student_in_class(&student.p1, 3, 1);
+        place_student_in_class(&student.p2, 3, 2);
+        place_student_in_class(&student.p3, 3, 3);
+        place_student_in_class(&student.p4, 3, 4);
+        place_student_in_class(&student.p5, 3, 5);
+    }
 
     log("Exporting current data to file.");
     export_data(grade9_agents, "grade9.txt");
