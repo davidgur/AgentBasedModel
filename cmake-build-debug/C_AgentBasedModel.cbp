@@ -84,6 +84,12 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/Model.cpp">
+			<Option target="C_AgentBasedModel"/>
+		</Unit>
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/Model.h">
+			<Option target="C_AgentBasedModel"/>
+		</Unit>
 		<Unit filename="/home/david/Desktop/AgentBasedModel/include/agent.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>

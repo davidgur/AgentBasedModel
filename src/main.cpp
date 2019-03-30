@@ -10,7 +10,7 @@
  * email: david@gurevich.ca
  *
  * ----------
- * TODO: Write python application to generate a timetable. If possible, port it to C++ later on
+ * TODO: Start super basic simulation
  */
 
 
@@ -23,15 +23,12 @@
 #include "../include/configure_agents.h"
 #include "../include/graph_building.h"
 
-
 // Below data is from the YRDSB Monthly Enrolment Report for Secondary Schools (Westmount Collegiate Institute)
 // It can be found at: http://www.yrdsb.ca/AboutUs/DirectorsAnnualReport/Documents/2018-19-Sec.pdf
 const int Grade9_Population = 292;
 const int Grade10_Population = 356;
 const int Grade11_Population = 372;
 const int Grade12_Population = 334;
-
-const int num_of_fast_trackers = 12;
 
 std::vector<Agent> grade9_agents;
 std::vector<Agent> grade10_agents;
@@ -47,7 +44,7 @@ void log(std::string to_print) {
     std::cout << to_print << std::endl;
 }
 
-void export_data(std::vector<Agent> agent_vector, const std::string file_name) {
+void export_data(std::vector<Agent> agent_vector, std::string file_name) {
     std::ofstream export_file;
     export_file.open("export/" + file_name);
     for (auto const &student : agent_vector) {
@@ -106,9 +103,9 @@ int main() {
 
     // Create some (very few) connections for people in different grades
     log("Creating student links between different grades");
-    watts_strongatz_between_vectors(grade9_agents, grade10_agents);
-    watts_strongatz_between_vectors(grade10_agents, grade11_agents);
-    watts_strongatz_between_vectors(grade11_agents, grade12_agents);
+    random_connections_between_grades(grade9_agents, grade10_agents);
+    random_connections_between_grades(grade10_agents, grade11_agents);
+    random_connections_between_grades(grade11_agents, grade12_agents);
 
     // Assigning all students a timetable in their grade
     log("Assigning students a timetable.");
@@ -124,7 +121,7 @@ int main() {
     export_data(grade11_agents, "grade11.txt");
     export_data(grade12_agents, "grade12.txt");
 
-    log("Complete!");
+    log("Completed Initialization!");
 
     return 0;
 }

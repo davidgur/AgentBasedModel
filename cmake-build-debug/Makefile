@@ -123,6 +123,33 @@ C_AgentBasedModel/fast:
 	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/build
 .PHONY : C_AgentBasedModel/fast
 
+include/Model.o: include/Model.cpp.o
+
+.PHONY : include/Model.o
+
+# target to build an object file
+include/Model.cpp.o:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/include/Model.cpp.o
+.PHONY : include/Model.cpp.o
+
+include/Model.i: include/Model.cpp.i
+
+.PHONY : include/Model.i
+
+# target to preprocess a source file
+include/Model.cpp.i:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/include/Model.cpp.i
+.PHONY : include/Model.cpp.i
+
+include/Model.s: include/Model.cpp.s
+
+.PHONY : include/Model.s
+
+# target to generate assembly for a file
+include/Model.cpp.s:
+	$(MAKE) -f CMakeFiles/C_AgentBasedModel.dir/build.make CMakeFiles/C_AgentBasedModel.dir/include/Model.cpp.s
+.PHONY : include/Model.cpp.s
+
 src/agent.o: src/agent.cpp.o
 
 .PHONY : src/agent.o
@@ -240,6 +267,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... C_AgentBasedModel"
 	@echo "... edit_cache"
+	@echo "... include/Model.o"
+	@echo "... include/Model.i"
+	@echo "... include/Model.s"
 	@echo "... src/agent.o"
 	@echo "... src/agent.i"
 	@echo "... src/agent.s"

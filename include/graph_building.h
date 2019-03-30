@@ -14,6 +14,6 @@ struct agent_vector_pair {
 
 void watts_strogatz_in_vector(std::vector<Agent> &agent_vector);
 
-void watts_strongatz_between_vectors(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2);
+void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2);
 
 #endif //C_AGENTBASEDMODEL_GRAPH_BUILDING_H

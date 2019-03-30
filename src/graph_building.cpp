@@ -42,7 +42,7 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
     }
 }
 
-void watts_strongatz_between_vectors(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2) {
+void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2) {
     const double beta = 0.2 / (((double) agent_vector_1.size() + (double) agent_vector_2.size()) / 2);
 
     std::random_device rd;
