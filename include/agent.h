@@ -18,6 +18,9 @@ public:
     int id;
     int grade;
 
+    int exposed_day_count;
+    int infected_day_count;
+
     bool exposed;
     bool infected;
     bool recovered;
@@ -33,6 +36,14 @@ public:
     std::string p5;
 
     void add_to_connections(Agent *new_agent);
+
+    void individual_disease_progression();
+
+    void process_washroom_needs();
+
+    void interact_with_friend_random();
+
+    void resolve_classroom();
 };
 
 
