@@ -22,14 +22,21 @@
 #define PERIOD5_END   920
 #define POST_CLASS    940
 
-Simulation::Simulation() = default;
+Simulation::Simulation() {
+    this->day_counter = 0;
+    this->day_state = 0;
+    this->minute_counter = 0;
+    this->current_period = -1;
+
+    this->start_time = std::chrono::high_resolution_clock::now();
+}
 
 Simulation::~Simulation() = default;
 
 void Simulation::log(std::string to_print) {
-    auto current_time = std::chrono::high_resolution_clock::now();
-    std::cout << "[" << std::chrono::system_clock::to_time_t(std::chrono::system_clock::now())
-              << "]\t\t";
+    auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>
+            (std::chrono::high_resolution_clock::now() - this->start_time);
+    std::cout << "[" << current_time.count() << "]\t\t";
     std::cout << to_print << std::endl;
 }
 
@@ -52,29 +59,32 @@ void Simulation::export_agent_data(std::vector<Agent> agent_vector, std::string 
 }
 
 void Simulation::initialize_simulation() {
-    log("Initializing the simulation now!");
+    Simulation::log("Initializing the simulation now!");
 
-    log("Populating all agent vectors.");
+    Simulation::log("Populating all agent vectors.");
     Simulation::populate_agent_vector();
 
-    log("Creating scale-free network for each grade.");
+    Simulation::log("Creating scale-free network for each grade.");
     watts_strogatz_in_vector(this->grade9_agents);
     watts_strogatz_in_vector(this->grade10_agents);
     watts_strogatz_in_vector(this->grade11_agents);
     watts_strogatz_in_vector(this->grade12_agents);
 
-    log("Creating student links between different grades.");
+    Simulation::log("Creating student links between different grades.");
     random_connections_between_grades(this->grade9_agents, this->grade10_agents);
     random_connections_between_grades(this->grade10_agents, this->grade11_agents);
     random_connections_between_grades(this->grade11_agents, this->grade12_agents);
 
-    log("Assigning all students timetables");
+    Simulation::log("Assigning all students timetables");
     assign_student_timetables(this->grade9_agents, "grade9");
     assign_student_timetables(this->grade10_agents, "grade10");
     assign_student_timetables(this->grade11_agents, "grade11");
     assign_student_timetables(this->grade12_agents, "grade12");
 
-    log("Exporting all agent data.");
+    Simulation::log("Determining classroom populations");
+    Simulation::determine_classroom_population();
+
+    Simulation::log("Exporting all agent data.");
     Simulation::export_agent_data(this->grade9_agents, "grade9.txt");
     Simulation::export_agent_data(this->grade10_agents, "grade10.txt");
     Simulation::export_agent_data(this->grade11_agents, "grade11.txt");
@@ -82,16 +92,13 @@ void Simulation::initialize_simulation() {
 }
 
 void Simulation::start_simulation() {
-    this->day_counter = 0;
-    this->minute_counter = 0;
-    this->day_state = 0;
-
     Simulation::log("Beginning Simulation Loop now!");
 
     // MAIN SIMULATION LOOP
     while (this->day_counter < this->day_limit) {
         // Figure out what the day_state is
         this->day_state = Simulation::determine_day_state();
+        this->current_period = Simulation::determine_period();
 
         // DAY STATE 0: AGENTS ARE AT HOME
         if (this->day_state == 0) {
@@ -124,9 +131,11 @@ void Simulation::start_simulation() {
         if (this->minute_counter == (24 * 60)) {
             this->day_counter++;
             this->minute_counter = 0;
-            log("Day " + std::to_string(this->day_counter));
+            this->current_period = 0;
+            Simulation::log("Day " + std::to_string(this->day_counter));
         }
     }
+    Simulation::log("Simulation complete!");
 }
 
 void Simulation::populate_agent_vector() {
@@ -203,7 +212,7 @@ void Simulation::resolve_classroom(std::vector<Agent> const &agent_vector) {
 }
 
 unsigned short Simulation::determine_day_state() {
-    auto between = [this](int lower, int upper) { return (unsigned) (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
     if (between(0, PRE_CLASS))
         return 0;
@@ -235,6 +244,57 @@ unsigned short Simulation::determine_day_state() {
         return 0;
 }
 
+short Simulation::determine_period() {
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
+
+    if (between(PERIOD1_START, PERIOD1_END))
+        return 0;
+    else if (between(PERIOD2_START, PERIOD2_END))
+        return 1;
+    else if (between(PERIOD3_START, PERIOD3_END))
+        return 2;
+    else if (between(PERIOD4_START, PERIOD4_END))
+        return 3;
+    else if (between(PERIOD5_START, PERIOD5_END))
+        return 4;
+    else
+        return -1;
+}
+
 void Simulation::set_day_limit(unsigned int day_limit) {
     this->day_limit = day_limit;
+}
+
+void Simulation::determine_classroom_population() {
+    for (auto &agent : this->grade9_agents) {
+        classrooms[agent.p1][0].push_back(&agent);
+        classrooms[agent.p2][1].push_back(&agent);
+        classrooms[agent.p3][2].push_back(&agent);
+        classrooms[agent.p4][3].push_back(&agent);
+        classrooms[agent.p5][4].push_back(&agent);
+    }
+
+    for (auto &agent : this->grade10_agents) {
+        classrooms[agent.p1][0].push_back(&agent);
+        classrooms[agent.p2][1].push_back(&agent);
+        classrooms[agent.p3][2].push_back(&agent);
+        classrooms[agent.p4][3].push_back(&agent);
+        classrooms[agent.p5][4].push_back(&agent);
+    }
+
+    for (auto &agent : this->grade11_agents) {
+        classrooms[agent.p1][0].push_back(&agent);
+        classrooms[agent.p2][1].push_back(&agent);
+        classrooms[agent.p3][2].push_back(&agent);
+        classrooms[agent.p4][3].push_back(&agent);
+        classrooms[agent.p5][4].push_back(&agent);
+    }
+
+    for (auto &agent : this->grade12_agents) {
+        classrooms[agent.p1][0].push_back(&agent);
+        classrooms[agent.p2][1].push_back(&agent);
+        classrooms[agent.p3][2].push_back(&agent);
+        classrooms[agent.p4][3].push_back(&agent);
+        classrooms[agent.p5][4].push_back(&agent);
+    }
 }

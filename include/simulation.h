@@ -7,7 +7,23 @@
 
 
 #include <chrono>
+#include <map>
+#include <array>
 #include "agent.h"
+
+/*
+ * classroom_population example:
+ * "303": {
+ *  {Agents who are in the class in period1},
+ *  {Agents who are in the class in period2},
+ *  {Agents who are in the class in period3},
+ *  {Agents who are in the class in period4},
+ *  {Agents who are in the class in period5},
+ * }
+ */
+
+
+typedef std::map<std::string, std::array<std::vector<Agent *>, 5>> classroom_population;
 
 class Simulation {
 public:
@@ -18,18 +34,20 @@ public:
 
     unsigned int day_counter;
     unsigned int day_limit;
+    int current_period;
 
     unsigned short day_state;
-
-    // Second counter counts the minutes in the day
     unsigned int minute_counter;
+
+    std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
 
     std::vector<Agent> grade9_agents;
     std::vector<Agent> grade10_agents;
     std::vector<Agent> grade11_agents;
     std::vector<Agent> grade12_agents;
 
-    //std::vector<Classroom> classrooms;
+    // Classroom
+    classroom_population classrooms;
 
     void initialize_simulation();
 
@@ -57,7 +75,11 @@ public:
 
     void set_day_limit(unsigned int day_limit);
 
+    void determine_classroom_population();
+
     unsigned short determine_day_state();
+
+    short determine_period();
 
     Simulation();
 
