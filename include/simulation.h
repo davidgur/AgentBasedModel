@@ -45,11 +45,11 @@ public:
 
     void resolve_classroom_for_all();
 
-    void process_washroom_needs(std::vector<Agent> agent_vector);
+    void process_washroom_needs(std::vector<Agent> const &agent_vector);
 
-    void interaction_among_friends(std::vector<Agent> agent_vector);
+    void interaction_among_friends(std::vector<Agent> const &agent_vector);
 
-    void resolve_classroom(std::vector<Agent> agent_vector);
+    void resolve_classroom(std::vector<Agent> const &agent_vector);
 
     void export_agent_data(std::vector<Agent> agent_vector, std::string file_name);
 

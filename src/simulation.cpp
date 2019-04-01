@@ -89,7 +89,7 @@ void Simulation::start_simulation() {
     Simulation::log("Beginning Simulation Loop now!");
 
     // MAIN SIMULATION LOOP
-    while (this->day_counter < this->day_limit + 1) {
+    while (this->day_counter < this->day_limit) {
         // Figure out what the day_state is
         this->day_state = Simulation::determine_day_state();
 
@@ -185,19 +185,19 @@ void Simulation::resolve_classroom_for_all() {
     Simulation::resolve_classroom(this->grade12_agents);
 }
 
-void Simulation::process_washroom_needs(std::vector<Agent> agent_vector) {
+void Simulation::process_washroom_needs(std::vector<Agent> const &agent_vector) {
     for (auto agent : agent_vector) {
         agent.process_washroom_needs();
     }
 }
 
-void Simulation::interaction_among_friends(std::vector<Agent> agent_vector) {
+void Simulation::interaction_among_friends(std::vector<Agent> const &agent_vector) {
     for (auto agent : agent_vector) {
         agent.interact_with_friend_random();
     }
 }
 
-void Simulation::resolve_classroom(std::vector<Agent> agent_vector) {
+void Simulation::resolve_classroom(std::vector<Agent> const &agent_vector) {
     for (auto agent : agent_vector)
         agent.resolve_classroom();
 }

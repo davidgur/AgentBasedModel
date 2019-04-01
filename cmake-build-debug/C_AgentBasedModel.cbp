@@ -8,109 +8,113 @@
 		<Option virtualFolders="CMake Files\;"/>
 		<Build>
 			<Target title="all">
-				<Option working_dir="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug"/>
+				<Option working_dir="/home/david/Desktop/AgentBasedModel/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="C_AgentBasedModel">
-				<Option output="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/C_AgentBasedModel.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 C_AgentBasedModel"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="C_AgentBasedModel/fast">
-				<Option output="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/C_AgentBasedModel.exe" prefix_auto="0" extension_auto="0"/>
-				<Option working_dir="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug"/>
-				<Option object_output="./"/>
-				<Option type="1"/>
-				<Option compiler="gcc"/>
-				<Compiler>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/mingw32"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include/c++/backward"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/../../../../include"/>
-					<Add directory="c:\mingw\bin\../lib/gcc/mingw32/6.3.0/include-fixed"/>
-				</Compiler>
-				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 C_AgentBasedModel/fast"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-				</MakeCommands>
-			</Target>
-			<Target title="edit_cache">
-				<Option working_dir="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug"/>
-				<Option type="4"/>
-				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 			<Target title="rebuild_cache">
-				<Option working_dir="C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug"/>
+				<Option working_dir="/home/david/Desktop/AgentBasedModel/cmake-build-debug"/>
 				<Option type="4"/>
 				<MakeCommands>
-					<Build command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
-					<CompileFile command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
-					<Clean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
-					<DistClean command="C:/MinGW/bin/mingw32-make.exe -f &quot;C:/Users/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="C_AgentBasedModel">
+				<Option output="/home/david/Desktop/AgentBasedModel/cmake-build-debug/C_AgentBasedModel" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/david/Desktop/AgentBasedModel/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 C_AgentBasedModel"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="C_AgentBasedModel/fast">
+				<Option output="/home/david/Desktop/AgentBasedModel/cmake-build-debug/C_AgentBasedModel" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/home/david/Desktop/AgentBasedModel/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/usr/include/c++/7"/>
+					<Add directory="/usr/include/x86_64-linux-gnu/c++/7"/>
+					<Add directory="/usr/include/c++/7/backward"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/usr/lib/gcc/x86_64-linux-gnu/7/include-fixed"/>
+					<Add directory="/usr/include/x86_64-linux-gnu"/>
+					<Add directory="/usr/include"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 C_AgentBasedModel/fast"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/home/david/Desktop/AgentBasedModel/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j12 -f &quot;/home/david/Desktop/AgentBasedModel/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/agent.h">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/agent.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/configure_agents.h">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/configure_agents.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/graph_building.h">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/graph_building.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/json.hpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/json.hpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/simulation.h">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/include/simulation.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/src/agent.cpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/agent.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/src/configure_agents.cpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/configure_agents.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/src/graph_building.cpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/graph_building.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/src/main.cpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/main.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/src/simulation.cpp">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/src/simulation.cpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
-		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/CMakeLists.txt">
+		<Unit filename="/home/david/Desktop/AgentBasedModel/CMakeLists.txt">
 			<Option virtualFolder="CMake Files\"/>
 		</Unit>
 	</Project>
