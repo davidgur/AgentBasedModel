@@ -14,8 +14,6 @@ CMakeFiles/C_AgentBasedModel.dir/src/graph_building.cpp.o: ../include/graph_buil
 CMakeFiles/C_AgentBasedModel.dir/src/graph_building.cpp.o: ../src/graph_building.cpp
 
 CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o: ../include/agent.h
-CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o: ../include/configure_agents.h
-CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o: ../include/graph_building.h
 CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o: ../include/simulation.h
 CMakeFiles/C_AgentBasedModel.dir/src/main.cpp.o: ../src/main.cpp
 
