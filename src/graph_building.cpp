@@ -17,10 +17,7 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
     // Connect each agent to it's previous and next neighbour. This is a ring lattice
     for (size_t i = 1; i < agent_vector.size() - 1; i++) {
         agent_vector[i].add_to_connections(&agent_vector[i - 1]);
-        agent_vector[i - 1].add_to_connections(&agent_vector[i]);
-
         agent_vector[i].add_to_connections(&agent_vector[i + 1]);
-        agent_vector[i + 1].add_to_connections(&agent_vector[i]);
     }
 
     agent_vector[0].add_to_connections(&agent_vector[agent_vector.size()]);

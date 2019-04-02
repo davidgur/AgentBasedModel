@@ -25,6 +25,7 @@
 Simulation::Simulation() {
     this->day_counter = 0;
     this->day_state = 0;
+    this->day_limit = 30;
     this->minute_counter = 0;
     this->current_period = -1;
 
@@ -33,6 +34,53 @@ Simulation::Simulation() {
 
 Simulation::~Simulation() = default;
 
+void Simulation::start_simulation() {
+    Simulation::log("Beginning Simulation Loop now!");
+
+    // MAIN SIMULATION LOOP
+    while (this->day_counter < this->day_limit) {
+        // Figure out what the day_state is
+        this->day_state = Simulation::determine_day_state();
+        this->current_period = Simulation::determine_period();
+
+        // DAY STATE 0: AGENTS ARE AT HOME
+        if (this->day_state == 0) {
+            // only do Individual Disease Progression
+            Simulation::individual_disease_progression_for_all();
+        }
+            // DAY STATE 1: BEFORE/AFTER CLASS
+        else if (this->day_state == 1) {
+            // Individual Disease Progression, Social Among Friends, Washroom
+            Simulation::individual_disease_progression_for_all();
+            Simulation::interaction_among_friends_for_all();
+            Simulation::process_washroom_needs_for_all();
+        }
+            // DAY STATE 2: IN CLASS
+        else if (this->day_state == 2) {
+            // Individual Disease Progression, Social Among Classmates, Washroom, any special class considerations
+            Simulation::individual_disease_progression_for_all();
+            Simulation::resolve_classroom_for_all();
+            Simulation::process_washroom_needs_for_all();
+        }
+            // DAY STATE 3: IN HALL
+        else if (this->day_state == 3) {
+            Simulation::individual_disease_progression_for_all();
+            Simulation::interaction_among_friends_for_all();
+            Simulation::process_washroom_needs_for_all();
+        }
+
+        // Increment minute counter
+        this->minute_counter++;
+        if (this->minute_counter == (24 * 60)) {
+            this->day_counter++;
+            this->minute_counter = 0;
+            this->current_period = 0;
+            Simulation::log("Day " + std::to_string(this->day_counter));
+        }
+    }
+    Simulation::log("Simulation complete!");
+}
+
 void Simulation::log(std::string to_print) {
     auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>
             (std::chrono::high_resolution_clock::now() - this->start_time);
@@ -40,7 +88,7 @@ void Simulation::log(std::string to_print) {
     std::cout << to_print << std::endl;
 }
 
-void Simulation::export_agent_data(std::vector<Agent> agent_vector, std::string file_name) {
+void Simulation::export_agent_data(const std::vector<Agent> &agent_vector, std::string file_name) {
     std::ofstream export_file;
     export_file.open("export/" + file_name);
     for (auto const &student : agent_vector) {
@@ -91,53 +139,6 @@ void Simulation::initialize_simulation() {
     Simulation::export_agent_data(this->grade12_agents, "grade12.txt");
 }
 
-void Simulation::start_simulation() {
-    Simulation::log("Beginning Simulation Loop now!");
-
-    // MAIN SIMULATION LOOP
-    while (this->day_counter < this->day_limit) {
-        // Figure out what the day_state is
-        this->day_state = Simulation::determine_day_state();
-        this->current_period = Simulation::determine_period();
-
-        // DAY STATE 0: AGENTS ARE AT HOME
-        if (this->day_state == 0) {
-            // only do Individual Disease Progression
-            Simulation::individual_disease_progression_for_all();
-        }
-            // DAY STATE 1: BEFORE/AFTER CLASS
-        else if (this->day_state == 1) {
-            // Individual Disease Progression, Social Among Friends, Washroom
-            Simulation::individual_disease_progression_for_all();
-            Simulation::interaction_among_friends_for_all();
-            Simulation::process_washroom_needs_for_all();
-        }
-            // DAY STATE 2: IN CLASS
-        else if (this->day_state == 2) {
-            // Individual Disease Progression, Social Among Classmates, Washroom, any special class considerations
-            Simulation::individual_disease_progression_for_all();
-            Simulation::resolve_classroom_for_all();
-            Simulation::process_washroom_needs_for_all();
-        }
-            // DAY STATE 3: IN HALL
-        else if (this->day_state == 3) {
-            Simulation::individual_disease_progression_for_all();
-            Simulation::interaction_among_friends_for_all();
-            Simulation::process_washroom_needs_for_all();
-        }
-
-        // Increment minute counter
-        this->minute_counter++;
-        if (this->minute_counter == (24 * 60)) {
-            this->day_counter++;
-            this->minute_counter = 0;
-            this->current_period = 0;
-            Simulation::log("Day " + std::to_string(this->day_counter));
-        }
-    }
-    Simulation::log("Simulation complete!");
-}
-
 void Simulation::populate_agent_vector() {
     for (int i = 0; i < GRADE_9_POPULATION; i++) {
         Agent agent(i, 0);
@@ -160,7 +161,7 @@ void Simulation::populate_agent_vector() {
     }
 }
 
-void Simulation::individual_disease_progression(std::vector<Agent> agent_vector) {
+void Simulation::individual_disease_progression(const std::vector<Agent> &agent_vector) {
     for (auto agent : agent_vector) {
         agent.individual_disease_progression();
     }
@@ -194,19 +195,19 @@ void Simulation::resolve_classroom_for_all() {
     Simulation::resolve_classroom(this->grade12_agents);
 }
 
-void Simulation::process_washroom_needs(std::vector<Agent> const &agent_vector) {
+void Simulation::process_washroom_needs(const std::vector<Agent> &agent_vector) {
     for (auto agent : agent_vector) {
         agent.process_washroom_needs();
     }
 }
 
-void Simulation::interaction_among_friends(std::vector<Agent> const &agent_vector) {
+void Simulation::interaction_among_friends(const std::vector<Agent> &agent_vector) {
     for (auto agent : agent_vector) {
         agent.interact_with_friend_random();
     }
 }
 
-void Simulation::resolve_classroom(std::vector<Agent> const &agent_vector) {
+void Simulation::resolve_classroom(const std::vector<Agent> &agent_vector) {
     for (auto agent : agent_vector)
         agent.resolve_classroom();
 }

@@ -53,8 +53,6 @@ public:
 
     void start_simulation();
 
-    void individual_disease_progression(std::vector<Agent> agent_vector);
-
     void individual_disease_progression_for_all();
 
     void interaction_among_friends_for_all();
@@ -63,13 +61,15 @@ public:
 
     void resolve_classroom_for_all();
 
-    void process_washroom_needs(std::vector<Agent> const &agent_vector);
+    static void individual_disease_progression(const std::vector<Agent> &agent_vector);
 
-    void interaction_among_friends(std::vector<Agent> const &agent_vector);
+    static void process_washroom_needs(const std::vector<Agent> &agent_vector);
 
-    void resolve_classroom(std::vector<Agent> const &agent_vector);
+    static void interaction_among_friends(const std::vector<Agent> &agent_vector);
 
-    void export_agent_data(std::vector<Agent> agent_vector, std::string file_name);
+    static void resolve_classroom(const std::vector<Agent> &agent_vector);
+
+    static void export_agent_data(const std::vector<Agent> &agent_vector, std::string file_name);
 
     void log(std::string to_print);
 
