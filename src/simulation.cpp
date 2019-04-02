@@ -9,7 +9,7 @@
 #include "../include/graph_building.h"
 #include "../include/configure_agents.h"
 
-#define PRE_CLASS     500
+#define PRE_CLASS     500   // From 0 to 500 minutes, students are at home
 #define PERIOD1_START 520
 #define PERIOD1_END   600
 #define PERIOD2_START 605
@@ -20,7 +20,7 @@
 #define PERIOD4_END   840
 #define PERIOD5_START 845
 #define PERIOD5_END   920
-#define POST_CLASS    940
+#define POST_CLASS    940   // From 940 minutes until (24 * 60), students are at home
 
 Simulation::Simulation() {
     this->day_counter = 0;
@@ -30,21 +30,37 @@ Simulation::Simulation() {
     this->current_period = -1;
 
     this->start_time = std::chrono::high_resolution_clock::now();
+    this->last_day = std::chrono::high_resolution_clock::now();
 }
 
 Simulation::~Simulation() = default;
 
 void Simulation::start_simulation() {
+    /*  (void) --> (void)
+     *  This is the function that runs the simulation based on the existing
+     *  parameters in the 'Simulation' object.
+     *
+     *  A loop runs until the specified day limit is reached.
+     *  NOTE: Simulation starts on a Monday.
+     *        This model assumes that students don't go to school on Sat and Sun
+     */
     Simulation::log("Beginning Simulation Loop now!");
+    Simulation::log("Day " + std::to_string(this->day_counter) +
+                    " (" + this->week[this->day_counter % 7] + ")\t" +
+                    "[Time elapsed since last day (ms): ~]");
+    this->last_day = std::chrono::high_resolution_clock::now();
 
     // MAIN SIMULATION LOOP
     while (this->day_counter < this->day_limit) {
-        // Figure out what the day_state is
+        // Figure out what the day_state and what period it is during the day
+        // (School days are divided into periods)
         this->day_state = Simulation::determine_day_state();
         this->current_period = Simulation::determine_period();
 
+        bool is_weekend = this->week[this->day_counter % 7] == "Sat" or week[this->day_counter % 7] == "Sun";
+
         // DAY STATE 0: AGENTS ARE AT HOME
-        if (this->day_state == 0) {
+        if (this->day_state == 0 or is_weekend) {
             // only do Individual Disease Progression
             Simulation::individual_disease_progression_for_all();
         }
@@ -75,7 +91,14 @@ void Simulation::start_simulation() {
             this->day_counter++;
             this->minute_counter = 0;
             this->current_period = 0;
-            Simulation::log("Day " + std::to_string(this->day_counter));
+            Simulation::log("Day " + std::to_string(this->day_counter) +
+                            " (" + this->week[this->day_counter % 7] + ")\t" +
+                            "[Time elapsed since last day (ms): " +
+                            std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
+                                                   (std::chrono::high_resolution_clock::now() -
+                                                    this->last_day).count()) +
+                            "]");
+            this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
     Simulation::log("Simulation complete!");

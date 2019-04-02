@@ -36,10 +36,13 @@ public:
     unsigned int day_limit;
     int current_period;
 
+    std::array<std::string, 7> week = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+
     unsigned short day_state;
     unsigned int minute_counter;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
+    std::chrono::time_point<std::chrono::high_resolution_clock> last_day;
 
     std::vector<Agent> grade9_agents;
     std::vector<Agent> grade10_agents;
