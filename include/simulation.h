@@ -1,6 +1,11 @@
-//
-// Created by david on 4/1/2019.
-//
+/**
+ * @file simulation.h
+ *
+ * @brief Header file outlining Simulation class and associated types
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #ifndef C_AGENTBASEDMODEL_SIMULATION_H
 #define C_AGENTBASEDMODEL_SIMULATION_H
@@ -11,17 +16,18 @@
 #include <array>
 #include "agent.h"
 
-/*
- * classroom_population example:
- * "303": {
- *  {Agents who are in the class in period1},
- *  {Agents who are in the class in period2},
- *  {Agents who are in the class in period3},
- *  {Agents who are in the class in period4},
- *  {Agents who are in the class in period5},
- * }
- */
-
+#define PRE_CLASS     500   // From 0 to 500 minutes, students are at home
+#define PERIOD1_START 520
+#define PERIOD1_END   600
+#define PERIOD2_START 605
+#define PERIOD2_END   680
+#define PERIOD3_START 685
+#define PERIOD3_END   760
+#define PERIOD4_START 675
+#define PERIOD4_END   840
+#define PERIOD5_START 845
+#define PERIOD5_END   920
+#define POST_CLASS    940   // From 940 minutes until (24 * 60), students are at home
 
 typedef std::map<std::string, std::array<std::vector<Agent *>, 5>> classroom_population;
 

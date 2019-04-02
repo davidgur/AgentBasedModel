@@ -1,6 +1,11 @@
-//
-// Created by david on 27/03/19.
-//
+/**
+ * @file graph_building.h
+ *
+ * @brief Header file outlining all functions associated with graph_building.cpp
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #ifndef C_AGENTBASEDMODEL_GRAPH_BUILDING_H
 #define C_AGENTBASEDMODEL_GRAPH_BUILDING_H

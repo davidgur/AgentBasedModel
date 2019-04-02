@@ -1,6 +1,11 @@
-//
-// Created by david on 27/03/19.
-//
+/**
+ * @file graph_building.h
+ *
+ * @brief Header file outlining all functions associated with configure_agents.cpp
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #ifndef C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H
 #define C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H

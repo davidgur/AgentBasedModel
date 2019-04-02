@@ -1,6 +1,11 @@
-//
-// Created by david on 3/27/2019.
-//
+/**
+ * @file agent.cpp
+ *
+ * @brief File containing all functions in the Agent class
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #include <iostream>
 #include "../include/agent.h"

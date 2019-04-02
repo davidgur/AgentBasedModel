@@ -1,26 +1,17 @@
-//
-// Created by david on 4/1/2019.
-//
-
+/**
+ * @file simulation.cpp
+ *
+ * @brief File containing all functions associated with Simulation class
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 #include <iostream>
 #include <fstream>
 
 #include "../include/simulation.h"
 #include "../include/graph_building.h"
 #include "../include/configure_agents.h"
-
-#define PRE_CLASS     500   // From 0 to 500 minutes, students are at home
-#define PERIOD1_START 520
-#define PERIOD1_END   600
-#define PERIOD2_START 605
-#define PERIOD2_END   680
-#define PERIOD3_START 685
-#define PERIOD3_END   760
-#define PERIOD4_START 675
-#define PERIOD4_END   840
-#define PERIOD5_START 845
-#define PERIOD5_END   920
-#define POST_CLASS    940   // From 940 minutes until (24 * 60), students are at home
 
 Simulation::Simulation() {
     this->day_counter = 0;

@@ -1,6 +1,11 @@
-//
-// Created by david on 3/27/2019.
-//
+/**
+ * @file agent.h
+ *
+ * @brief Header file outlining Agent class
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #ifndef C_AGENTBASEDMODEL_AGENT_H
 #define C_AGENTBASEDMODEL_AGENT_H

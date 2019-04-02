@@ -1,6 +1,11 @@
-//
-// Created by david on 27/03/19.
-//
+/**
+ * @file graph_building.cpp
+ *
+ * @brief Functions that are used in the creation of a graph from a vector of Agents
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #include <random>
 #include <algorithm>

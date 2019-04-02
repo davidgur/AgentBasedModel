@@ -1,6 +1,11 @@
-//
-// Created by david on 27/03/19.
-//
+/**
+ * @file configure_agents.cpp
+ *
+ * @brief Functions that are used to configure individual agents before the simulation starts
+ *
+ * @author David Gurevich
+ * Contact: david(at)gurevich.ca
+ */
 
 #include "../include/configure_agents.h"
 #include "../include/json.hpp"
