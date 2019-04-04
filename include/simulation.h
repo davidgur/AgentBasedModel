@@ -70,21 +70,23 @@ public:
 
     void resolve_classroom_for_all();
 
-    static void individual_disease_progression(const std::vector<Agent> &agent_vector);
+    void individual_disease_progression(std::vector<Agent> &agent_vector);
 
-    static void process_washroom_needs(const std::vector<Agent> &agent_vector);
+    static void process_washroom_needs(std::vector<Agent> &agent_vector);
 
-    static void interaction_among_friends(const std::vector<Agent> &agent_vector);
+    static void interaction_among_friends(std::vector<Agent> &agent_vector);
 
-    static void resolve_classroom(const std::vector<Agent> &agent_vector);
+    static void resolve_classroom(std::vector<Agent> &agent_vector);
 
-    static void export_agent_data(const std::vector<Agent> &agent_vector, std::string file_name);
+    static void export_agent_data(std::vector<Agent> &agent_vector, std::string file_name);
 
     void log(std::string to_print);
 
     void set_day_limit(unsigned int day_limit);
 
     void determine_classroom_population();
+
+    void pick_random_sick();
 
     unsigned short determine_day_state();
 

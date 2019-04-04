@@ -10,6 +10,10 @@
 #ifndef C_AGENTBASEDMODEL_AGENT_H
 #define C_AGENTBASEDMODEL_AGENT_H
 
+#define MINUTES_PER_DAY (24*60)
+
+#define EXPOSED_DAY_COUNT 12
+#define INFECTED_DAY_COUNT 5
 
 #include <vector>
 #include <string>
@@ -23,8 +27,8 @@ public:
     int id;
     int grade;
 
-    int exposed_day_count;
-    int infected_day_count;
+    unsigned long exposed_minute_count;
+    unsigned long infected_minute_count;
 
     bool exposed;
     bool infected;

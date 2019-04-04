@@ -8,6 +8,7 @@
  */
 #include <iostream>
 #include <fstream>
+#include <random>
 
 #include "../include/simulation.h"
 #include "../include/graph_building.h"
@@ -102,10 +103,10 @@ void Simulation::log(std::string to_print) {
     std::cout << to_print << std::endl;
 }
 
-void Simulation::export_agent_data(const std::vector<Agent> &agent_vector, std::string file_name) {
+void Simulation::export_agent_data(std::vector<Agent> &agent_vector, std::string file_name) {
     std::ofstream export_file;
     export_file.open("export/" + file_name);
-    for (auto const &student : agent_vector) {
+    for (auto &student : agent_vector) {
         export_file << "[AGENT " << student.grade << student.id << "]" << std::endl;
         export_file << "\t" << student.p1 << std::endl;
         export_file << "\t" << student.p2 << std::endl;
@@ -146,6 +147,9 @@ void Simulation::initialize_simulation() {
     Simulation::log("Determining classroom populations");
     Simulation::determine_classroom_population();
 
+    Simulation::log("Picking random sick person");
+    Simulation::pick_random_sick();
+
     Simulation::log("Exporting all agent data.");
     Simulation::export_agent_data(this->grade9_agents, "grade9.txt");
     Simulation::export_agent_data(this->grade10_agents, "grade10.txt");
@@ -175,8 +179,8 @@ void Simulation::populate_agent_vector() {
     }
 }
 
-void Simulation::individual_disease_progression(const std::vector<Agent> &agent_vector) {
-    for (auto agent : agent_vector) {
+void Simulation::individual_disease_progression(std::vector<Agent> &agent_vector) {
+    for (auto &agent : agent_vector) {
         agent.individual_disease_progression();
     }
 }
@@ -209,20 +213,20 @@ void Simulation::resolve_classroom_for_all() {
     Simulation::resolve_classroom(this->grade12_agents);
 }
 
-void Simulation::process_washroom_needs(const std::vector<Agent> &agent_vector) {
-    for (auto agent : agent_vector) {
+void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
+    for (auto &agent : agent_vector) {
         agent.process_washroom_needs();
     }
 }
 
-void Simulation::interaction_among_friends(const std::vector<Agent> &agent_vector) {
-    for (auto agent : agent_vector) {
+void Simulation::interaction_among_friends(std::vector<Agent> &agent_vector) {
+    for (auto &agent : agent_vector) {
         agent.interact_with_friend_random();
     }
 }
 
-void Simulation::resolve_classroom(const std::vector<Agent> &agent_vector) {
-    for (auto agent : agent_vector)
+void Simulation::resolve_classroom(std::vector<Agent> &agent_vector) {
+    for (auto &agent : agent_vector)
         agent.resolve_classroom();
 }
 
@@ -278,6 +282,27 @@ short Simulation::determine_period() {
 
 void Simulation::set_day_limit(unsigned int day_limit) {
     this->day_limit = day_limit;
+}
+
+void Simulation::pick_random_sick() {
+    std::random_device dev;
+    std::mt19937 rng(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> random_grade(1, 4);
+
+    int infected_individual_grade = random_grade(rng);
+
+    switch (infected_individual_grade) {
+        case 1:
+            this->grade9_agents[0].exposed = true;
+        case 2:
+            this->grade10_agents[0].exposed = true;
+        case 3:
+            this->grade11_agents[0].exposed = true;
+        case 4:
+            this->grade12_agents[0].exposed = true;
+        default:
+            this->grade9_agents[0].exposed = true;
+    }
 }
 
 void Simulation::determine_classroom_population() {

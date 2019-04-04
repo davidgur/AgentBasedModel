@@ -28,8 +28,8 @@ Agent::Agent(int id, int grade) {
     this->infected = false;
     this->recovered = false;
 
-    this->exposed_day_count = 0;
-    this->infected_day_count = 0;
+    this->exposed_minute_count = 0;
+    this->infected_minute_count = 0;
 
     this->p1 = "";
     this->p2 = "";
@@ -43,19 +43,20 @@ void Agent::add_to_connections(Agent *new_agent) {
 }
 
 void Agent::individual_disease_progression() {
-    if (this->exposed and this->exposed_day_count < 12) {
-        this->exposed_day_count++;
-    } else if (this->exposed and this->exposed_day_count == 12) {
+    if (this->exposed and this->exposed_minute_count < (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
+        this->exposed_minute_count++;
+    } else if (this->exposed and this->exposed_minute_count == (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->exposed = false;
-        this->exposed_day_count = 0;
-
+        this->exposed_minute_count = 0;
+        std::cout << "Agent (" << this->grade << ", " << this->id << ") just became infected" << std::endl;
         this->infected = true;
-    } else if (this->infected and this->infected_day_count < 5) {
-        this->infected_day_count++;
-    } else if (this->infected and this->infected_day_count == 5) {
+    } else if (this->infected and this->infected_minute_count < (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
+        this->infected_minute_count++;
+    } else if (this->infected and this->infected_minute_count == (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->infected = false;
         this->recovered = true;
-        this->infected_day_count = 0;
+        std::cout << "Agent (" << this->grade << ", " << this->id << ") just recovered" << std::endl;
+        this->infected_minute_count = 0;
     }
 }
 
