@@ -12,10 +12,10 @@
 
 #define MINUTES_PER_DAY (24*60)
 
-#define EXPOSED_DAY_COUNT 0
+#define EXPOSED_DAY_COUNT 12
 #define INFECTED_DAY_COUNT 5
 
-#define PROBABILITY_OF_INFECTION (0.527)
+#define PROBABILITY_OF_INFECTION 0.05
 
 #include <vector>
 #include <string>
@@ -64,7 +64,7 @@ public:
 
     void resolve_classroom();
 
-    void interact(Agent *other_agent);
+    void interact(Agent &other_agent);
 };
 
 

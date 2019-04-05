@@ -12,6 +12,7 @@
 #include <iostream>
 #include <fstream>
 #include <random>
+#include <algorithm>
 
 #include "../include/simulation.h"
 #include "../include/graph_building.h"
@@ -84,6 +85,7 @@ void Simulation::start_simulation() {
 
         // Increment minute counter
         this->minute_counter++;
+        this->print_population_sizes();
         if (this->minute_counter == (24 * 60)) {
             this->day_counter++;
             this->minute_counter = 0;
@@ -160,6 +162,9 @@ void Simulation::initialize_simulation() {
     Simulation::export_agent_data(this->grade10_agents, "grade10.txt");
     Simulation::export_agent_data(this->grade11_agents, "grade11.txt");
     Simulation::export_agent_data(this->grade12_agents, "grade12.txt");
+
+    Simulation::log("Preparing export file.");
+    Simulation::clear_existing_data();
 }
 
 void Simulation::populate_agent_vector() {
@@ -216,6 +221,115 @@ void Simulation::resolve_classroom_for_all() {
     Simulation::resolve_classroom(this->grade10_agents);
     Simulation::resolve_classroom(this->grade11_agents);
     Simulation::resolve_classroom(this->grade12_agents);
+}
+
+std::vector<int> Simulation::get_grade9_population_sizes() {
+    int grade9_susceptible = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(),
+                                           [](auto &agent) { return agent.susceptible == true; });
+    int grade9_vaccinated = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(),
+                                          [](auto &agent) { return agent.vaccinated == true; });
+    int grade9_exposed = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(),
+                                       [](auto &agent) { return agent.exposed == true; });
+    int grade9_infected = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(),
+                                        [](auto &agent) { return agent.infected == true; });
+    int grade9_recovered = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(),
+                                         [](auto &agent) { return agent.recovered == true; });
+
+    return std::vector<int>{grade9_susceptible, grade9_vaccinated, grade9_exposed, grade9_infected, grade9_recovered};
+}
+
+std::vector<int> Simulation::get_grade10_population_sizes() {
+    int grade10_susceptible = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(),
+                                            [](auto &agent) { return agent.susceptible == true; });
+    int grade10_vaccinated = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(),
+                                           [](auto &agent) { return agent.vaccinated == true; });
+    int grade10_exposed = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(),
+                                        [](auto &agent) { return agent.exposed == true; });
+    int grade10_infected = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(),
+                                         [](auto &agent) { return agent.infected == true; });
+    int grade10_recovered = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(),
+                                          [](auto &agent) { return agent.recovered == true; });
+
+    return std::vector<int>{grade10_susceptible, grade10_vaccinated, grade10_exposed, grade10_infected,
+                            grade10_recovered};
+}
+
+std::vector<int> Simulation::get_grade11_population_sizes() {
+    int grade11_susceptible = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(),
+                                            [](auto &agent) { return agent.susceptible == true; });
+    int grade11_vaccinated = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(),
+                                           [](auto &agent) { return agent.vaccinated == true; });
+    int grade11_exposed = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(),
+                                        [](auto &agent) { return agent.exposed == true; });
+    int grade11_infected = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(),
+                                         [](auto &agent) { return agent.infected == true; });
+    int grade11_recovered = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(),
+                                          [](auto &agent) { return agent.recovered == true; });
+
+    return std::vector<int>{grade11_susceptible, grade11_vaccinated, grade11_exposed, grade11_infected,
+                            grade11_recovered};
+}
+
+std::vector<int> Simulation::get_grade12_population_sizes() {
+    int grade12_susceptible = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(),
+                                            [](auto &agent) { return agent.susceptible == true; });
+    int grade12_vaccinated = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(),
+                                           [](auto &agent) { return agent.vaccinated == true; });
+    int grade12_exposed = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(),
+                                        [](auto &agent) { return agent.exposed == true; });
+    int grade12_infected = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(),
+                                         [](auto &agent) { return agent.infected == true; });
+    int grade12_recovered = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(),
+                                          [](auto &agent) { return agent.recovered == true; });
+
+    return std::vector<int>{grade12_susceptible, grade12_vaccinated, grade12_exposed, grade12_infected,
+                            grade12_recovered};
+}
+
+void Simulation::clear_existing_data() {
+    std::ofstream out;
+    out.open("export/population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
+    out.close();
+}
+
+void Simulation::print_population_sizes() {
+    std::vector<int> grade9_population_sizes = this->get_grade9_population_sizes();
+    std::vector<int> grade10_population_sizes = this->get_grade10_population_sizes();
+    std::vector<int> grade11_population_sizes = this->get_grade11_population_sizes();
+    std::vector<int> grade12_population_sizes = this->get_grade12_population_sizes();
+
+    std::ofstream out;
+
+    // Append to file
+    out.open("export/population_sizes.csv", std::ios::app);
+
+    // Grade 9
+    out << grade9_population_sizes[0] << "," <<
+        grade9_population_sizes[1] << "," <<
+        grade9_population_sizes[2] << "," <<
+        grade9_population_sizes[3] << "," <<
+        grade9_population_sizes[4] << ",";
+
+    // Grade 10
+    out << grade10_population_sizes[0] << "," <<
+        grade10_population_sizes[1] << "," <<
+        grade10_population_sizes[2] << "," <<
+        grade10_population_sizes[3] << "," <<
+        grade10_population_sizes[4] << ",";
+
+    // Grade 11
+    out << grade11_population_sizes[0] << "," <<
+        grade11_population_sizes[1] << "," <<
+        grade11_population_sizes[2] << "," <<
+        grade11_population_sizes[3] << "," <<
+        grade11_population_sizes[4] << ",";
+
+    // Grade 12
+    out << grade12_population_sizes[0] << "," <<
+        grade12_population_sizes[1] << "," <<
+        grade12_population_sizes[2] << "," <<
+        grade12_population_sizes[3] << "," <<
+        grade12_population_sizes[4] << std::endl;
 }
 
 void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
@@ -296,13 +410,9 @@ void Simulation::set_day_limit(unsigned int day_limit) {
 }
 
 void Simulation::pick_random_sick() {
-    auto sick_agent = random_element(this->grade9_agents.begin(), this->grade9_agents.end());
-    sick_agent->susceptible = false;
+    Agent *sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
     sick_agent->exposed = true;
-    for (auto &connection : sick_agent->connections) {
-        connection->susceptible = false;
-        connection->exposed = true;
-    }
+    sick_agent->susceptible = false;
 }
 
 void Simulation::determine_classroom_population() {

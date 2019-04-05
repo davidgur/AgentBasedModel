@@ -71,6 +71,18 @@ public:
 
     void resolve_classroom_for_all();
 
+    void print_population_sizes();
+
+    void clear_existing_data();
+
+    std::vector<int> get_grade9_population_sizes();
+
+    std::vector<int> get_grade10_population_sizes();
+
+    std::vector<int> get_grade11_population_sizes();
+
+    std::vector<int> get_grade12_population_sizes();
+
     void individual_disease_progression(std::vector<Agent> &agent_vector);
 
     static void process_washroom_needs(std::vector<Agent> &agent_vector);

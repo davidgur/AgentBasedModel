@@ -29,6 +29,7 @@ Agent::Agent(int id, int grade) {
     this->id = id;
     this->grade = grade;
 
+    this->susceptible = true;
     this->vaccinated = false;
     this->exposed = false;
     this->infected = false;
@@ -64,34 +65,30 @@ void Agent::individual_disease_progression() {
     }
 }
 
-void Agent::interact(Agent *other_agent) {
+void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0.0, 1.0);
+    std::uniform_int_distribution<int> minutes_in_day(0, 24 * 60);
 
-    bool should_infect = dist(mt) <= 0.527;
+    bool should_infect = dist(mt) < PROBABILITY_OF_INFECTION;
 
     // Check if the other agent is infectious
-    if (other_agent->infected and this->susceptible and should_infect) {
+    if (other_agent.infected and this->susceptible and should_infect) {
         this->susceptible = false;
         this->exposed = true;
-        this->exposed_minute_count = 0;
-        std::cout << "Agent (" << other_agent->grade << ", " << other_agent->id <<
-                  " infected Agent (" << this->grade << ", " << this->id << ")" << std::endl;
-    } else if (other_agent->susceptible and this->infected and should_infect) {
-        other_agent->susceptible = false;
-        other_agent->exposed = true;
-        other_agent->exposed_minute_count = 0;
-        std::cout << "Agent (" << this->grade << ", " << this->id <<
-                  " infected Agent (" << other_agent->grade << ", " << other_agent->id << ")" << std::endl;
+        this->exposed_minute_count = minutes_in_day(mt);    // Random value to add some stochasticity
+    } else if (other_agent.susceptible and this->infected and should_infect) {
+        other_agent.susceptible = false;
+        other_agent.exposed = true;
+        other_agent.exposed_minute_count = minutes_in_day(mt); // Random value to add some stochasticity
     }
 }
 
 void Agent::process_washroom_needs() {}
 
 void Agent::interact_with_friend_random() {
-    auto other_agent = random_element(this->connections.begin(), this->connections.end());
-    this->interact(*other_agent);
+    this->interact(**random_element(this->connections.begin(), this->connections.end()));
 }
 
 void Agent::resolve_classroom() {}

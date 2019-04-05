@@ -1,4 +1,4 @@
-ToolSet: 5.0@C:\MinGW
+ToolSet: Ubuntu 18.04.1 LTS (local)@C:\Users\david\AppData\Local\Microsoft\WindowsApps\ubuntu.exe
 Options: 
 
 Options:
