@@ -12,11 +12,19 @@
 
 #define MINUTES_PER_DAY (24*60)
 
-#define EXPOSED_DAY_COUNT 12
+#define EXPOSED_DAY_COUNT 0
 #define INFECTED_DAY_COUNT 5
+
+#define PROBABILITY_OF_INFECTION (0.527)
 
 #include <vector>
 #include <string>
+
+template<typename Iter, typename RandomGenerator>
+Iter select_randomly(Iter start, Iter end, RandomGenerator &g);
+
+template<typename Iter>
+Iter random_element(Iter start, Iter end);
 
 class Agent {
 public:
@@ -30,11 +38,13 @@ public:
     unsigned long exposed_minute_count;
     unsigned long infected_minute_count;
 
+    // SVEIR
+    bool susceptible;
+    bool vaccinated;
     bool exposed;
     bool infected;
     bool recovered;
 
-    bool vaccinated;
 
     std::vector<Agent*> connections;
 
@@ -53,6 +63,8 @@ public:
     void interact_with_friend_random();
 
     void resolve_classroom();
+
+    void interact(Agent *other_agent);
 };
 
 

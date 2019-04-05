@@ -5,6 +5,9 @@
  *
  * @author David Gurevich
  * Contact: david(at)gurevich.ca
+ *
+ * TODO: - Track period of the day
+ *       - Create transmission dynamic in class
  */
 #include <iostream>
 #include <fstream>
@@ -13,6 +16,7 @@
 #include "../include/simulation.h"
 #include "../include/graph_building.h"
 #include "../include/configure_agents.h"
+#include "../include/random_element.h"
 
 Simulation::Simulation() {
     this->day_counter = 0;
@@ -67,7 +71,8 @@ void Simulation::start_simulation() {
         else if (this->day_state == 2) {
             // Individual Disease Progression, Social Among Classmates, Washroom, any special class considerations
             Simulation::individual_disease_progression_for_all();
-            Simulation::resolve_classroom_for_all();
+            Simulation::interaction_among_friends_for_all();
+            //Simulation::resolve_classroom_for_all();
             Simulation::process_washroom_needs_for_all();
         }
             // DAY STATE 3: IN HALL
@@ -220,8 +225,14 @@ void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
 }
 
 void Simulation::interaction_among_friends(std::vector<Agent> &agent_vector) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+
     for (auto &agent : agent_vector) {
-        agent.interact_with_friend_random();
+        bool is_interacting_with_friend = dist(mt) < (20.0 / 75.0);
+        if (is_interacting_with_friend)
+            agent.interact_with_friend_random();
     }
 }
 
@@ -285,23 +296,12 @@ void Simulation::set_day_limit(unsigned int day_limit) {
 }
 
 void Simulation::pick_random_sick() {
-    std::random_device dev;
-    std::mt19937 rng(dev());
-    std::uniform_int_distribution<std::mt19937::result_type> random_grade(1, 4);
-
-    int infected_individual_grade = random_grade(rng);
-
-    switch (infected_individual_grade) {
-        case 1:
-            this->grade9_agents[0].exposed = true;
-        case 2:
-            this->grade10_agents[0].exposed = true;
-        case 3:
-            this->grade11_agents[0].exposed = true;
-        case 4:
-            this->grade12_agents[0].exposed = true;
-        default:
-            this->grade9_agents[0].exposed = true;
+    auto sick_agent = random_element(this->grade9_agents.begin(), this->grade9_agents.end());
+    sick_agent->susceptible = false;
+    sick_agent->exposed = true;
+    for (auto &connection : sick_agent->connections) {
+        connection->susceptible = false;
+        connection->exposed = true;
     }
 }
 

@@ -11,33 +11,20 @@
     </configurations>
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="be723bf9-ab73-413c-946d-e27d4fef5839" name="Default Changelist" comment="Added some basic documentation">
-      <change beforePath="$PROJECT_DIR$/.idea/C_AgentBasedModel.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/C_AgentBasedModel.iml" afterDir="false" />
+    <list default="true" id="be723bf9-ab73-413c-946d-e27d4fef5839" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/include/random_element.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeCache.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeDirectoryInformation.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/CMakeOutput.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/DependInfo.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/DependInfo.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/build.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/build.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/cmake_clean.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/cmake_clean.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/depend.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/depend.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/flags.make" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/flags.make" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/link.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir/link.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile.cmake" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/Makefile2" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/TargetDirectories.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-environment.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/clion-log.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/CMakeFiles/feature_tests.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cmake-build-debug/C_AgentBasedModel.cbp" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/C_AgentBasedModel.cbp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/C_AgentBasedModel.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/Makefile" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/Makefile" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/cmake_install.cmake" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cmake-build-debug/C_AgentBasedModel.exe" beforeDir="false" afterPath="$PROJECT_DIR$/cmake-build-debug/C_AgentBasedModel.exe" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/agent.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/agent.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/include/graph_building.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/graph_building.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/include/configure_agents.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/configure_agents.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/include/simulation.h" beforeDir="false" afterPath="$PROJECT_DIR$/include/simulation.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/agent.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/agent.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/configure_agents.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/configure_agents.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/simulation.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/src/simulation.cpp" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/cmake-build-debug/" />
@@ -80,29 +67,31 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="array" value="1" />
-          <entry key="cpp" value="4" />
-          <entry key="h" value="10" />
+          <entry key="cpp" value="5" />
+          <entry key="h" value="14" />
           <entry key="vmoptions" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="ObjectiveC" value="15" />
+          <entry key="ObjectiveC" value="20" />
           <entry key="PLAIN_TEXT" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="cpp" value="2132" />
-          <entry key="h" value="565" />
+          <entry key="cpp" value="4211" />
+          <entry key="h" value="803" />
           <entry key="mm" value="185" />
+          <entry key="txt" value="99" />
           <entry key="vmoptions" value="9" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="ObjectiveC" value="2882" />
-          <entry key="PLAIN_TEXT" value="9" />
+          <entry key="Doxygen file" value="6" />
+          <entry key="ObjectiveC" value="5193" />
+          <entry key="PLAIN_TEXT" value="108" />
         </counts>
       </usages-collector>
     </session>
@@ -113,7 +102,7 @@
         <entry file="file://$PROJECT_DIR$/src/main.cpp">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="299">
-              <caret line="13" column="37" lean-forward="true" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
+              <caret line="13" column="37" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
             </state>
           </provider>
         </entry>
@@ -121,8 +110,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/simulation.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-2472">
-              <caret line="106" column="30" lean-forward="true" selection-start-line="106" selection-start-column="30" selection-end-line="106" selection-end-column="30" />
+            <state relative-caret-position="4443">
+              <caret line="276" column="38" selection-start-line="276" selection-start-column="38" selection-end-line="276" selection-end-column="38" />
               <folding>
                 <element signature="e#170#189#0" expanded="true" />
               </folding>
@@ -130,23 +119,13 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/include/simulation.h">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1771">
-              <caret line="80" column="34" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/agent.cpp">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="322">
-              <caret line="55" column="31" lean-forward="true" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
+            <state relative-caret-position="92">
+              <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
               <folding>
                 <element signature="e#152#171#0" expanded="true" />
-                <element signature="e#203#374#0" />
                 <element signature="e#376#734#0" />
                 <element signature="e#736#832#0" />
               </folding>
@@ -154,11 +133,26 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/configure_agents.cpp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1817">
+              <caret line="79" column="32" lean-forward="true" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
+              <folding>
+                <element signature="e#198#238#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/agent.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="234">
-              <caret line="15" column="28" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+            <state relative-caret-position="138">
+              <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+              <folding>
+                <element signature="e#357#374#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -166,7 +160,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/include/graph_building.h">
           <provider selected="true" editor-type-id="text-editor">
-            <state>
+            <state relative-caret-position="-65">
               <caret column="3" selection-start-column="3" selection-end-column="3" />
             </state>
           </provider>
@@ -184,7 +178,13 @@
       <find>minute_</find>
       <find>initia</find>
       <find>exposed</find>
+      <find>for</find>
       <find>auto</find>
+      <find>interaction_among</find>
+      <find>random</find>
+      <find>initialize</find>
+      <find>pick_rand</find>
+      <find>interact</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -217,16 +217,17 @@
         <option value="$PROJECT_DIR$/include/initialization.h" />
         <option value="$PROJECT_DIR$/CMakeLists.txt" />
         <option value="$PROJECT_DIR$/src/graph_building.cpp" />
-        <option value="$PROJECT_DIR$/src/configure_agents.cpp" />
-        <option value="$PROJECT_DIR$/include/configure_agents.h" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$APPLICATION_CONFIG_DIR$/clion64.exe.vmoptions" />
         <option value="$PROJECT_DIR$/include/graph_building.h" />
-        <option value="$PROJECT_DIR$/src/agent.cpp" />
+        <option value="$PROJECT_DIR$/src/main.cpp" />
+        <option value="$PROJECT_DIR$/include/configure_agents.h" />
+        <option value="$PROJECT_DIR$/include/random_element.h" />
+        <option value="$PROJECT_DIR$/src/configure_agents.cpp" />
         <option value="$PROJECT_DIR$/include/simulation.h" />
         <option value="$PROJECT_DIR$/src/simulation.cpp" />
-        <option value="$PROJECT_DIR$/src/main.cpp" />
         <option value="$PROJECT_DIR$/include/agent.h" />
+        <option value="$PROJECT_DIR$/src/agent.cpp" />
       </list>
     </option>
   </component>
@@ -347,7 +348,7 @@
       <workItem from="1554207501007" duration="5649000" />
       <workItem from="1554244687951" duration="15000" />
       <workItem from="1554382016915" duration="201000" />
-      <workItem from="1554382270834" duration="3909000" />
+      <workItem from="1554382270834" duration="8486000" />
     </task>
     <task id="LOCAL-00001" summary="Agents are now built with a network of &quot;friends&quot;. Courses generated.">
       <created>1553712674448</created>
@@ -412,11 +413,18 @@
       <option name="project" value="LOCAL" />
       <updated>1554172599519</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Added individual disease progression. Speed improvements.">
+      <created>1554386746794</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1554386746794</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="72219000" />
+    <option name="totallyTimeSpent" value="76796000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -436,7 +444,7 @@
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49932885" weight="0.5658466" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49932885" visible="true" weight="0.5658466" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.39797395" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -519,16 +527,10 @@
     <MESSAGE value="Remove duplicate connections from ring generation phase." />
     <MESSAGE value="Added weekends and better day-by-day logging." />
     <MESSAGE value="Added some basic documentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Added some basic documentation" />
+    <MESSAGE value="Added individual disease progression. Speed improvements." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added individual disease progression. Speed improvements." />
     <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="true" />
     <option name="REARRANGE_BEFORE_PROJECT_COMMIT" value="true" />
-  </component>
-  <component name="XDebuggerManager">
-    <watches-manager>
-      <configuration name="CMakeRunConfiguration">
-        <watch expression="this-&gt;exposed_minute_count / MINUTES_PER_DAY" language="ObjectiveC" />
-      </configuration>
-    </watches-manager>
   </component>
   <component name="debuggerHistoryManager">
     <expressions id="breakpointCondition">
@@ -602,8 +604,6 @@
     </expressions>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/ext/alloc_traits.h" />
-    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/alloc_traits.h" />
     <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/allocator.h" />
     <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/ext/new_allocator.h" />
     <entry file="file://$PROJECT_DIR$/initialize.cpp" />
@@ -699,13 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/configure_agents.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="22" selection-start-line="22" selection-end-line="22" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="280">
@@ -717,23 +710,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
           <caret line="4" column="8" selection-start-line="4" selection-start-column="8" selection-end-line="4" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/include/graph_building.h">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="3" selection-start-column="3" selection-end-column="3" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/configure_agents.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="24" column="5" selection-start-line="24" selection-start-column="5" selection-end-line="24" selection-end-column="5" />
-          <folding>
-            <element signature="e#198#238#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -765,47 +741,87 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/simulation.cpp">
+    <entry file="file://$PROJECT_DIR$/include/simulation.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-2472">
-          <caret line="106" column="30" lean-forward="true" selection-start-line="106" selection-start-column="30" selection-end-line="106" selection-end-column="30" />
-          <folding>
-            <element signature="e#170#189#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="161">
+          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/configure_agents.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="16" column="87" selection-start-line="16" selection-start-column="87" selection-end-line="16" selection-end-column="87" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://C:/MinGW/lib/gcc/mingw32/6.3.0/include/c++/bits/random.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="116">
+          <caret line="1808" selection-start-line="1808" selection-end-line="1808" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/random_element.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="9" column="49" lean-forward="true" selection-start-line="9" selection-start-column="49" selection-end-line="9" selection-end-column="49" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main.cpp">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="299">
-          <caret line="13" column="37" lean-forward="true" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
+          <caret line="13" column="37" selection-start-line="13" selection-start-column="37" selection-end-line="13" selection-end-column="37" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/include/simulation.h">
+    <entry file="file://$PROJECT_DIR$/src/simulation.cpp">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1771">
-          <caret line="80" column="34" selection-start-line="80" selection-start-column="34" selection-end-line="80" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/agent.cpp">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="322">
-          <caret line="55" column="31" lean-forward="true" selection-start-line="55" selection-start-column="31" selection-end-line="55" selection-end-column="31" />
+        <state relative-caret-position="4443">
+          <caret line="276" column="38" selection-start-line="276" selection-start-column="38" selection-end-line="276" selection-end-column="38" />
           <folding>
-            <element signature="e#152#171#0" expanded="true" />
-            <element signature="e#203#374#0" />
-            <element signature="e#376#734#0" />
-            <element signature="e#736#832#0" />
+            <element signature="e#170#189#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/include/graph_building.h">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-65">
+          <caret column="3" selection-start-column="3" selection-end-column="3" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/include/agent.h">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="234">
-          <caret line="15" column="28" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+        <state relative-caret-position="138">
+          <caret line="15" column="28" lean-forward="true" selection-start-line="15" selection-start-column="28" selection-end-line="15" selection-end-column="28" />
+          <folding>
+            <element signature="e#357#374#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/configure_agents.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1817">
+          <caret line="79" column="32" lean-forward="true" selection-start-line="79" selection-start-column="32" selection-end-line="79" selection-end-column="32" />
+          <folding>
+            <element signature="e#198#238#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/agent.cpp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="92">
+          <caret line="71" column="44" selection-start-line="71" selection-start-column="44" selection-end-line="71" selection-end-column="44" />
+          <folding>
+            <element signature="e#152#171#0" expanded="true" />
+            <element signature="e#376#734#0" />
+            <element signature="e#736#832#0" />
+          </folding>
         </state>
       </provider>
     </entry>

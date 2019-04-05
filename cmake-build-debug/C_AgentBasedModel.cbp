@@ -92,6 +92,9 @@
 		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/json.hpp">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>
+		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/random_element.h">
+			<Option target="C_AgentBasedModel"/>
+		</Unit>
 		<Unit filename="C:/Users/david/Desktop/AgentBasedModel/include/simulation.h">
 			<Option target="C_AgentBasedModel"/>
 		</Unit>

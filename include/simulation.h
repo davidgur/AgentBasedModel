@@ -14,6 +14,7 @@
 #include <chrono>
 #include <map>
 #include <array>
+
 #include "agent.h"
 
 #define PRE_CLASS     500   // From 0 to 500 minutes, students are at home
