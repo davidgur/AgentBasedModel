@@ -11,7 +11,7 @@
 
 int main() {
     Simulation main_simulation;
-    main_simulation.set_day_limit(120);
+    main_simulation.set_day_limit(62);
     main_simulation.initialize_simulation();
     main_simulation.start_simulation();
 

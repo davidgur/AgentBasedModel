@@ -15,10 +15,12 @@
 #define EXPOSED_DAY_COUNT 12
 #define INFECTED_DAY_COUNT 5
 
-#define PROBABILITY_OF_INFECTION 0.05
+#define PROBABILITY_OF_INFECTION 0.5217
 
 #include <vector>
 #include <string>
+#include <array>
+#include <map>
 
 template<typename Iter, typename RandomGenerator>
 Iter select_randomly(Iter start, Iter end, RandomGenerator &g);
@@ -35,8 +37,8 @@ public:
     int id;
     int grade;
 
-    unsigned long exposed_minute_count;
-    unsigned long infected_minute_count;
+    long long exposed_minute_count;
+    long long infected_minute_count;
 
     // SVEIR
     bool susceptible;
@@ -44,6 +46,9 @@ public:
     bool exposed;
     bool infected;
     bool recovered;
+
+    double susceptibility;
+    double transmisability;
 
 
     std::vector<Agent*> connections;
@@ -62,7 +67,7 @@ public:
 
     void interact_with_friend_random();
 
-    void resolve_classroom();
+    void resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent *>, 5>> &classrooms);
 
     void interact(Agent &other_agent);
 };

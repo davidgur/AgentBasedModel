@@ -6,8 +6,8 @@
  * @author David Gurevich
  * Contact: david(at)gurevich.ca
  *
- * TODO: - Track period of the day
- *       - Create transmission dynamic in class
+ * TODO: - Do environmental transmission (maybe 1/100 of regular transmission?)
+ *
  */
 #include <iostream>
 #include <fstream>
@@ -72,8 +72,8 @@ void Simulation::start_simulation() {
         else if (this->day_state == 2) {
             // Individual Disease Progression, Social Among Classmates, Washroom, any special class considerations
             Simulation::individual_disease_progression_for_all();
-            Simulation::interaction_among_friends_for_all();
-            //Simulation::resolve_classroom_for_all();
+            //Simulation::interaction_among_friends_for_all();
+            Simulation::resolve_classroom_for_all(this->current_period);
             Simulation::process_washroom_needs_for_all();
         }
             // DAY STATE 3: IN HALL
@@ -216,11 +216,11 @@ void Simulation::process_washroom_needs_for_all() {
     Simulation::process_washroom_needs(this->grade12_agents);
 }
 
-void Simulation::resolve_classroom_for_all() {
-    Simulation::resolve_classroom(this->grade9_agents);
-    Simulation::resolve_classroom(this->grade10_agents);
-    Simulation::resolve_classroom(this->grade11_agents);
-    Simulation::resolve_classroom(this->grade12_agents);
+void Simulation::resolve_classroom_for_all(int current_period) {
+    Simulation::resolve_classroom(this->grade9_agents, current_period);
+    Simulation::resolve_classroom(this->grade10_agents, current_period);
+    Simulation::resolve_classroom(this->grade11_agents, current_period);
+    Simulation::resolve_classroom(this->grade12_agents, current_period);
 }
 
 std::vector<int> Simulation::get_grade9_population_sizes() {
@@ -344,15 +344,22 @@ void Simulation::interaction_among_friends(std::vector<Agent> &agent_vector) {
     std::uniform_real_distribution<double> dist(0.0, 1.0);
 
     for (auto &agent : agent_vector) {
-        bool is_interacting_with_friend = dist(mt) < (20.0 / 75.0);
+        bool is_interacting_with_friend = dist(mt) < (1.0 / 5.0);
         if (is_interacting_with_friend)
             agent.interact_with_friend_random();
     }
 }
 
-void Simulation::resolve_classroom(std::vector<Agent> &agent_vector) {
-    for (auto &agent : agent_vector)
-        agent.resolve_classroom();
+void Simulation::resolve_classroom(std::vector<Agent> &agent_vector, int current_period) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_real_distribution<double> dist(0.0, 1.0);
+
+    for (auto &agent : agent_vector) {
+        bool is_interacting_in_class = dist(mt) < (5.75 / 75.0);
+        if (is_interacting_in_class)
+            agent.resolve_classroom(current_period, this->classrooms);
+    }
 }
 
 unsigned short Simulation::determine_day_state() {
@@ -392,17 +399,17 @@ short Simulation::determine_period() {
     auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
     if (between(PERIOD1_START, PERIOD1_END))
-        return 0;
-    else if (between(PERIOD2_START, PERIOD2_END))
         return 1;
-    else if (between(PERIOD3_START, PERIOD3_END))
+    else if (between(PERIOD2_START, PERIOD2_END))
         return 2;
-    else if (between(PERIOD4_START, PERIOD4_END))
+    else if (between(PERIOD3_START, PERIOD3_END))
         return 3;
-    else if (between(PERIOD5_START, PERIOD5_END))
+    else if (between(PERIOD4_START, PERIOD4_END))
         return 4;
+    else if (between(PERIOD5_START, PERIOD5_END))
+        return 5;
     else
-        return -1;
+        return 0;
 }
 
 void Simulation::set_day_limit(unsigned int day_limit) {
@@ -417,34 +424,34 @@ void Simulation::pick_random_sick() {
 
 void Simulation::determine_classroom_population() {
     for (auto &agent : this->grade9_agents) {
-        classrooms[agent.p1][0].push_back(&agent);
-        classrooms[agent.p2][1].push_back(&agent);
-        classrooms[agent.p3][2].push_back(&agent);
-        classrooms[agent.p4][3].push_back(&agent);
-        classrooms[agent.p5][4].push_back(&agent);
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
     }
 
     for (auto &agent : this->grade10_agents) {
-        classrooms[agent.p1][0].push_back(&agent);
-        classrooms[agent.p2][1].push_back(&agent);
-        classrooms[agent.p3][2].push_back(&agent);
-        classrooms[agent.p4][3].push_back(&agent);
-        classrooms[agent.p5][4].push_back(&agent);
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
     }
 
     for (auto &agent : this->grade11_agents) {
-        classrooms[agent.p1][0].push_back(&agent);
-        classrooms[agent.p2][1].push_back(&agent);
-        classrooms[agent.p3][2].push_back(&agent);
-        classrooms[agent.p4][3].push_back(&agent);
-        classrooms[agent.p5][4].push_back(&agent);
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
     }
 
     for (auto &agent : this->grade12_agents) {
-        classrooms[agent.p1][0].push_back(&agent);
-        classrooms[agent.p2][1].push_back(&agent);
-        classrooms[agent.p3][2].push_back(&agent);
-        classrooms[agent.p4][3].push_back(&agent);
-        classrooms[agent.p5][4].push_back(&agent);
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
     }
 }

@@ -69,7 +69,7 @@ public:
 
     void process_washroom_needs_for_all();
 
-    void resolve_classroom_for_all();
+    void resolve_classroom_for_all(int current_period);
 
     void print_population_sizes();
 
@@ -89,7 +89,7 @@ public:
 
     static void interaction_among_friends(std::vector<Agent> &agent_vector);
 
-    static void resolve_classroom(std::vector<Agent> &agent_vector);
+    void resolve_classroom(std::vector<Agent> &agent_vector, int current_period);
 
     static void export_agent_data(std::vector<Agent> &agent_vector, std::string file_name);
 

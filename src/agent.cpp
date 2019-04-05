@@ -53,9 +53,14 @@ void Agent::individual_disease_progression() {
     if (this->exposed and this->exposed_minute_count < (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->exposed_minute_count++;
     } else if (this->exposed and this->exposed_minute_count == (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
+        std::random_device rd;
+        std::mt19937 mt(rd());
+        std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
+
         this->exposed = false;
         this->exposed_minute_count = 0;
         this->infected = true;
+        this->infected_minute_count = stoch_range(mt);
     } else if (this->infected and this->infected_minute_count < (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->infected_minute_count++;
     } else if (this->infected and this->infected_minute_count == (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
@@ -69,7 +74,7 @@ void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::uniform_real_distribution<double> dist(0.0, 1.0);
-    std::uniform_int_distribution<int> minutes_in_day(0, 24 * 60);
+    std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
     bool should_infect = dist(mt) < PROBABILITY_OF_INFECTION;
 
@@ -77,11 +82,11 @@ void Agent::interact(Agent &other_agent) {
     if (other_agent.infected and this->susceptible and should_infect) {
         this->susceptible = false;
         this->exposed = true;
-        this->exposed_minute_count = minutes_in_day(mt);    // Random value to add some stochasticity
+        this->exposed_minute_count = stoch_range(mt);    // Random value to add some stochasticity
     } else if (other_agent.susceptible and this->infected and should_infect) {
         other_agent.susceptible = false;
         other_agent.exposed = true;
-        other_agent.exposed_minute_count = minutes_in_day(mt); // Random value to add some stochasticity
+        other_agent.exposed_minute_count = stoch_range(mt); // Random value to add some stochasticity
     }
 }
 
@@ -91,6 +96,54 @@ void Agent::interact_with_friend_random() {
     this->interact(**random_element(this->connections.begin(), this->connections.end()));
 }
 
-void Agent::resolve_classroom() {}
+void
+Agent::resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent *>, 5>> &classrooms) {
+    // TODO: Add special circumstances for more disease-prone classes, such as gym or lunch.
+    switch (current_period) {
+        case 1:
+            if (this->p1 == "LUNCH")
+                this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            else {
+                this->interact(
+                        **random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end())
+                );
+            }
+        case 2:
+            if (this->p2 == "LUNCH")
+                this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            else {
+                this->interact(
+                        **random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end())
+                );
+            }
+        case 3:
+            if (this->p3 == "LUNCH")
+                this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            else {
+                this->interact(
+                        **random_element(classrooms[this->p3][2].begin(), classrooms[this->p3][2].end())
+                );
+            }
+        case 4:
+            if (this->p4 == "LUNCH")
+                this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            else {
+                this->interact(
+                        **random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end())
+                );
+            }
+        case 5:
+            if (this->p5 == "LUNCH")
+                this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            else {
+                this->interact(
+                        **random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end())
+                );
+            }
+        default:
+            this->interact(**random_element(this->connections.begin(), this->connections.end()));
+    }
+}
+
 
 Agent::~Agent()=default;
