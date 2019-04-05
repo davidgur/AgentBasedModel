@@ -1,3 +1,0 @@
-/mnt/f/Agent Based Model/AgentBasedModel/cmake-build-debug/CMakeFiles/rebuild_cache.dir
-/mnt/f/Agent Based Model/AgentBasedModel/cmake-build-debug/CMakeFiles/C_AgentBasedModel.dir
-/mnt/f/Agent Based Model/AgentBasedModel/cmake-build-debug/CMakeFiles/edit_cache.dir
