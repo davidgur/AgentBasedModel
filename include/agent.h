@@ -47,9 +47,6 @@ public:
     bool infected;
     bool recovered;
 
-    double susceptibility;
-    double transmisability;
-
 
     std::vector<Agent*> connections;
 

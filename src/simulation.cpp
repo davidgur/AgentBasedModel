@@ -54,10 +54,10 @@ void Simulation::start_simulation() {
         this->day_state = Simulation::determine_day_state();
         this->current_period = Simulation::determine_period();
 
-        bool is_weekend = this->week[this->day_counter % 7] == "Sat" or week[this->day_counter % 7] == "Sun";
+        bool is_weekend = this->week[this->day_counter % 7] == "Sat" || this->week[this->day_counter % 7] == "Sun";
 
         // DAY STATE 0: AGENTS ARE AT HOME
-        if (this->day_state == 0 or is_weekend) {
+        if (this->day_state == 0 || is_weekend) {
             // only do Individual Disease Progression
             Simulation::individual_disease_progression_for_all();
         }
@@ -165,6 +165,8 @@ void Simulation::initialize_simulation() {
 
     Simulation::log("Preparing export file.");
     Simulation::clear_existing_data();
+
+	this->population_out.open("export/population_sizes.csv", std::ios::app);
 }
 
 void Simulation::populate_agent_vector() {
@@ -298,38 +300,33 @@ void Simulation::print_population_sizes() {
     std::vector<int> grade11_population_sizes = this->get_grade11_population_sizes();
     std::vector<int> grade12_population_sizes = this->get_grade12_population_sizes();
 
-    std::ofstream out;
-
-    // Append to file
-    out.open("export/population_sizes.csv", std::ios::app);
-
     // Grade 9
-    out << grade9_population_sizes[0] << "," <<
+    this->population_out << grade9_population_sizes[0] << "," <<
         grade9_population_sizes[1] << "," <<
         grade9_population_sizes[2] << "," <<
         grade9_population_sizes[3] << "," <<
         grade9_population_sizes[4] << ",";
 
     // Grade 10
-    out << grade10_population_sizes[0] << "," <<
+	this->population_out << grade10_population_sizes[0] << "," <<
         grade10_population_sizes[1] << "," <<
         grade10_population_sizes[2] << "," <<
         grade10_population_sizes[3] << "," <<
         grade10_population_sizes[4] << ",";
 
     // Grade 11
-    out << grade11_population_sizes[0] << "," <<
+	this->population_out << grade11_population_sizes[0] << "," <<
         grade11_population_sizes[1] << "," <<
         grade11_population_sizes[2] << "," <<
         grade11_population_sizes[3] << "," <<
         grade11_population_sizes[4] << ",";
 
     // Grade 12
-    out << grade12_population_sizes[0] << "," <<
+	this->population_out << grade12_population_sizes[0] << "," <<
         grade12_population_sizes[1] << "," <<
         grade12_population_sizes[2] << "," <<
         grade12_population_sizes[3] << "," <<
-        grade12_population_sizes[4] << std::endl;
+        grade12_population_sizes[4] << "\n";
 }
 
 void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
@@ -363,7 +360,7 @@ void Simulation::resolve_classroom(std::vector<Agent> &agent_vector, int current
 }
 
 unsigned short Simulation::determine_day_state() {
-    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (unsigned)(this->minute_counter - lower) < (upper - lower); };
 
     if (between(0, PRE_CLASS))
         return 0;
@@ -396,7 +393,7 @@ unsigned short Simulation::determine_day_state() {
 }
 
 short Simulation::determine_period() {
-    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (unsigned)(this->minute_counter - lower) < (upper - lower); };
 
     if (between(PERIOD1_START, PERIOD1_END))
         return 1;

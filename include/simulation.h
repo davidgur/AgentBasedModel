@@ -14,6 +14,7 @@
 #include <chrono>
 #include <map>
 #include <array>
+#include <fstream>
 
 #include "agent.h"
 
@@ -56,8 +57,9 @@ public:
     std::vector<Agent> grade11_agents;
     std::vector<Agent> grade12_agents;
 
-    // Classroom
     classroom_population classrooms;
+
+	std::ofstream population_out;
 
     void initialize_simulation();
 
