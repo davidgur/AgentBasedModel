@@ -52,6 +52,6 @@ set(CPACK_PACKAGE_VERSION "1.0.0")
 
 # we don't want to split our program up into several things
 set(CPACK_MONOLITHIC_INSTALL 1)
-
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # This must be last
 include(CPack)

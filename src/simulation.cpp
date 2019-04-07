@@ -69,7 +69,7 @@ void Simulation::start_simulation() {
             // Individual Disease Progression, Social Among Friends, Washroom
             Simulation::individual_disease_progression_for_all();
             Simulation::interaction_among_friends_for_all();
-            Simulation::process_washroom_needs_for_all();
+	    Simulation::process_washroom_needs_for_all();
         }
             // DAY STATE 2: IN CLASS
         else if (this->day_state == 2) {

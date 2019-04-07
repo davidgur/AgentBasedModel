@@ -29,7 +29,6 @@ Agent::Agent() {
 }
 
 Agent::Agent(int id, int grade) {
-    this->id = id;
     this->grade = grade;
 
     this->susceptible = true;
