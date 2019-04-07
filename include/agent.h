@@ -50,6 +50,7 @@ public:
     bool infected;
     bool recovered;
 
+	bool at_home;
 
     std::vector<Agent *> connections;
 

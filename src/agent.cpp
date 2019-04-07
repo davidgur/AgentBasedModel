@@ -23,12 +23,15 @@ Agent::Agent() {
     this->exposed = false;
     this->infected = false;
     this->recovered = false;
+	
+    this->at_home = false;
 
     this->exposed_minute_count = 0;
     this->infected_minute_count = 0;
 }
 
 Agent::Agent(int id, int grade) {
+    this->id = id;
     this->grade = grade;
 
     this->susceptible = true;
@@ -36,6 +39,8 @@ Agent::Agent(int id, int grade) {
     this->exposed = false;
     this->infected = false;
     this->recovered = false;
+
+    this->at_home = false;
 
     this->exposed_minute_count = 0;
     this->infected_minute_count = 0;
@@ -63,10 +68,16 @@ void Agent::individual_disease_progression() {
         this->exposed_minute_count = 0;
         this->infected = true;
         this->infected_minute_count = stoch_range(mt);
+	} else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
+	    this->at_home = true;
+        this->infected_minute_count++;
+
     } else if (this->infected && this->infected_minute_count < (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->infected_minute_count++;
+
     } else if (this->infected && this->infected_minute_count == (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->infected = false;
+	    this->at_home = false;
         this->recovered = true;
         this->infected_minute_count = 0;
     }

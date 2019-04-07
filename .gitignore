@@ -42,5 +42,6 @@ build/CmakeFiles/*
 build/assets/*
 build/*.*
 build/Makefile
+build/AgentBasedModel
 
 compile_commands.json

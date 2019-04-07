@@ -116,16 +116,16 @@ void Simulation::export_agent_data(std::vector<Agent> &agent_vector, std::string
     std::ofstream export_file;
     export_file.open("export/" + file_name);
     for (auto &student : agent_vector) {
-        export_file << "[AGENT " << student.grade << student.id << "]" << std::endl;
-        export_file << "\t" << student.p1 << std::endl;
-        export_file << "\t" << student.p2 << std::endl;
-        export_file << "\t" << student.p3 << std::endl;
-        export_file << "\t" << student.p4 << std::endl;
-        export_file << "\t" << student.p5 << std::endl;
+        export_file << "[AGENT " << student.grade << student.id << "]" << "\n";
+        export_file << "\t" << student.p1 << "\n";
+        export_file << "\t" << student.p2 << "\n";
+        export_file << "\t" << student.p3 << "\n";
+        export_file << "\t" << student.p4 << "\n";
+        export_file << "\t" << student.p5 << "\n";
 
-        export_file << "\t->connections" << std::endl;
+        export_file << "\t->connections" << "\n";
         for (auto &connection : student.connections) {
-            export_file << "\t" << connection->grade << connection->id << std::endl;
+            export_file << "\t" << connection->grade << connection->id << "\n";
         }
     }
 }
@@ -288,20 +288,20 @@ void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
 
 void Simulation::interaction_among_friends(std::vector<Agent> &agent_vector) {
     for (auto &agent : agent_vector) {
-        if (this->dist(mt) < FRIENDS_PROBABILITY)
+        if (this->dist(mt) < FRIENDS_PROBABILITY && !agent.at_home)
             agent.interact_with_friend_random();
     }
 }
 
 void Simulation::resolve_classroom(std::vector<Agent> &agent_vector, int current_period) {
     for (auto &agent : agent_vector) {
-        if (this->dist(mt) < CLASS_PROBABILITY)
+        if (this->dist(mt) < CLASS_PROBABILITY && !agent.at_home)
             agent.resolve_classroom(current_period, this->classrooms);
     }
 }
 
 unsigned short Simulation::determine_day_state() {
-    auto between = [this](int lower, int upper) { return (unsigned) (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
     if (between(0, PRE_CLASS))
         return 0;
@@ -334,7 +334,7 @@ unsigned short Simulation::determine_day_state() {
 }
 
 short Simulation::determine_period() {
-    auto between = [this](int lower, int upper) { return (unsigned) (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
     if (between(PERIOD1_START, PERIOD1_END))
         return 1;

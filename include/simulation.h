@@ -51,7 +51,7 @@ public:
     std::array<std::string, 7> week = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
 
     unsigned short day_state;
-    unsigned int minute_counter;
+    long minute_counter;
 
     std::chrono::time_point<std::chrono::high_resolution_clock> start_time;
     std::chrono::time_point<std::chrono::high_resolution_clock> last_day;
