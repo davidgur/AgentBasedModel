@@ -24,8 +24,8 @@ Agent::Agent() {
     this->infected = false;
     this->recovered = false;
 
-	this->exposed_minute_count = 0;
-	this->infected_minute_count = 0;
+    this->exposed_minute_count = 0;
+    this->infected_minute_count = 0;
 }
 
 Agent::Agent(int id, int grade) {
@@ -110,6 +110,7 @@ Agent::resolve_classroom(int current_period, std::map<std::string, std::array<st
                 this->interact(
                         **random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end())
                 );
+                break;
             }
         case 2:
             if (this->p2 == "LUNCH")
@@ -118,6 +119,7 @@ Agent::resolve_classroom(int current_period, std::map<std::string, std::array<st
                 this->interact(
                         **random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end())
                 );
+                break;
             }
         case 3:
             if (this->p3 == "LUNCH")
@@ -126,6 +128,7 @@ Agent::resolve_classroom(int current_period, std::map<std::string, std::array<st
                 this->interact(
                         **random_element(classrooms[this->p3][2].begin(), classrooms[this->p3][2].end())
                 );
+                break;
             }
         case 4:
             if (this->p4 == "LUNCH")
@@ -134,6 +137,7 @@ Agent::resolve_classroom(int current_period, std::map<std::string, std::array<st
                 this->interact(
                         **random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end())
                 );
+                break;
             }
         case 5:
             if (this->p5 == "LUNCH")
@@ -142,11 +146,13 @@ Agent::resolve_classroom(int current_period, std::map<std::string, std::array<st
                 this->interact(
                         **random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end())
                 );
+                break;
             }
         default:
             this->interact(**random_element(this->connections.begin(), this->connections.end()));
+            break;
     }
 }
 
 
-Agent::~Agent()=default;
+Agent::~Agent() = default;

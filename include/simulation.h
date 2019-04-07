@@ -6,14 +6,12 @@
  * @author David Gurevich
  * Contact: david(at)gurevich.ca
  */
-
-#ifndef C_AGENTBASEDMODEL_SIMULATION_H
-#define C_AGENTBASEDMODEL_SIMULATION_H
-
+#pragma once
 
 #include <chrono>
 #include <map>
 #include <array>
+#include <random>
 #include <fstream>
 
 #include "agent.h"
@@ -31,7 +29,13 @@
 #define PERIOD5_END   920
 #define POST_CLASS    940   // From 940 minutes until (24 * 60), students are at home
 
+#define FRIENDS_PROBABILITY 1
+#define CLASS_PROBABILITY 1
+
 typedef std::map<std::string, std::array<std::vector<Agent *>, 5>> classroom_population;
+
+#ifndef C_AGENTBASEDMODEL_SIMULATION_H
+#define C_AGENTBASEDMODEL_SIMULATION_H
 
 class Simulation {
 public:
@@ -57,9 +61,13 @@ public:
     std::vector<Agent> grade11_agents;
     std::vector<Agent> grade12_agents;
 
+    std::random_device rd;
+    std::mt19937 mt;
+    std::uniform_real_distribution<double> dist;
+
     classroom_population classrooms;
 
-	std::ofstream population_out;
+    std::ofstream population_out;
 
     void initialize_simulation();
 
@@ -77,19 +85,11 @@ public:
 
     void clear_existing_data();
 
-    std::vector<int> get_grade9_population_sizes();
-
-    std::vector<int> get_grade10_population_sizes();
-
-    std::vector<int> get_grade11_population_sizes();
-
-    std::vector<int> get_grade12_population_sizes();
-
     void individual_disease_progression(std::vector<Agent> &agent_vector);
 
     static void process_washroom_needs(std::vector<Agent> &agent_vector);
 
-    static void interaction_among_friends(std::vector<Agent> &agent_vector);
+    void interaction_among_friends(std::vector<Agent> &agent_vector);
 
     void resolve_classroom(std::vector<Agent> &agent_vector, int current_period);
 
@@ -106,6 +106,8 @@ public:
     unsigned short determine_day_state();
 
     short determine_period();
+
+    std::array<int, 5> get_population_sizes(std::vector<Agent> &agent_vector);
 
     Simulation();
 

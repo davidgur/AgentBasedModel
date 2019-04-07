@@ -26,6 +26,8 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
     }
 
     agent_vector[0].add_to_connections(&agent_vector.back());
+    agent_vector[0].add_to_connections(&agent_vector[1]);
+
     agent_vector[agent_vector.size() - 1].add_to_connections(&agent_vector[0]);
 
     // Create some random connections

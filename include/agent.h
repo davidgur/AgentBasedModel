@@ -6,16 +6,14 @@
  * @author David Gurevich
  * Contact: david(at)gurevich.ca
  */
-
-#ifndef C_AGENTBASEDMODEL_AGENT_H
-#define C_AGENTBASEDMODEL_AGENT_H
+#pragma once
 
 #define MINUTES_PER_DAY (24*60)
 
 #define EXPOSED_DAY_COUNT 12
 #define INFECTED_DAY_COUNT 5
 
-#define PROBABILITY_OF_INFECTION 0.5217
+#define PROBABILITY_OF_INFECTION 0.52
 
 #include <vector>
 #include <string>
@@ -28,10 +26,15 @@ Iter select_randomly(Iter start, Iter end, RandomGenerator &g);
 template<typename Iter>
 Iter random_element(Iter start, Iter end);
 
+#ifndef C_AGENTBASEDMODEL_AGENT_H
+#define C_AGENTBASEDMODEL_AGENT_H
+
 class Agent {
 public:
     Agent();
+
     Agent(int id, int grade);
+
     ~Agent();
 
     int id;
@@ -48,7 +51,7 @@ public:
     bool recovered;
 
 
-    std::vector<Agent*> connections;
+    std::vector<Agent *> connections;
 
     std::string p1;
     std::string p2;
