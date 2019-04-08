@@ -363,7 +363,7 @@ void Simulation::set_day_limit(unsigned int day_limit) {
 }
 
 void Simulation::pick_random_sick() {
-    for (int i = 0; i < 3; i++) {
+    for (int i = 0; i < 1; i++) {
         Agent *sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
         sick_agent->infected = true;
         sick_agent->susceptible = false;

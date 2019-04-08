@@ -13,11 +13,11 @@
 
 
 void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
-    const double beta = 4.0 / agent_vector.size();
+    const double beta = 3.0 / agent_vector.size();
 
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    std::discrete_distribution<bool> beta_gen{1 - beta, beta};
 
     // Connect each agent to it's previous and next neighbour. This is a ring lattice
     for (size_t i = 1; i < agent_vector.size() - 1; i++) {
@@ -37,7 +37,7 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
                                     source.connections.end();
             bool source_is_target = &source == &target;
 
-            bool generate_link = (distribution(generator) < beta) && !source_is_target && !target_in_source;
+            bool generate_link = beta_gen(generator) && !source_is_target && !target_in_source;
             if (generate_link) {
                 source.add_to_connections(&target);
                 target.add_to_connections(&source);
@@ -51,14 +51,14 @@ void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::
 
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::uniform_real_distribution<double> distribution(0.0, 1.0);
+    std::discrete_distribution<bool> beta_gen{1-beta, beta};
 
     for (auto &source : agent_vector_1) {
         for (auto &target : agent_vector_2) {
             bool target_in_source = std::find(source.connections.begin(), source.connections.end(), &target) !=
                                     source.connections.end();
 
-            bool generate_link = (distribution(generator) < beta) && !target_in_source;
+            bool generate_link = beta_gen(generator) && !target_in_source;
             if (generate_link) {
                 source.add_to_connections(&target);
                 target.add_to_connections(&source);

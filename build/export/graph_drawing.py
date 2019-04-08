@@ -118,6 +118,5 @@ legend_elements = [Line2D([0], [0], marker='o', color='red', label="Grade 9"),
 
 nx.draw_spring(G, **options)
 
-
 plt.legend(handles=legend_elements)
 plt.show()
