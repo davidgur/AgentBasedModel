@@ -29,8 +29,9 @@
 #define PERIOD5_END   920
 #define POST_CLASS    940   // From 940 minutes until (24 * 60), students are at home
 
-#define FRIENDS_PROBABILITY 1
-#define CLASS_PROBABILITY 1
+#define FRIENDS_PROBABILITY 5.75 / 20.0
+#define CLASS_PROBABILITY 5.75 / 75.0
+#define CONCENTRATION_DECAY_RATE 0.62578
 
 typedef std::map<std::string, std::array<std::vector<Agent *>, 5>> classroom_population;
 
@@ -49,6 +50,7 @@ public:
     int current_period;
 
     std::array<std::string, 7> week = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+    std::array<double, 6> school_washrooms = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
 
     unsigned short day_state;
     long minute_counter;
@@ -63,7 +65,6 @@ public:
 
     std::random_device rd;
     std::mt19937 mt;
-    std::uniform_real_distribution<double> dist;
 
     classroom_population classrooms;
 
@@ -87,7 +88,7 @@ public:
 
     void individual_disease_progression(std::vector<Agent> &agent_vector);
 
-    static void process_washroom_needs(std::vector<Agent> &agent_vector);
+    void process_washroom_needs(std::vector<Agent> &agent_vector);
 
     void interaction_among_friends(std::vector<Agent> &agent_vector);
 
@@ -102,6 +103,10 @@ public:
     void determine_classroom_population();
 
     void pick_random_sick();
+
+    void decay_washroom_concentration();
+
+    void clean_washrooms();
 
     unsigned short determine_day_state();
 

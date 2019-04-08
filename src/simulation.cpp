@@ -30,7 +30,6 @@ Simulation::Simulation() {
     this->last_day = std::chrono::high_resolution_clock::now();
 
     this->mt = std::mt19937(rd());
-    this->dist = std::uniform_real_distribution<double>(0.0, 1.0);
 }
 
 Simulation::~Simulation() = default;
@@ -69,7 +68,7 @@ void Simulation::start_simulation() {
             // Individual Disease Progression, Social Among Friends, Washroom
             Simulation::individual_disease_progression_for_all();
             Simulation::interaction_among_friends_for_all();
-	    Simulation::process_washroom_needs_for_all();
+            Simulation::process_washroom_needs_for_all();
         }
             // DAY STATE 2: IN CLASS
         else if (this->day_state == 2) {
@@ -87,9 +86,11 @@ void Simulation::start_simulation() {
 
         // Increment minute counter
         this->minute_counter++;
+        this->decay_washroom_concentration();
         this->print_population_sizes();
         if (this->minute_counter == (24 * 60)) {
             this->day_counter++;
+            this->clean_washrooms();
             this->minute_counter = 0;
             this->current_period = 0;
             Simulation::log("Day " + std::to_string(this->day_counter) +
@@ -282,20 +283,27 @@ void Simulation::print_population_sizes() {
 
 void Simulation::process_washroom_needs(std::vector<Agent> &agent_vector) {
     for (auto &agent : agent_vector) {
-        agent.process_washroom_needs();
+        if (!agent.at_home)
+            agent.process_washroom_needs(this->school_washrooms);
     }
 }
 
 void Simulation::interaction_among_friends(std::vector<Agent> &agent_vector) {
+    std::discrete_distribution<bool> friends_distribution{1 - FRIENDS_PROBABILITY, FRIENDS_PROBABILITY};
+
     for (auto &agent : agent_vector) {
-        if (this->dist(mt) < FRIENDS_PROBABILITY && !agent.at_home)
+        bool interact_with_friend = friends_distribution(this->mt);
+        if (interact_with_friend && !agent.at_home)
             agent.interact_with_friend_random();
     }
 }
 
 void Simulation::resolve_classroom(std::vector<Agent> &agent_vector, int current_period) {
+    std::discrete_distribution<bool> class_distribution(1 - CLASS_PROBABILITY, CLASS_PROBABILITY);
+
     for (auto &agent : agent_vector) {
-        if (this->dist(mt) < CLASS_PROBABILITY && !agent.at_home)
+        bool interact_in_class = class_distribution(this->mt);
+        if (interact_in_class && !agent.at_home)
             agent.resolve_classroom(current_period, this->classrooms);
     }
 }
@@ -359,6 +367,18 @@ void Simulation::pick_random_sick() {
         Agent *sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
         sick_agent->infected = true;
         sick_agent->susceptible = false;
+    }
+}
+
+void Simulation::decay_washroom_concentration() {
+    for (auto &washroom : this->school_washrooms) {
+        washroom *= CONCENTRATION_DECAY_RATE;
+    }
+}
+
+void Simulation::clean_washrooms() {
+    for (auto &washroom : this->school_washrooms) {
+        washroom = 0;
     }
 }
 

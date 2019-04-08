@@ -14,6 +14,12 @@
 #define INFECTED_DAY_COUNT 5
 
 #define PROBABILITY_OF_INFECTION 0.52
+#define PROBABILITY_OF_WASHROOM  0.0004
+
+#define CONCENTRATION_INCREASE 28.7878179
+
+#define PULMINARY_VENTILATION 0.00566
+#define AVERAGE_WR_TIME 3
 
 #include <vector>
 #include <string>
@@ -64,7 +70,7 @@ public:
 
     void individual_disease_progression();
 
-    void process_washroom_needs();
+    void process_washroom_needs(std::array<double, 6> &school_washrooms);
 
     void interact_with_friend_random();
 

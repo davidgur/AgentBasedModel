@@ -86,10 +86,10 @@ void Agent::individual_disease_progression() {
 void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::uniform_real_distribution<double> dist(0.0, 1.0);
+    std::discrete_distribution<bool> infection_prob{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
     std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
-    bool should_infect = dist(mt) < PROBABILITY_OF_INFECTION;
+    bool should_infect = infection_prob(mt);
 
     // Check if the other agent is infectious
     if (other_agent.infected && this->susceptible && should_infect) {
@@ -103,7 +103,33 @@ void Agent::interact(Agent &other_agent) {
     }
 }
 
-void Agent::process_washroom_needs() {}
+void Agent::process_washroom_needs(std::array<double, 6> &school_washrooms) {
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::discrete_distribution<bool> going_to_wr{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
+    std::uniform_int_distribution<int> washroom(1, 6);
+    std::uniform_int_distribution<int> stoch_range(-24 * 60, 24 * 60);
+
+    bool going_to_washroom = going_to_wr(mt);
+    if (going_to_washroom) {
+        int wr_choice = washroom(mt);
+
+        // If the student is infectious, they should infect the washroom a bit
+        if (this->infected) {
+            school_washrooms[wr_choice] += CONCENTRATION_INCREASE;
+        } else if (this->susceptible) {
+            std::discrete_distribution<bool> infect_from_wr{
+                    1 - (school_washrooms[wr_choice] * PULMINARY_VENTILATION * AVERAGE_WR_TIME),
+                    (school_washrooms[wr_choice] * PULMINARY_VENTILATION * AVERAGE_WR_TIME)};
+            bool infect_from_washroom = infect_from_wr(mt);
+            if (infect_from_washroom) {
+                this->susceptible = false;
+                this->exposed = true;
+                this->exposed_minute_count = stoch_range(mt);
+            }
+        }
+    }
+}
 
 void Agent::interact_with_friend_random() {
     this->interact(**random_element(this->connections.begin(), this->connections.end()));
