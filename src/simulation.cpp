@@ -93,6 +93,14 @@ void Simulation::start_simulation() {
             this->clean_washrooms();
             this->minute_counter = 0;
             this->current_period = 0;
+
+            if (day_counter % 7 == 0) {
+                if (this->check_for_steady()) {
+                    Simulation::log("Simulation reached steady state!");
+                    break;
+                }
+            }
+
             Simulation::log("Day " + std::to_string(this->day_counter) +
                             " (" + this->week[this->day_counter % 7] + ")\t" +
                             "[Time elapsed since last day (ms): " +
@@ -106,14 +114,14 @@ void Simulation::start_simulation() {
     Simulation::log("Simulation complete!");
 }
 
-void Simulation::log(std::string to_print) {
+void Simulation::log(const std::string to_print) {
     auto current_time = std::chrono::duration_cast<std::chrono::milliseconds>
             (std::chrono::high_resolution_clock::now() - this->start_time);
     std::cout << "[" << current_time.count() << "]\t\t";
     std::cout << to_print << std::endl;
 }
 
-void Simulation::export_agent_data(std::vector<Agent> &agent_vector, std::string file_name) {
+void Simulation::export_agent_data(std::vector<Agent> &agent_vector, const std::string file_name) {
     std::ofstream export_file;
     export_file.open("export/" + file_name);
     for (auto &student : agent_vector) {
@@ -379,50 +387,50 @@ void Simulation::create_vaccinated(double percent) {
 
     // grade 9
     for (int i = 0; i < grade9_vacc_population; i++) {
-        Agent &student = *random_element(grade9_agents.begin(), grade9_agents.end());
+        Agent *student = nullptr;
         while (true) {
-            student = *random_element(grade9_agents.begin(), grade9_agents.end());
-            if (!student.vaccinated)
+            student = &(*random_element(grade9_agents.begin(), grade9_agents.end()));
+            if (!student->vaccinated)
                 break;
         }
-        student.vaccinated = true;
-        student.susceptible = false;
+        student->vaccinated = true;
+        student->susceptible = false;
     }
 
     // grade 10
     for (int i = 0; i < grade10_vacc_population; i++) {
-        Agent &student = *random_element(grade10_agents.begin(), grade10_agents.end());
+        Agent *student = nullptr;
         while (true) {
-            student = *random_element(grade10_agents.begin(), grade10_agents.end());
-            if (!student.vaccinated)
+            student = &(*random_element(grade10_agents.begin(), grade10_agents.end()));
+            if (!student->vaccinated)
                 break;
         }
-        student.vaccinated = true;
-        student.susceptible = false;
+        student->vaccinated = true;
+        student->susceptible = false;
     }
 
     // grade 11
     for (int i = 0; i < grade11_vacc_population; i++) {
-        Agent &student = *random_element(grade11_agents.begin(), grade11_agents.end());
+        Agent *student = nullptr;
         while (true) {
-            student = *random_element(grade11_agents.begin(), grade11_agents.end());
-            if (!student.vaccinated)
+            student = &(*random_element(grade11_agents.begin(), grade11_agents.end()));
+            if (!student->vaccinated)
                 break;
         }
-        student.vaccinated = true;
-        student.susceptible = false;
+        student->vaccinated = true;
+        student->susceptible = false;
     }
 
     // grade 12
     for (int i = 0; i < grade12_vacc_population; i++) {
-        Agent &student = *random_element(grade12_agents.begin(), grade12_agents.end());
+        Agent *student = nullptr;
         while (true) {
-            student = *random_element(grade12_agents.begin(), grade12_agents.end());
-            if (!student.vaccinated)
+            student = &(*random_element(grade12_agents.begin(), grade12_agents.end()));
+            if (!student->vaccinated)
                 break;
         }
-        student.vaccinated = true;
-        student.susceptible = false;
+        student->vaccinated = true;
+        student->susceptible = false;
     }
 
 }
@@ -437,6 +445,17 @@ void Simulation::clean_washrooms() {
     for (auto &washroom : this->school_washrooms) {
         washroom = 0;
     }
+}
+
+bool Simulation::check_for_steady() {
+    auto not_sick = [](Agent &agent) { return agent.exposed || agent.infected; };
+
+    bool grade9_steady = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(), not_sick) == 0;
+    bool grade10_steady = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(), not_sick) == 0;
+    bool grade11_steady = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(), not_sick) == 0;
+    bool grade12_steady = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(), not_sick) == 0;
+
+    return grade9_steady && grade10_steady && grade11_steady && grade12_steady;
 }
 
 void Simulation::determine_classroom_population() {
