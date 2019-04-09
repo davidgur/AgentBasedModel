@@ -108,6 +108,8 @@ public:
 
     void clean_washrooms();
 
+    void create_vaccinated(double percent);
+
     unsigned short determine_day_state();
 
     short determine_period();

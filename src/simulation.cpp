@@ -367,7 +367,64 @@ void Simulation::pick_random_sick() {
         Agent *sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
         sick_agent->infected = true;
         sick_agent->susceptible = false;
+        sick_agent->vaccinated = false;
     }
+}
+
+void Simulation::create_vaccinated(double percent) {
+    int grade9_vacc_population = (int) std::round(GRADE_9_POPULATION * percent);
+    int grade10_vacc_population = (int) std::round(GRADE_10_POPULATION * percent);
+    int grade11_vacc_population = (int) std::round(GRADE_11_POPULATION * percent);
+    int grade12_vacc_population = (int) std::round(GRADE_12_POPULATION * percent);
+
+    // grade 9
+    for (int i = 0; i < grade9_vacc_population; i++) {
+        Agent &student = *random_element(grade9_agents.begin(), grade9_agents.end());
+        while (true) {
+            student = *random_element(grade9_agents.begin(), grade9_agents.end());
+            if (!student.vaccinated)
+                break;
+        }
+        student.vaccinated = true;
+        student.susceptible = false;
+    }
+
+    // grade 10
+    for (int i = 0; i < grade10_vacc_population; i++) {
+        Agent &student = *random_element(grade10_agents.begin(), grade10_agents.end());
+        while (true) {
+            student = *random_element(grade10_agents.begin(), grade10_agents.end());
+            if (!student.vaccinated)
+                break;
+        }
+        student.vaccinated = true;
+        student.susceptible = false;
+    }
+
+    // grade 11
+    for (int i = 0; i < grade11_vacc_population; i++) {
+        Agent &student = *random_element(grade11_agents.begin(), grade11_agents.end());
+        while (true) {
+            student = *random_element(grade11_agents.begin(), grade11_agents.end());
+            if (!student.vaccinated)
+                break;
+        }
+        student.vaccinated = true;
+        student.susceptible = false;
+    }
+
+    // grade 12
+    for (int i = 0; i < grade12_vacc_population; i++) {
+        Agent &student = *random_element(grade12_agents.begin(), grade12_agents.end());
+        while (true) {
+            student = *random_element(grade12_agents.begin(), grade12_agents.end());
+            if (!student.vaccinated)
+                break;
+        }
+        student.vaccinated = true;
+        student.susceptible = false;
+    }
+
 }
 
 void Simulation::decay_washroom_concentration() {

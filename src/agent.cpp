@@ -59,6 +59,7 @@ void Agent::add_to_connections(Agent *new_agent) {
 void Agent::individual_disease_progression() {
     if (this->exposed && this->exposed_minute_count < (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->exposed_minute_count++;
+
     } else if (this->exposed && this->exposed_minute_count == (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
         std::random_device rd;
         std::mt19937 mt(rd());
@@ -68,6 +69,7 @@ void Agent::individual_disease_progression() {
         this->exposed_minute_count = 0;
         this->infected = true;
         this->infected_minute_count = stoch_range(mt);
+
 	} else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
 	    this->at_home = true;
         this->infected_minute_count++;
@@ -86,20 +88,31 @@ void Agent::individual_disease_progression() {
 void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
-    std::discrete_distribution<bool> infection_prob{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
+    std::discrete_distribution<bool> infection_prob_no_vacc{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
+    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC,
+                                                             PROBABILITY_OF_INFECTION_VACC);
     std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
-    bool should_infect = infection_prob(mt);
+    bool should_infect = infection_prob_no_vacc(mt);
+    bool should_infect_vacc = infection_prob_yes_vacc(mt);
 
     // Check if the other agent is infectious
     if (other_agent.infected && this->susceptible && should_infect) {
         this->susceptible = false;
         this->exposed = true;
         this->exposed_minute_count = stoch_range(mt);    // Random value to add some stochasticity
+    } else if (other_agent.infected && this->vaccinated && should_infect_vacc) {
+        this->vaccinated = false;
+        this->exposed = true;
+        this->exposed_minute_count = stoch_range(mt);
     } else if (other_agent.susceptible && this->infected && should_infect) {
         other_agent.susceptible = false;
         other_agent.exposed = true;
         other_agent.exposed_minute_count = stoch_range(mt); // Random value to add some stochasticity
+    } else if (other_agent.vaccinated && this->infected && should_infect_vacc) {
+        other_agent.vaccinated = false;
+        other_agent.exposed = true;
+        other_agent.exposed_minute_count = stoch_range(mt);
     }
 }
 
