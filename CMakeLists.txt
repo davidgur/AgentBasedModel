@@ -21,7 +21,7 @@ file(GLOB_RECURSE data assets/*)
 add_executable(AgentBasedModel ${sources} ${data})
 
 # just for example add some compiler flags
-target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -Ofast)
+target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -O2 -flto -march=native)
 
 # this lets me include files relative to the root src dir with a <> pair
 #target_include_directories(example PUBLIC src)
