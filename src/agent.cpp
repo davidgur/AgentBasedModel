@@ -89,8 +89,7 @@ void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::discrete_distribution<bool> infection_prob_no_vacc{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
-    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC,
-                                                             PROBABILITY_OF_INFECTION_VACC);
+    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC, PROBABILITY_OF_INFECTION_VACC);
     std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
     bool should_infect = infection_prob_no_vacc(mt);

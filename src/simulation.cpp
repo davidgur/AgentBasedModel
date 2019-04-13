@@ -251,6 +251,7 @@ std::array<int, 5> Simulation::get_population_sizes(std::vector<Agent> &agent_ve
 void Simulation::clear_existing_data() {
     std::ofstream out;
     out.open("export/population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
+    out << "G9S,G9V,G9E,G9I,G9R,G10S,G10V,G10E,G10I,G10R,G11S,G11V,G11E,G11I,G11R,G12S,G12V,G12E,G12I,G12R\n";
     out.close();
 }
 

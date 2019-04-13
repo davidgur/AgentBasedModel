@@ -38,7 +38,7 @@ build/assets
 *.out
 *.app
 
-build/CmakeFiles/*
+build/CMakeFiles/*
 build/assets/*
 build/*.*
 build/Makefile
