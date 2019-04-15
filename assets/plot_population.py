@@ -90,5 +90,6 @@ fig.suptitle('Compartmentalization of students in different grades within a seco
 mpl.rcParams['figure.figsize'] = [10.0, 8.0]
 mpl.rcParams['figure.dpi'] = 100
 mpl.rcParams['savefig.dpi'] = 120
+mpl.rcParams['image.cmap'] = 'jet'
 
 plt.show()

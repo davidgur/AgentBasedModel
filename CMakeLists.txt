@@ -1,57 +1,25 @@
 cmake_minimum_required(VERSION 3.0)
 project(AgentBasedModel)
 
-###############################################################################
-## file globbing ##############################################################
-###############################################################################
 
-# these instructions search the directory tree when cmake is
-# invoked and put all files that match the pattern in the variables
-# `sources` and `data`
-file(GLOB_RECURSE sources      src/*.cpp include/*.h)
-file(GLOB_RECURSE data assets/*)
-# you can use set(sources src/main.cpp) etc if you don't want to
-# use globing to find files automatically
+# Search directory for all source code files and assets
+file(GLOB_RECURSE sources   src/*.cpp include/*.h)
+file(GLOB_RECURSE data assets/*.json)
+file(GLOB py_utils assets/*.py)
 
-###############################################################################
-## target definitions #########################################################
-###############################################################################
-
-# add the data to the target, so it becomes visible in some IDE
+# Add the data to the target
 add_executable(AgentBasedModel ${sources} ${data})
 
-# just for example add some compiler flags
-target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -O2 -flto -march=native)
+# Compiler flags
+target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -O2)
 
-# this lets me include files relative to the root src dir with a <> pair
-#target_include_directories(example PUBLIC src)
-
-# this copies all resource files in the build directory
-# we need this, because we want to work with paths relative to the executable
+# Add files that are needed for execution to the execution folder
 file(COPY ${data} DESTINATION assets)
+file(COPY ${py_utils} DESTINATION export)
 
-
-###############################################################################
-## packaging ##################################################################
-###############################################################################
-
-# all install commands get the same destination. this allows us to use paths
-# relative to the executable.
-#install(TARGETS example DESTINATION example_destination)
-# this is basically a repeat of the file copy instruction that copies the
-# resources in the build directory, but here we tell cmake that we want it
-# in the package
-#install(DIRECTORY resources DESTINATION example_destination)
-
-# now comes everything we need, to create a package
-# there are a lot more variables you can set, and some
-# you need to set for some package types, but we want to
-# be minimal here
-set(CPACK_PACKAGE_NAME "AgentBasedModel")
+# Packaging stuff
+set(CPACK_PACKAGE_NAME "Agent Based Model")
 set(CPACK_PACKAGE_VERSION "1.0.0")
-
-# we don't want to split our program up into several things
 set(CPACK_MONOLITHIC_INSTALL 1)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-# This must be last
 include(CPack)

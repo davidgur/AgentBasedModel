@@ -46,7 +46,7 @@ void Simulation::start_simulation() {
     Simulation::log("Beginning Simulation Loop now!");
     Simulation::log("Day " + std::to_string(this->day_counter) +
                     " (" + this->week[this->day_counter % 7] + ")\t" +
-                    "[Time elapsed since last day (ms): ~]");
+                    "[~]");
     this->last_day = std::chrono::high_resolution_clock::now();
 
     // MAIN SIMULATION LOOP
@@ -60,19 +60,16 @@ void Simulation::start_simulation() {
 
         // DAY STATE 0: AGENTS ARE AT HOME
         if (this->day_state == 0 || is_weekend) {
-            // only do Individual Disease Progression
             Simulation::individual_disease_progression_for_all();
         }
             // DAY STATE 1: BEFORE/AFTER CLASS
         else if (this->day_state == 1) {
-            // Individual Disease Progression, Social Among Friends, Washroom
             Simulation::individual_disease_progression_for_all();
             Simulation::interaction_among_friends_for_all();
             Simulation::process_washroom_needs_for_all();
         }
             // DAY STATE 2: IN CLASS
         else if (this->day_state == 2) {
-            // Individual Disease Progression, Social Among Classmates, Washroom, any special class considerations
             Simulation::individual_disease_progression_for_all();
             Simulation::resolve_classroom_for_all(this->current_period);
             Simulation::process_washroom_needs_for_all();
@@ -101,13 +98,13 @@ void Simulation::start_simulation() {
                 }
             }
 
-            Simulation::log("Day " + std::to_string(this->day_counter) +
-                            " (" + this->week[this->day_counter % 7] + ")\t" +
-                            "[Time elapsed since last day (ms): " +
-                            std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
-                                                   (std::chrono::high_resolution_clock::now() -
-                                                    this->last_day).count()) +
-                            "]");
+            // Log what day it is
+            std::string day_counter_str = std::to_string(this->day_counter);
+            std::string day_of_week = this->week[this->day_counter % 7];
+            std::string ms_since_yesterday = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
+                                            (std::chrono::high_resolution_clock::now() - this->last_day).count());
+
+            Simulation::log("Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" + ms_since_yesterday + "]");
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
