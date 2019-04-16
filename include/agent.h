@@ -44,20 +44,20 @@ public:
 
     ~Agent();
 
-    int id;
-    int grade;
+    int id = 0;
+    int grade = 0;
 
-    long long exposed_minute_count;
-    long long infected_minute_count;
+    long long exposed_minute_count = 0;
+    long long infected_minute_count = 0;
 
     // SVEIR
-    bool susceptible;
-    bool vaccinated;
-    bool exposed;
-    bool infected;
-    bool recovered;
+    bool susceptible = false;
+    bool vaccinated = false;
+    bool exposed = false;
+    bool infected = false;
+    bool recovered = false;
 
-	bool at_home;
+    bool at_home = false;
 
     std::vector<Agent *> connections;
 

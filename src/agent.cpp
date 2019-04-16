@@ -23,7 +23,7 @@ Agent::Agent() {
     this->exposed = false;
     this->infected = false;
     this->recovered = false;
-	
+
     this->at_home = false;
 
     this->exposed_minute_count = 0;
@@ -70,8 +70,8 @@ void Agent::individual_disease_progression() {
         this->infected = true;
         this->infected_minute_count = stoch_range(mt);
 
-	} else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
-	    this->at_home = true;
+    } else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
+        this->at_home = true;
         this->infected_minute_count++;
 
     } else if (this->infected && this->infected_minute_count < (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
@@ -79,7 +79,7 @@ void Agent::individual_disease_progression() {
 
     } else if (this->infected && this->infected_minute_count == (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
         this->infected = false;
-	    this->at_home = false;
+        this->at_home = false;
         this->recovered = true;
         this->infected_minute_count = 0;
     }
@@ -89,7 +89,8 @@ void Agent::interact(Agent &other_agent) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::discrete_distribution<bool> infection_prob_no_vacc{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
-    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC, PROBABILITY_OF_INFECTION_VACC);
+    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC,
+                                                             PROBABILITY_OF_INFECTION_VACC);
     std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
     bool should_infect = infection_prob_no_vacc(mt);
@@ -112,6 +113,7 @@ void Agent::interact(Agent &other_agent) {
         other_agent.vaccinated = false;
         other_agent.exposed = true;
         other_agent.exposed_minute_count = stoch_range(mt);
+
     }
 }
 

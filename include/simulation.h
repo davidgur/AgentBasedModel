@@ -13,6 +13,7 @@
 #include <array>
 #include <random>
 #include <fstream>
+#include <thread>
 
 #include "agent.h"
 
@@ -45,6 +46,10 @@ public:
     static const int GRADE_11_POPULATION = 372;
     static const int GRADE_12_POPULATION = 334;
 
+    int sim_id;
+    double vacc_rate;
+    std::string export_folder;
+
     unsigned int day_counter;
     unsigned int day_limit;
     int current_period;
@@ -72,6 +77,8 @@ public:
 
     void initialize_simulation();
 
+    std::thread start_simulation_thread();
+
     void start_simulation();
 
     void individual_disease_progression_for_all();
@@ -84,8 +91,6 @@ public:
 
     void print_population_sizes();
 
-    void clear_existing_data();
-
     void individual_disease_progression(std::vector<Agent> &agent_vector);
 
     void process_washroom_needs(std::vector<Agent> &agent_vector);
@@ -94,13 +99,15 @@ public:
 
     void resolve_classroom(std::vector<Agent> &agent_vector, int current_period);
 
-    static void export_agent_data(std::vector<Agent> &agent_vector, std::string file_name);
+    void export_agent_data(std::vector<Agent> &agent_vector, std::string file_name);
 
     void log(std::string to_print);
 
     void set_day_limit(unsigned int day_limit);
 
     void determine_classroom_population();
+
+    void prep_output_file();
 
     void pick_random_sick();
 
@@ -110,7 +117,7 @@ public:
 
     bool check_for_steady();
 
-    void create_vaccinated(double percent);
+    void create_vaccinated();
 
     unsigned short determine_day_state();
 
@@ -118,7 +125,7 @@ public:
 
     std::array<int, 5> get_population_sizes(std::vector<Agent> &agent_vector);
 
-    Simulation();
+    Simulation(int sim_id, double vacc_rate);
 
     ~Simulation();
 

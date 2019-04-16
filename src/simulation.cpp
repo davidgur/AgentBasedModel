@@ -13,18 +13,23 @@
 #include <fstream>
 #include <random>
 #include <algorithm>
+#include <sys/stat.h>
 
 #include "../include/simulation.h"
 #include "../include/graph_building.h"
 #include "../include/configure_agents.h"
 #include "../include/random_element.h"
 
-Simulation::Simulation() {
+Simulation::Simulation(int sim_id, double vacc_rate) {
     this->day_counter = 0;
     this->day_state = 0;
     this->day_limit = 30;
     this->minute_counter = 0;
     this->current_period = -1;
+
+    this->sim_id = sim_id;
+    this->vacc_rate = vacc_rate;
+    this->export_folder = "export/SIM_" + std::to_string(this->vacc_rate) + "/" + std::to_string(this->sim_id) + "/";
 
     this->start_time = std::chrono::high_resolution_clock::now();
     this->last_day = std::chrono::high_resolution_clock::now();
@@ -43,8 +48,8 @@ void Simulation::start_simulation() {
      *  NOTE: Simulation starts on a Monday.
      *        This model assumes that students don't go to school on Sat and Sun
      */
-    Simulation::log("Beginning Simulation Loop now!");
-    Simulation::log("Day " + std::to_string(this->day_counter) +
+    this->log("Beginning Simulation Loop now!");
+    this->log("Day " + std::to_string(this->day_counter) +
                     " (" + this->week[this->day_counter % 7] + ")\t" +
                     "[~]");
     this->last_day = std::chrono::high_resolution_clock::now();
@@ -53,32 +58,32 @@ void Simulation::start_simulation() {
     while (this->day_counter < this->day_limit) {
         // Figure out what the day_state and what period it is during the day
         // (School days are divided into periods)
-        this->day_state = Simulation::determine_day_state();
-        this->current_period = Simulation::determine_period();
+        this->day_state = this->determine_day_state();
+        this->current_period = this->determine_period();
 
         bool is_weekend = this->week[this->day_counter % 7] == "Sat" || this->week[this->day_counter % 7] == "Sun";
 
         // DAY STATE 0: AGENTS ARE AT HOME
         if (this->day_state == 0 || is_weekend) {
-            Simulation::individual_disease_progression_for_all();
+            this->individual_disease_progression_for_all();
         }
             // DAY STATE 1: BEFORE/AFTER CLASS
         else if (this->day_state == 1) {
-            Simulation::individual_disease_progression_for_all();
-            Simulation::interaction_among_friends_for_all();
-            Simulation::process_washroom_needs_for_all();
+            this->individual_disease_progression_for_all();
+            this->interaction_among_friends_for_all();
+            this->process_washroom_needs_for_all();
         }
             // DAY STATE 2: IN CLASS
         else if (this->day_state == 2) {
-            Simulation::individual_disease_progression_for_all();
-            Simulation::resolve_classroom_for_all(this->current_period);
-            Simulation::process_washroom_needs_for_all();
+            this->individual_disease_progression_for_all();
+            this->resolve_classroom_for_all(this->current_period);
+            this->process_washroom_needs_for_all();
         }
             // DAY STATE 3: IN HALL
         else if (this->day_state == 3) {
-            Simulation::individual_disease_progression_for_all();
-            Simulation::interaction_among_friends_for_all();
-            Simulation::process_washroom_needs_for_all();
+            this->individual_disease_progression_for_all();
+            this->interaction_among_friends_for_all();
+            this->process_washroom_needs_for_all();
         }
 
         // Increment minute counter
@@ -93,7 +98,7 @@ void Simulation::start_simulation() {
 
             if (day_counter % 7 == 0) {
                 if (this->check_for_steady()) {
-                    Simulation::log("Simulation reached steady state!");
+                    this->log("Simulation reached steady state!");
                     break;
                 }
             }
@@ -104,11 +109,15 @@ void Simulation::start_simulation() {
             std::string ms_since_yesterday = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
                                             (std::chrono::high_resolution_clock::now() - this->last_day).count());
 
-            Simulation::log("Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" + ms_since_yesterday + "]");
+            this->log("Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" + ms_since_yesterday + "]");
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
-    Simulation::log("Simulation complete!");
+    this->log("Simulation complete!");
+}
+
+std::thread Simulation::start_simulation_thread() {
+    return std::thread([this] { this->start_simulation(); });
 }
 
 void Simulation::log(const std::string to_print) {
@@ -120,7 +129,7 @@ void Simulation::log(const std::string to_print) {
 
 void Simulation::export_agent_data(std::vector<Agent> &agent_vector, const std::string file_name) {
     std::ofstream export_file;
-    export_file.open("export/" + file_name);
+    export_file.open(this->export_folder + file_name);
     for (auto &student : agent_vector) {
         export_file << "[AGENT " << student.grade << student.id << "]" << "\n";
         export_file << "\t" << student.p1 << "\n";
@@ -137,44 +146,46 @@ void Simulation::export_agent_data(std::vector<Agent> &agent_vector, const std::
 }
 
 void Simulation::initialize_simulation() {
-    Simulation::log("Initializing the simulation now!");
+    this->log("Initializing the simulation now!");
 
-    Simulation::log("Populating all agent vectors.");
-    Simulation::populate_agent_vector();
+    this->log("Populating all agent vectors.");
+    this->populate_agent_vector();
 
-    Simulation::log("Creating scale-free network for each grade.");
+    this->log("Creating scale-free network for each grade.");
     watts_strogatz_in_vector(this->grade9_agents);
     watts_strogatz_in_vector(this->grade10_agents);
     watts_strogatz_in_vector(this->grade11_agents);
     watts_strogatz_in_vector(this->grade12_agents);
 
-    Simulation::log("Creating student links between different grades.");
+    this->log("Creating student links between different grades.");
     random_connections_between_grades(this->grade9_agents, this->grade10_agents);
     random_connections_between_grades(this->grade10_agents, this->grade11_agents);
     random_connections_between_grades(this->grade11_agents, this->grade12_agents);
 
-    Simulation::log("Assigning all students timetables");
+    this->log("Assigning all students timetables");
     assign_student_timetables(this->grade9_agents, "grade9");
     assign_student_timetables(this->grade10_agents, "grade10");
     assign_student_timetables(this->grade11_agents, "grade11");
     assign_student_timetables(this->grade12_agents, "grade12");
 
-    Simulation::log("Determining classroom populations");
-    Simulation::determine_classroom_population();
+    this->log("Determining classroom populations");
+    this->determine_classroom_population();
 
-    Simulation::log("Picking random sick person");
-    Simulation::pick_random_sick();
+    this->log("Picking random sick person");
+    this->pick_random_sick();
 
-    Simulation::log("Exporting all agent data.");
-    Simulation::export_agent_data(this->grade9_agents, "grade9.txt");
-    Simulation::export_agent_data(this->grade10_agents, "grade10.txt");
-    Simulation::export_agent_data(this->grade11_agents, "grade11.txt");
-    Simulation::export_agent_data(this->grade12_agents, "grade12.txt");
+    this->log("Exporting all agent data.");
+    this->export_agent_data(this->grade9_agents, "grade9.txt");
+    this->export_agent_data(this->grade10_agents, "grade10.txt");
+    this->export_agent_data(this->grade11_agents, "grade11.txt");
+    this->export_agent_data(this->grade12_agents, "grade12.txt");
 
-    Simulation::log("Preparing export file.");
-    Simulation::clear_existing_data();
+    this->log("Preparing export file.");
+    std::string parent_folder = "export/SIM_" + std::to_string(this->vacc_rate);
 
-    this->population_out.open("export/population_sizes.csv", std::ios::app);
+    mkdir(this->export_folder.c_str(), 0777);
+    this->population_out.open(this->export_folder + "population_sizes.csv", std::ios::app);
+    this->prep_output_file();
 }
 
 void Simulation::populate_agent_vector() {
@@ -206,31 +217,31 @@ void Simulation::individual_disease_progression(std::vector<Agent> &agent_vector
 }
 
 void Simulation::individual_disease_progression_for_all() {
-    Simulation::individual_disease_progression(this->grade9_agents);
-    Simulation::individual_disease_progression(this->grade10_agents);
-    Simulation::individual_disease_progression(this->grade11_agents);
-    Simulation::individual_disease_progression(this->grade12_agents);
+    this->individual_disease_progression(this->grade9_agents);
+    this->individual_disease_progression(this->grade10_agents);
+    this->individual_disease_progression(this->grade11_agents);
+    this->individual_disease_progression(this->grade12_agents);
 }
 
 void Simulation::interaction_among_friends_for_all() {
-    Simulation::interaction_among_friends(this->grade9_agents);
-    Simulation::interaction_among_friends(this->grade10_agents);
-    Simulation::interaction_among_friends(this->grade11_agents);
-    Simulation::interaction_among_friends(this->grade12_agents);
+    this->interaction_among_friends(this->grade9_agents);
+    this->interaction_among_friends(this->grade10_agents);
+    this->interaction_among_friends(this->grade11_agents);
+    this->interaction_among_friends(this->grade12_agents);
 }
 
 void Simulation::process_washroom_needs_for_all() {
-    Simulation::process_washroom_needs(this->grade9_agents);
-    Simulation::process_washroom_needs(this->grade10_agents);
-    Simulation::process_washroom_needs(this->grade11_agents);
-    Simulation::process_washroom_needs(this->grade12_agents);
+    this->process_washroom_needs(this->grade9_agents);
+    this->process_washroom_needs(this->grade10_agents);
+    this->process_washroom_needs(this->grade11_agents);
+    this->process_washroom_needs(this->grade12_agents);
 }
 
 void Simulation::resolve_classroom_for_all(int current_period) {
-    Simulation::resolve_classroom(this->grade9_agents, current_period);
-    Simulation::resolve_classroom(this->grade10_agents, current_period);
-    Simulation::resolve_classroom(this->grade11_agents, current_period);
-    Simulation::resolve_classroom(this->grade12_agents, current_period);
+    this->resolve_classroom(this->grade9_agents, current_period);
+    this->resolve_classroom(this->grade10_agents, current_period);
+    this->resolve_classroom(this->grade11_agents, current_period);
+    this->resolve_classroom(this->grade12_agents, current_period);
 }
 
 std::array<int, 5> Simulation::get_population_sizes(std::vector<Agent> &agent_vector) {
@@ -245,9 +256,9 @@ std::array<int, 5> Simulation::get_population_sizes(std::vector<Agent> &agent_ve
     return std::array<int, 5>{susceptible, vaccinated, exposed, infected, recovered};
 }
 
-void Simulation::clear_existing_data() {
+void Simulation::prep_output_file() {
     std::ofstream out;
-    out.open("export/population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
+    out.open(this->export_folder + "population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
     out << "G9S,G9V,G9E,G9I,G9R,G10S,G10V,G10E,G10I,G10R,G11S,G11V,G11E,G11I,G11R,G12S,G12V,G12E,G12I,G12R\n";
     out.close();
 }
@@ -377,11 +388,11 @@ void Simulation::pick_random_sick() {
     }
 }
 
-void Simulation::create_vaccinated(double percent) {
-    int grade9_vacc_population = (int) std::round(GRADE_9_POPULATION * percent);
-    int grade10_vacc_population = (int) std::round(GRADE_10_POPULATION * percent);
-    int grade11_vacc_population = (int) std::round(GRADE_11_POPULATION * percent);
-    int grade12_vacc_population = (int) std::round(GRADE_12_POPULATION * percent);
+void Simulation::create_vaccinated() {
+    int grade9_vacc_population = (int) std::round(GRADE_9_POPULATION * this->vacc_rate);
+    int grade10_vacc_population = (int) std::round(GRADE_10_POPULATION * this->vacc_rate);
+    int grade11_vacc_population = (int) std::round(GRADE_11_POPULATION * this->vacc_rate);
+    int grade12_vacc_population = (int) std::round(GRADE_12_POPULATION * this->vacc_rate);
 
     // grade 9
     for (int i = 0; i < grade9_vacc_population; i++) {
