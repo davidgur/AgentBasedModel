@@ -23,6 +23,7 @@
 #define AVERAGE_WR_TIME 3
 
 #include <vector>
+#include <random>
 #include <string>
 #include <array>
 #include <map>
@@ -66,6 +67,11 @@ public:
     std::string p3;
     std::string p4;
     std::string p5;
+
+    std::mt19937 mt;
+    std::discrete_distribution<bool> going_to_wr;
+    std::uniform_int_distribution<int> washroom;
+    std::uniform_int_distribution<int> stoch_range;
 
     void add_to_connections(Agent *new_agent);
 

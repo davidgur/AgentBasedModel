@@ -28,6 +28,8 @@ Agent::Agent() {
 
     this->exposed_minute_count = 0;
     this->infected_minute_count = 0;
+
+
 }
 
 Agent::Agent(int id, int grade) {
@@ -50,6 +52,11 @@ Agent::Agent(int id, int grade) {
     this->p3 = "";
     this->p4 = "";
     this->p5 = "";
+
+    this->mt = std::mt19937(std::random_device{}());
+    this->going_to_wr = std::discrete_distribution<bool>{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
+    this->washroom = std::uniform_int_distribution<int>(0, 6);
+    this->stoch_range = std::uniform_int_distribution<int>(-48 * 60, 48 * 60);
 }
 
 void Agent::add_to_connections(Agent *new_agent) {
@@ -61,14 +68,11 @@ void Agent::individual_disease_progression() {
         this->exposed_minute_count++;
 
     } else if (this->exposed && this->exposed_minute_count == (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
-        std::random_device rd;
-        std::mt19937 mt(rd());
-        std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
         this->exposed = false;
         this->exposed_minute_count = 0;
         this->infected = true;
-        this->infected_minute_count = stoch_range(mt);
+        this->infected_minute_count = this->stoch_range(mt);
 
     } else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
         this->at_home = true;
@@ -91,7 +95,6 @@ void Agent::interact(Agent &other_agent) {
     std::discrete_distribution<bool> infection_prob_no_vacc{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
     std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC,
                                                              PROBABILITY_OF_INFECTION_VACC);
-    std::uniform_int_distribution<long long> stoch_range(-24 * 60, 24 * 60);
 
     bool should_infect = infection_prob_no_vacc(mt);
     bool should_infect_vacc = infection_prob_yes_vacc(mt);
@@ -100,33 +103,26 @@ void Agent::interact(Agent &other_agent) {
     if (other_agent.infected && this->susceptible && should_infect) {
         this->susceptible = false;
         this->exposed = true;
-        this->exposed_minute_count = stoch_range(mt);    // Random value to add some stochasticity
+        this->exposed_minute_count = this->stoch_range(mt);    // Random value to add some stochasticity
     } else if (other_agent.infected && this->vaccinated && should_infect_vacc) {
         this->vaccinated = false;
         this->exposed = true;
-        this->exposed_minute_count = stoch_range(mt);
+        this->exposed_minute_count = this->stoch_range(mt);
     } else if (other_agent.susceptible && this->infected && should_infect) {
         other_agent.susceptible = false;
         other_agent.exposed = true;
-        other_agent.exposed_minute_count = stoch_range(mt); // Random value to add some stochasticity
+        other_agent.exposed_minute_count = this->stoch_range(mt); // Random value to add some stochasticity
     } else if (other_agent.vaccinated && this->infected && should_infect_vacc) {
         other_agent.vaccinated = false;
         other_agent.exposed = true;
-        other_agent.exposed_minute_count = stoch_range(mt);
+        other_agent.exposed_minute_count = this->stoch_range(mt);
 
     }
 }
 
 void Agent::process_washroom_needs(std::vector<double> &school_washrooms) {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::discrete_distribution<bool> going_to_wr{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
-    std::uniform_int_distribution<int> washroom(1, 6);
-    std::uniform_int_distribution<int> stoch_range(-24 * 60, 24 * 60);
-
-    bool going_to_washroom = going_to_wr(mt);
-    if (going_to_washroom && !this->at_home) {
-        int wr_choice = washroom(mt);
+    if (this->going_to_wr(mt) && !this->at_home) {
+        int wr_choice = this->washroom(mt);
 
         // If the student is infectious, they should infect the washroom a bit
         if (this->infected) {
