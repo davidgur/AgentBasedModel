@@ -106,7 +106,8 @@ void Simulation::start_simulation() {
             std::string day_counter_str = std::to_string(this->day_counter);
             std::string day_of_week = this->week[this->day_counter % 7];
             std::string ms_since_yesterday = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
-                                            (std::chrono::high_resolution_clock::now() - this->last_day).count());
+                                                                    (std::chrono::high_resolution_clock::now() -
+                                                                     this->last_day).count());
 
             this->log(
                     "[" + std::to_string(this->sim_id) + "] Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" +

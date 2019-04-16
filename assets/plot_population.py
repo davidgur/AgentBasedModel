@@ -7,10 +7,10 @@
 Contact: david(at)gurevich.ca
 """
 
-import numpy as np
-import pandas as pd
 import matplotlib as mpl
 import matplotlib.pyplot as plt
+import numpy as np
+import pandas as pd
 
 # Get all csv values and organize them
 population_df = pd.read_csv('population_sizes.csv', delimiter=',')
@@ -44,13 +44,13 @@ G10_SVEIR = [G10S, G10V, G10E, G10I, G10R]
 G11_SVEIR = [G11S, G11V, G11E, G11I, G11R]
 G12_SVEIR = [G12S, G12V, G12E, G12I, G12R]
 
-vacc_rate  = 100 * (G12V[0] / (G12S[0] + G12V[0] + G12E[0] + G12I[0] + G12R[0]))
-num_of_days = len(G12R) // (24*60)
+vacc_rate = 100 * (G12V[0] / (G12S[0] + G12V[0] + G12E[0] + G12I[0] + G12R[0]))
+num_of_days = len(G12R) // (24 * 60)
 x_axis = np.linspace(0, num_of_days, len(G12R))
 # Plotting the data
 fig = plt.figure()
 
-grade9_ax  = fig.add_subplot(221)
+grade9_ax = fig.add_subplot(221)
 grade10_ax = fig.add_subplot(222)
 grade11_ax = fig.add_subplot(223)
 grade12_ax = fig.add_subplot(224)
@@ -86,7 +86,9 @@ grade10_ax.set_title("Grade 10")
 grade11_ax.set_title("Grade 11")
 grade12_ax.set_title("Grade 12")
 
-fig.suptitle('Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(round(vacc_rate, 2)) + '%)')
+fig.suptitle(
+    'Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(
+        round(vacc_rate, 2)) + '%)')
 mpl.rcParams['figure.figsize'] = [10.0, 8.0]
 mpl.rcParams['figure.dpi'] = 100
 mpl.rcParams['savefig.dpi'] = 120

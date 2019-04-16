@@ -25,7 +25,7 @@ for i in range(len(grade9_new_agent) - 1):
     connections = grade9_lines[grade9_connection[i] + 1:grade9_new_agent[i + 1]]
     for connection in connections:
         connection = connection.strip()
-        G.add_edge(node_name, connection, weight=(100 if node_name[0]==connection[0] else 0))
+        G.add_edge(node_name, connection, weight=(100 if node_name[0] == connection[0] else 0))
 
 color_map.append("red")
 
@@ -50,7 +50,7 @@ for i in range(len(grade10_new_agent) - 1):
     connections = grade10_lines[grade10_connection[i] + 1:grade10_new_agent[i + 1]]
     for connection in connections:
         connection = connection.strip()
-        G.add_edge(node_name, connection, weight=(100 if node_name[0]==connection[0] else 0))
+        G.add_edge(node_name, connection, weight=(100 if node_name[0] == connection[0] else 0))
 
 color_map.append("green")
 
@@ -73,7 +73,7 @@ for i in range(len(grade11_new_agent) - 1):
     connections = grade11_lines[grade11_connection[i] + 1:grade11_new_agent[i + 1]]
     for connection in connections:
         connection = connection.strip()
-        G.add_edge(node_name, connection, weight=(100 if node_name[0]==connection[0] else 0))
+        G.add_edge(node_name, connection, weight=(100 if node_name[0] == connection[0] else 0))
 
 color_map.append("blue")
 
@@ -95,7 +95,7 @@ for i in range(len(grade12_new_agent) - 1):
     connections = grade12_lines[grade12_connection[i] + 1:grade12_new_agent[i + 1]]
     for connection in connections:
         connection = connection.strip()
-        G.add_edge(node_name, connection, weight=(100 if node_name[0]==connection[0] else 0))
+        G.add_edge(node_name, connection, weight=(100 if node_name[0] == connection[0] else 0))
 
 color_map.append("magenta")
 

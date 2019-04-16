@@ -51,7 +51,7 @@ void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::
 
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::discrete_distribution<bool> beta_gen{1-beta, beta};
+    std::discrete_distribution<bool> beta_gen{1 - beta, beta};
 
     for (auto &source : agent_vector_1) {
         for (auto &target : agent_vector_2) {
