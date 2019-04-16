@@ -16,7 +16,6 @@
 int main(int argc, char *argv[]) {
     const int NUM_OF_SIMULATIONS = std::stoi(argv[1]);
 
-    std::vector<std::thread> sim_threads;
     std::vector<double> vacc_rates(argc - 2);
 
     for (int i = 0; i < (argc - 2); i++) {
@@ -24,6 +23,7 @@ int main(int argc, char *argv[]) {
     }
 
     for (auto &VACC_RATE : vacc_rates) {
+        std::vector<std::thread> sim_threads;
 
         system(("rm -rf export/SIM_" + std::to_string(VACC_RATE)).c_str());
         mkdir(("export/SIM_" + std::to_string(VACC_RATE)).c_str(), 0777);
