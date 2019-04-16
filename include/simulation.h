@@ -55,7 +55,7 @@ public:
     int current_period;
 
     std::array<std::string, 7> week = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-    std::array<double, 6> school_washrooms = {0.0, 0.0, 0.0, 0.0, 0.0, 0.0};
+    std::vector<double> school_washrooms = {0, 0, 0, 0, 0, 0};
 
     unsigned short day_state;
     long minute_counter;

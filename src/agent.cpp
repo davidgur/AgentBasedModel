@@ -117,7 +117,7 @@ void Agent::interact(Agent &other_agent) {
     }
 }
 
-void Agent::process_washroom_needs(std::array<double, 6> &school_washrooms) {
+void Agent::process_washroom_needs(std::vector<double> &school_washrooms) {
     std::random_device rd;
     std::mt19937 mt(rd());
     std::discrete_distribution<bool> going_to_wr{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
@@ -125,7 +125,7 @@ void Agent::process_washroom_needs(std::array<double, 6> &school_washrooms) {
     std::uniform_int_distribution<int> stoch_range(-24 * 60, 24 * 60);
 
     bool going_to_washroom = going_to_wr(mt);
-    if (going_to_washroom) {
+    if (going_to_washroom && !this->at_home) {
         int wr_choice = washroom(mt);
 
         // If the student is infectious, they should infect the washroom a bit

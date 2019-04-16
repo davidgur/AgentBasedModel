@@ -71,7 +71,7 @@ public:
 
     void individual_disease_progression();
 
-    void process_washroom_needs(std::array<double, 6> &school_washrooms);
+    void process_washroom_needs(std::vector<double> &school_washrooms);
 
     void interact_with_friend_random();
 
