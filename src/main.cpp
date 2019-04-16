@@ -11,6 +11,7 @@
 
 #include <thread>
 #include <sys/stat.h>
+#include <iostream>
 
 int main(int argc, char *argv[]) {
     const int NUM_OF_SIMULATIONS = std::stoi(argv[1]);
@@ -18,8 +19,11 @@ int main(int argc, char *argv[]) {
 
     std::vector<std::thread> sim_threads;
 
+    system(("rm -rf export/SIM_" + std::to_string(VACC_RATE)).c_str());
     mkdir(("export/SIM_" + std::to_string(VACC_RATE)).c_str(), 0777);
 
+    std::cout << "Starting " << NUM_OF_SIMULATIONS << " simulations with " << VACC_RATE << " vaccination rate."
+              << std::endl;
     for (int i = 1; i <= NUM_OF_SIMULATIONS; i++) {
         auto *sim = new Simulation(i, VACC_RATE);
         sim->set_day_limit(-1);

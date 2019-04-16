@@ -48,10 +48,9 @@ void Simulation::start_simulation() {
      *  NOTE: Simulation starts on a Monday.
      *        This model assumes that students don't go to school on Sat and Sun
      */
-    this->log("Beginning Simulation Loop now!");
-    this->log("Day " + std::to_string(this->day_counter) +
-                    " (" + this->week[this->day_counter % 7] + ")\t" +
-                    "[~]");
+    this->log("[" + std::to_string(this->sim_id) + "] Day " + std::to_string(this->day_counter) +
+              " (" + this->week[this->day_counter % 7] + ")\t" +
+              "[~]");
     this->last_day = std::chrono::high_resolution_clock::now();
 
     // MAIN SIMULATION LOOP
@@ -109,7 +108,9 @@ void Simulation::start_simulation() {
             std::string ms_since_yesterday = std::to_string(std::chrono::duration_cast<std::chrono::milliseconds>
                                             (std::chrono::high_resolution_clock::now() - this->last_day).count());
 
-            this->log("Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" + ms_since_yesterday + "]");
+            this->log(
+                    "[" + std::to_string(this->sim_id) + "] Day " + day_counter_str + " (" + day_of_week + ")\t" + "[" +
+                    ms_since_yesterday + "]");
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
@@ -146,46 +147,35 @@ void Simulation::export_agent_data(std::vector<Agent> &agent_vector, const std::
 }
 
 void Simulation::initialize_simulation() {
-    this->log("Initializing the simulation now!");
-
-    this->log("Populating all agent vectors.");
-    this->populate_agent_vector();
-
-    this->log("Creating scale-free network for each grade.");
-    watts_strogatz_in_vector(this->grade9_agents);
-    watts_strogatz_in_vector(this->grade10_agents);
-    watts_strogatz_in_vector(this->grade11_agents);
-    watts_strogatz_in_vector(this->grade12_agents);
-
-    this->log("Creating student links between different grades.");
-    random_connections_between_grades(this->grade9_agents, this->grade10_agents);
-    random_connections_between_grades(this->grade10_agents, this->grade11_agents);
-    random_connections_between_grades(this->grade11_agents, this->grade12_agents);
-
-    this->log("Assigning all students timetables");
-    assign_student_timetables(this->grade9_agents, "grade9");
-    assign_student_timetables(this->grade10_agents, "grade10");
-    assign_student_timetables(this->grade11_agents, "grade11");
-    assign_student_timetables(this->grade12_agents, "grade12");
-
-    this->log("Determining classroom populations");
-    this->determine_classroom_population();
-
-    this->log("Picking random sick person");
-    this->pick_random_sick();
-
-    this->log("Exporting all agent data.");
-    this->export_agent_data(this->grade9_agents, "grade9.txt");
-    this->export_agent_data(this->grade10_agents, "grade10.txt");
-    this->export_agent_data(this->grade11_agents, "grade11.txt");
-    this->export_agent_data(this->grade12_agents, "grade12.txt");
-
-    this->log("Preparing export file.");
     std::string parent_folder = "export/SIM_" + std::to_string(this->vacc_rate);
 
     mkdir(this->export_folder.c_str(), 0777);
     this->population_out.open(this->export_folder + "population_sizes.csv", std::ios::app);
     this->prep_output_file();
+
+    this->populate_agent_vector();
+
+    watts_strogatz_in_vector(this->grade9_agents);
+    watts_strogatz_in_vector(this->grade10_agents);
+    watts_strogatz_in_vector(this->grade11_agents);
+    watts_strogatz_in_vector(this->grade12_agents);
+
+    random_connections_between_grades(this->grade9_agents, this->grade10_agents);
+    random_connections_between_grades(this->grade10_agents, this->grade11_agents);
+    random_connections_between_grades(this->grade11_agents, this->grade12_agents);
+
+    assign_student_timetables(this->grade9_agents, "grade9");
+    assign_student_timetables(this->grade10_agents, "grade10");
+    assign_student_timetables(this->grade11_agents, "grade11");
+    assign_student_timetables(this->grade12_agents, "grade12");
+
+    this->determine_classroom_population();
+    this->pick_random_sick();
+
+    this->export_agent_data(this->grade9_agents, "grade9.txt");
+    this->export_agent_data(this->grade10_agents, "grade10.txt");
+    this->export_agent_data(this->grade11_agents, "grade11.txt");
+    this->export_agent_data(this->grade12_agents, "grade12.txt");
 }
 
 void Simulation::populate_agent_vector() {
