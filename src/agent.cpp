@@ -57,6 +57,10 @@ Agent::Agent(int id, int grade) {
     this->going_to_wr = std::discrete_distribution<bool>{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
     this->washroom = std::uniform_int_distribution<int>(0, 6);
     this->stoch_range = std::uniform_int_distribution<int>(-48 * 60, 48 * 60);
+    this->infection_prob_no_vacc = std::discrete_distribution<bool>{1 - PROBABILITY_OF_INFECTION,
+                                                                    PROBABILITY_OF_INFECTION};
+    this->infection_prob_yes_vacc = std::discrete_distribution<bool>(1 - PROBABILITY_OF_INFECTION_VACC,
+                                                                     PROBABILITY_OF_INFECTION_VACC);
 }
 
 void Agent::add_to_connections(Agent *new_agent) {
@@ -90,14 +94,8 @@ void Agent::individual_disease_progression() {
 }
 
 void Agent::interact(Agent &other_agent) {
-    std::random_device rd;
-    std::mt19937 mt(rd());
-    std::discrete_distribution<bool> infection_prob_no_vacc{1 - PROBABILITY_OF_INFECTION, PROBABILITY_OF_INFECTION};
-    std::discrete_distribution<bool> infection_prob_yes_vacc(1 - PROBABILITY_OF_INFECTION_VACC,
-                                                             PROBABILITY_OF_INFECTION_VACC);
-
-    bool should_infect = infection_prob_no_vacc(mt);
-    bool should_infect_vacc = infection_prob_yes_vacc(mt);
+    bool should_infect = this->infection_prob_no_vacc(mt);
+    bool should_infect_vacc = this->infection_prob_yes_vacc(mt);
 
     // Check if the other agent is infectious
     if (other_agent.infected && this->susceptible && should_infect) {

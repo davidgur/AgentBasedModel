@@ -72,6 +72,8 @@ public:
     std::discrete_distribution<bool> going_to_wr;
     std::uniform_int_distribution<int> washroom;
     std::uniform_int_distribution<int> stoch_range;
+    std::discrete_distribution<bool> infection_prob_no_vacc;
+    std::discrete_distribution<bool> infection_prob_yes_vacc;
 
     void add_to_connections(Agent *new_agent);
 

@@ -114,7 +114,7 @@ void Simulation::start_simulation() {
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
-    this->log("Simulation complete!");
+    this->log("[" + std::to_string(this->sim_id) + "] Simulation complete!");
 }
 
 std::thread Simulation::start_simulation_thread() {
