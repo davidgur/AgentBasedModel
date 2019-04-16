@@ -15,12 +15,10 @@
 
 int main(int argc, char *argv[]) {
     const int NUM_OF_SIMULATIONS = std::stoi(argv[1]);
-
     std::vector<double> vacc_rates(argc - 2);
 
-    for (int i = 0; i < (argc - 2); i++) {
+    for (int i = 0; i < (argc - 2); i++)
         vacc_rates[i] = std::stod(argv[2 + i]);
-    }
 
     for (auto &VACC_RATE : vacc_rates) {
         std::vector<std::thread> sim_threads;

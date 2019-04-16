@@ -16,6 +16,7 @@
 #include <thread>
 
 #include "agent.h"
+#include "json.hpp"
 
 #define PRE_CLASS     500   // From 0 to 500 minutes, students are at home
 #define PERIOD1_START 520
@@ -56,6 +57,7 @@ public:
 
     std::array<std::string, 7> week = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
     std::vector<double> school_washrooms = {0, 0, 0, 0, 0, 0};
+    std::vector<nlohmann::json> classes;
 
     unsigned short day_state;
     long minute_counter;
@@ -124,6 +126,8 @@ public:
     short determine_period();
 
     std::array<int, 5> get_population_sizes(std::vector<Agent> &agent_vector);
+
+    std::vector<nlohmann::json> load_classes();
 
     Simulation(int sim_id, double vacc_rate);
 

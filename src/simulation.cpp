@@ -165,10 +165,11 @@ void Simulation::initialize_simulation() {
     random_connections_between_grades(this->grade10_agents, this->grade11_agents);
     random_connections_between_grades(this->grade11_agents, this->grade12_agents);
 
-    assign_student_timetables(this->grade9_agents, "grade9");
-    assign_student_timetables(this->grade10_agents, "grade10");
-    assign_student_timetables(this->grade11_agents, "grade11");
-    assign_student_timetables(this->grade12_agents, "grade12");
+    this->classes = this->load_classes();
+    assign_student_timetables(this->grade9_agents, this->classes, "grade9");
+    assign_student_timetables(this->grade10_agents, this->classes, "grade10");
+    assign_student_timetables(this->grade11_agents, this->classes, "grade11");
+    assign_student_timetables(this->grade12_agents, this->classes, "grade12");
 
     this->determine_classroom_population();
     this->pick_random_sick();
@@ -397,6 +398,37 @@ void Simulation::pick_random_sick() {
     sick_agent->susceptible = false;
     sick_agent->vaccinated = false;
 
+}
+
+std::vector<nlohmann::json> Simulation::load_classes() {
+    using json = nlohmann::json;
+
+    // Period 1 JSON
+    std::ifstream period1_file("assets/period1.json");
+    json period1_json;
+    period1_file >> period1_json;
+
+    // Period 2 JSON
+    std::ifstream period2_file("assets/period2.json");
+    json period2_json;
+    period2_file >> period2_json;
+
+    // Period 3 JSON
+    std::ifstream period3_file("assets/period3.json");
+    json period3_json;
+    period3_file >> period3_json;
+
+    // Period 4 JSON
+    std::ifstream period4_file("assets/period4.json");
+    json period4_json;
+    period4_file >> period4_json;
+
+    // Period 5 JSON
+    std::ifstream period5_file("assets/period5.json");
+    json period5_json;
+    period5_file >> period5_json;
+
+    return std::vector<json>{period1_json, period2_json, period3_json, period4_json, period5_json};
 }
 
 void Simulation::create_vaccinated() {
