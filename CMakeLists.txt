@@ -13,7 +13,7 @@ add_executable(AgentBasedModel ${sources} ${data})
 find_package(Threads)
 target_link_libraries(AgentBasedModel ${CMAKE_THREAD_LIBS_INIT})
 # Compiler flags
-target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -g -pthread -lpthread)
+target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -Ofast -march=native -pthread)
 
 # Add files that are needed for execution to the execution folder
 file(COPY ${data} DESTINATION assets)

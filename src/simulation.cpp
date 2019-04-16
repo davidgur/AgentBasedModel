@@ -70,19 +70,19 @@ void Simulation::start_simulation() {
         else if (this->day_state == 1) {
             this->individual_disease_progression_for_all();
             this->interaction_among_friends_for_all();
-            this->process_washroom_needs_for_all();
+            //this->process_washroom_needs_for_all();
         }
             // DAY STATE 2: IN CLASS
         else if (this->day_state == 2) {
             this->individual_disease_progression_for_all();
             this->resolve_classroom_for_all(this->current_period);
-            this->process_washroom_needs_for_all();
+            //this->process_washroom_needs_for_all();
         }
             // DAY STATE 3: IN HALL
         else if (this->day_state == 3) {
             this->individual_disease_progression_for_all();
             this->interaction_among_friends_for_all();
-            this->process_washroom_needs_for_all();
+            //this->process_washroom_needs_for_all();
         }
 
         // Increment minute counter
