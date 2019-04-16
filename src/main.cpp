@@ -12,9 +12,9 @@
 #include <thread>
 #include <sys/stat.h>
 
-int main() {
-    const int NUM_OF_SIMULATIONS = 10;
-    const double VACC_RATE = 0.5;
+int main(int argc, char *argv[]) {
+    const int NUM_OF_SIMULATIONS = std::stoi(argv[1]);
+    const double VACC_RATE = std::stod(argv[2]);
 
     std::vector<std::thread> sim_threads;
 
