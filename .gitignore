@@ -44,4 +44,6 @@ build/*.*
 build/Makefile
 build/AgentBasedModel
 
+!*/*.py
+
 compile_commands.json

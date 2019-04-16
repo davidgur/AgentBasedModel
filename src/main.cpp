@@ -1,46 +1,91 @@
-/**
- * @file main.cpp
+/* Modelling the spread of measles within secondary schools
  *
- * @brief Main configuration and execution function for model
+ * Copyright (c) 2019 David Gurevich
  *
- * @author David Gurevich
- * Contact: david(at)gurevich.ca
+ * Permission is hereby granted, free of charge,
+ * to any person obtaining a copy of this software and
+ * associated documentation files (the "Software"), to
+ * deal in the Software without restriction, including
+ * without limitation the rights to use, copy, modify,
+ * merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom
+ * the Software is furnised to do so, subject to the
+ * following conditions:
+ *
+ * The above copyright notice and this permission notice
+ * shall be included in all copies or substantial portions of the Software.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
+ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
+ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+ * IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR
+ * ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
+ * TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
+ * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ *
+ * Author: david@gurevich.ca (David Gurevich)
+ *
+ * NOTE: "vacc" is short for "vaccination"
  */
 
 #include "../include/simulation.h"
 
+#include <iostream>
+#include <vector>
 #include <thread>
 #include <sys/stat.h>
-#include <iostream>
 
 int main(int argc, char *argv[]) {
-    const int NUM_OF_SIMULATIONS = std::stoi(argv[1]);
-    std::vector<double> vacc_rates(argc - 2);
+	int num_of_simulations_per_rate = std::stoi(argv[1]);
+	int num_of_vacc_rates = argc - 2;
 
-    for (int i = 0; i < (argc - 2); i++)
-        vacc_rates[i] = std::stod(argv[2 + i]);
+	std::vector<double> vacc_rates(num_of_vacc_rates);
 
-    for (auto &VACC_RATE : vacc_rates) {
-        std::vector<std::thread> sim_threads;
+	// Add all vaccination rates to the vector
+	int vacc_rate_arg_count;
+	for (vacc_rate_arg_count = 0; vacc_rate_arg_count < num_of_vacc_rates; vacc_rate_arg_count++)
+		vacc_rates[vacc_rate_arg_count] = std::stod(argv[2 + vacc_rate_arg_count]);
 
-        system(("rm -rf export/SIM_" + std::to_string(VACC_RATE)).c_str());
-        mkdir(("export/SIM_" + std::to_string(VACC_RATE)).c_str(), 0777);
+	// Every vaccination rate has some number of simulations.
+	// Here, we iterate over all of the different vaccination
+	// rates, and then we will run independent simulations
+	// inside this loop.
+	for (auto &vacc_rate : vacc_rates) {
+		std::vector<std::thread> simulation_threads;
 
-        std::cout << "Starting " << NUM_OF_SIMULATIONS << " simulations with " << VACC_RATE << " vaccination rate."
-                  << std::endl;
-        for (int i = 1; i <= NUM_OF_SIMULATIONS; i++) {
-            auto *sim = new Simulation(i, VACC_RATE);
-            sim->set_day_limit(-1);
-            sim->initialize_simulation();
-            sim->create_vaccinated();
-            sim->pick_random_sick();
+		// Remove any existing data.
+		system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str());
 
-            sim_threads.push_back(sim->start_simulation_thread());
-        }
+		// Create new directory for data.
+		mkdir(("export/SIM_" + std::to_string(vacc_rate)).c_str(), 0777);
 
-        for (auto &th : sim_threads)
-            th.join();
-    }
+		// Message to indicate new simulation
+		std::cout << "===============" << std::endl;
+		std::cout << "Starting " << num_of_simulations_per_rate << " simulations with "
+		          << vacc_rate << " vaccination rate." << std::endl;
+		std::cout << "===============" << std::endl;
 
-    return 0;
+		// Start making threads.
+		for (int sim_id = 1; sim_id <= num_of_simulations_per_rate; sim_id++) {
+			auto *simulation = new Simulation(sim_id, vacc_rate);
+
+			// Virtually indefinite simulation limit
+			simulation->set_day_limit(-1);
+
+			simulation->initialize_simulation();
+			simulation->create_vaccinated();
+			simulation->pick_random_sick();
+
+			simulation_threads.push_back(simulation->start_simulation_thread());
+		}
+
+		// Join all threads before proceeding with next "job"
+		for (auto &thread : simulation_threads)
+			thread.join();
+
+		// Clear the vector
+		simulation_threads.clear();
+	}
+
+	return 0;
 }
