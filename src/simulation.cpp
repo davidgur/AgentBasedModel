@@ -97,7 +97,7 @@ void Simulation::start_simulation() {
 
             if (day_counter % 7 == 0) {
                 if (this->check_for_steady()) {
-                    this->log("Simulation reached steady state!");
+                    this->log("[" + std::to_string(this->sim_id) + "] Simulation reached steady state!");
                     break;
                 }
             }
@@ -370,12 +370,33 @@ void Simulation::set_day_limit(unsigned int day_limit) {
 }
 
 void Simulation::pick_random_sick() {
-    for (int i = 0; i < 1; i++) {
-        Agent *sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
-        sick_agent->infected = true;
-        sick_agent->susceptible = false;
-        sick_agent->vaccinated = false;
+    std::random_device rd;
+    std::mt19937 mt(rd());
+    std::uniform_int_distribution<int> dist(0, 4);
+
+    Agent *sick_agent = nullptr;
+
+    switch (dist(mt)) {
+        case 0:
+            sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
+            break;
+        case 1:
+            sick_agent = &(*random_element(this->grade10_agents.begin(), this->grade10_agents.end()));
+            break;
+        case 2:
+            sick_agent = &(*random_element(this->grade11_agents.begin(), this->grade11_agents.end()));
+            break;
+        case 3:
+            sick_agent = &(*random_element(this->grade12_agents.begin(), this->grade12_agents.end()));
+            break;
+        default:
+            sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
     }
+
+    sick_agent->infected = true;
+    sick_agent->susceptible = false;
+    sick_agent->vaccinated = false;
+
 }
 
 void Simulation::create_vaccinated() {
