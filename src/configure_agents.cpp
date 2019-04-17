@@ -29,28 +29,58 @@
 #include "../include/configure_agents.h"
 #include "../include/agent.h"
 #include "../include/random_element.h"
-#include "../include/json.hpp"
 
 
 #include <random>
 #include <fstream>
 
-void assign_student_timetables(std::vector<Agent> &agent_vector, std::vector<nlohmann::json> &classes,
-                               std::string grade_id) {
+void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
+	std::vector<std::vector<std::vector<std::string>>> student_courses = {
+		{   // Grade 9
+			{"304", "115", "223", "345", "227", "226", "211", "108", "340", "312", "GYMA", "319", "145", "334"}, // p1
+			{"304", "210", "GYMA", "227", "150", "320", "226", "340", "GYMB", "319", "205", "115"}, // p2
+			{"302", "316", "340", "210", "107", "327", "106", "340", "312", "115"}, // p3
+			{"111", "150", "112", "210", "226", "146", "346", "320"}, // p4
+			{"GYMA", "345", "304", "211", "LIBSEM", "GYMB", "320", "214", "227", "205"} // p5
+		},
+		{   // Grade 10
+			{"337", "316", "146", "327", "314", "111", "208", "338", "326", "303", "107", "213"}, // p1
+			{"329", "337", "312", "106", "333", "112", "305", "345", "316", "303", "327", "211", "145", "310", "213",
+			 "336"}, // p2
+			{"111", "328", "146", "303", "305", "214", "310", "205", "319", "210"}, // p3
+			{"337", "GYMB", "WEIGH", "227", "223", "213", "303", "312", "302"}, // p4
+			{"107", "150", "112", "106", "333", "317", "WEIGH", "303", "226"} // p5
+		},
+		{   // Grade 11
+			{"328", "310", "150", "112", "305", "214", "302", "106", "GYMB", "317", "336", "LUNCH"}, // p1
+			{"111", "208", "317", "214", "346", "107", "334", "302", "336", "334", "302", "LUNCH"}, // p2
+			{"304", "314", "208", "326", "WEIGH", "226", "337", "319", "211", "220", "145", "213", "LUNCH"}, // p3
+			{"345", "338", "333", "211", "214", "145", "220", "317", "LUNCH"}, // p4
+			{"328", "310", "314", "326", "111", "305", "223", "146", "337", "LUNCH"} // p5
+		},
+		{   // Grade 12
+			{"329", "301", "210", "333", "WEIGH", "346", "320", "220", "LUNCH"}, // p1
+			{"326", "338", "328", "223", "WEIGH", "301", "146", "LUNCH"}, // p2
+			{"150", "312", "333", "320", "227", "301", "346", "213", "317", "145", "220", "LUNCH"}, // p3
+			{"310", "314", "106", "301", "316", "327", "340", "328", "336", "LUNCH"}, // p4
+			{"338", "208", "316", "327", "346", "301", "LUNCH", "LUNCH"} // p5
+		}
+	};
+
     for (auto &student : agent_vector) {
         // Assign the student to some classes
-        student.p1 = *random_element(classes[0][grade_id].begin(), classes[0][grade_id].end());
-        student.p2 = *random_element(classes[1][grade_id].begin(), classes[1][grade_id].end());
-        student.p3 = *random_element(classes[2][grade_id].begin(), classes[2][grade_id].end());
-        student.p4 = *random_element(classes[3][grade_id].begin(), classes[3][grade_id].end());
-        student.p5 = *random_element(classes[4][grade_id].begin(), classes[4][grade_id].end());
+	    student.p1 = *random_element(student_courses[grade][0].begin(), student_courses[grade][0].end());
+	    student.p2 = *random_element(student_courses[grade][1].begin(), student_courses[grade][1].end());
+	    student.p3 = *random_element(student_courses[grade][2].begin(), student_courses[grade][2].end());
+	    student.p4 = *random_element(student_courses[grade][3].begin(), student_courses[grade][3].end());
+	    student.p5 = *random_element(student_courses[grade][4].begin(), student_courses[grade][4].end());
 
         // Give the student a lunch
         //      If the student is in grade 9 or 10, give them a lunch in P3 or P4
         int lunch_period;
         std::vector<int> possible_lunch_periods;
 
-        if (grade_id == "grade9" or grade_id == "grade10")
+	    if (grade == 0 or grade == 1)
             possible_lunch_periods = {3, 4};
         else
             possible_lunch_periods = {1, 2, 3, 4, 5};

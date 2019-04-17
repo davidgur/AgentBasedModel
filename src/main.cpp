@@ -52,6 +52,7 @@ int main(int argc, char *argv[]) {
 	// inside this loop.
 	for (auto &vacc_rate : vacc_rates) {
 		std::vector<std::thread> simulation_threads;
+		std::vector<Simulation *> simulation_objects;
 
 		// Remove any existing data.
 		system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str());
@@ -67,11 +68,11 @@ int main(int argc, char *argv[]) {
 
 		// Start making threads.
 		for (int sim_id = 1; sim_id <= num_of_simulations_per_rate; sim_id++) {
-			auto *simulation = new Simulation(sim_id, vacc_rate);
+			simulation_objects.push_back(new Simulation(sim_id, vacc_rate));
+		}
 
-			// Virtually indefinite simulation limit
+		for (auto &simulation : simulation_objects) {
 			simulation->set_day_limit(-1);
-
 			simulation->initialize_simulation();
 			simulation->create_vaccinated();
 			simulation->pick_random_sick();
@@ -83,7 +84,10 @@ int main(int argc, char *argv[]) {
 		for (auto &thread : simulation_threads)
 			thread.join();
 
+		for (auto &simulation : simulation_objects)
+			delete simulation;
 		// Clear the vector
+		simulation_objects.clear();
 		simulation_threads.clear();
 	}
 
