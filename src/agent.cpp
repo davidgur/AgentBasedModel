@@ -33,24 +33,6 @@
 #include "../include/agent.h"
 #include "../include/random_element.h"
 
-Agent::Agent() {
-    this->grade = 0;
-    this->id = 0;
-
-    this->susceptible = true;
-    this->vaccinated = false;
-    this->exposed = false;
-    this->infected = false;
-    this->recovered = false;
-
-    this->at_home = false;
-
-    this->exposed_minute_count = 0;
-    this->infected_minute_count = 0;
-
-
-}
-
 Agent::Agent(int id, int grade) {
     this->id = id;
     this->grade = grade;
@@ -75,11 +57,9 @@ Agent::Agent(int id, int grade) {
     this->mt = std::mt19937(std::random_device{}());
     this->going_to_wr = std::discrete_distribution<bool>{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
     this->washroom = std::uniform_int_distribution<int>(0, 6);
-    this->stoch_range = std::uniform_int_distribution<int>(-48 * 60, 48 * 60);
-    this->infection_prob_no_vacc = std::discrete_distribution<bool>{1 - PROBABILITY_OF_INFECTION,
-                                                                    PROBABILITY_OF_INFECTION};
-    this->infection_prob_yes_vacc = std::discrete_distribution<bool>(1 - PROBABILITY_OF_INFECTION_VACC,
-                                                                     PROBABILITY_OF_INFECTION_VACC);
+    this->stoch_range = std::normal_distribution<>(0, 24 * 60);
+    this->infection_prob = std::discrete_distribution<bool>{1 - PROBABILITY_OF_INFECTION,
+                                                            PROBABILITY_OF_INFECTION};
 }
 
 void Agent::add_to_connections(Agent *new_agent) {
@@ -97,7 +77,7 @@ void Agent::individual_disease_progression() {
         this->infected = true;
         this->infected_minute_count = this->stoch_range(mt);
 
-    } else if (this->infected && this->infected_minute_count == (1 * MINUTES_PER_DAY)) {
+    } else if (this->infected && this->infected_minute_count == (DAYS_UNTIL_SYMPTOMS * MINUTES_PER_DAY)) {
         this->at_home = true;
         this->infected_minute_count++;
 
@@ -113,27 +93,17 @@ void Agent::individual_disease_progression() {
 }
 
 void Agent::interact(Agent &other_agent) {
-    bool should_infect = this->infection_prob_no_vacc(mt);
-    bool should_infect_vacc = this->infection_prob_yes_vacc(mt);
+    bool should_infect = this->infection_prob(mt);
 
     // Check if the other agent is infectious
     if (other_agent.infected && this->susceptible && should_infect) {
         this->susceptible = false;
         this->exposed = true;
         this->exposed_minute_count = this->stoch_range(mt);    // Random value to add some stochasticity
-    } else if (other_agent.infected && this->vaccinated && should_infect_vacc) {
-        this->vaccinated = false;
-        this->exposed = true;
-        this->exposed_minute_count = this->stoch_range(mt);
     } else if (other_agent.susceptible && this->infected && should_infect) {
         other_agent.susceptible = false;
         other_agent.exposed = true;
         other_agent.exposed_minute_count = this->stoch_range(mt); // Random value to add some stochasticity
-    } else if (other_agent.vaccinated && this->infected && should_infect_vacc) {
-        other_agent.vaccinated = false;
-        other_agent.exposed = true;
-        other_agent.exposed_minute_count = this->stoch_range(mt);
-
     }
 }
 

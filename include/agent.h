@@ -35,11 +35,11 @@
 #define INFECTED_DAY_COUNT 5
 
 #define PROBABILITY_OF_INFECTION 0.52
-#define PROBABILITY_OF_INFECTION_VACC 0.005
 #define PROBABILITY_OF_WASHROOM  0.0004
 
 #define CONCENTRATION_INCREASE 28.7878179
 
+#define DAYS_UNTIL_SYMPTOMS 4
 #define PULMINARY_VENTILATION 0.00566
 #define AVERAGE_WR_TIME 3
 
@@ -89,9 +89,8 @@ public:
     std::mt19937 mt;
     std::discrete_distribution<bool> going_to_wr;
     std::uniform_int_distribution<int> washroom;
-    std::uniform_int_distribution<int> stoch_range;
-    std::discrete_distribution<bool> infection_prob_no_vacc;
-    std::discrete_distribution<bool> infection_prob_yes_vacc;
+    std::normal_distribution<> stoch_range;
+    std::discrete_distribution<bool> infection_prob;
 
     void add_to_connections(Agent *new_agent);
 

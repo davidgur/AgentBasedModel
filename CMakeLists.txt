@@ -3,9 +3,8 @@ project(AgentBasedModel)
 
 
 # Search directory for all source code files and assets
-file(GLOB_RECURSE sources src/*.cpp include/*.h)
-file(GLOB_RECURSE data assets/*.json)
-file(GLOB py_utils assets/*.py)
+file(GLOB_RECURSE sources src/*.cpp include/*.h include/*.hpp)
+file(GLOB_RECURSE util tools/*.py)
 # Add the data to the target
 add_executable(AgentBasedModel ${sources} ${data})
 
@@ -13,11 +12,10 @@ add_executable(AgentBasedModel ${sources} ${data})
 find_package(Threads)
 target_link_libraries(AgentBasedModel ${CMAKE_THREAD_LIBS_INIT})
 # Compiler flags
-target_compile_options(AgentBasedModel PUBLIC -std=c++17 -Wall -Ofast -march=native -pthread)
+target_compile_options(AgentBasedModel PUBLIC -std=c++17 -O3 -march=native -pthread)
 
 # Add files that are needed for execution to the execution folder
-file(COPY ${data} DESTINATION assets)
-file(COPY ${py_utils} DESTINATION export)
+file(COPY ${util} DESTINATION export)
 
 # Packaging stuff
 set(CPACK_PACKAGE_NAME "Agent Based Model")

@@ -1,9 +1,8 @@
 .vscode/
 .idea/
 
-build/export/*.txt
-build/export/*.csv
-build/assets
+build/*.*
+build/
 
 # Prerequisites
 *.d
@@ -38,11 +37,6 @@ build/assets
 *.out
 *.app
 
-build/CMakeFiles/*
-build/assets/*
-build/*.*
-build/Makefile
-build/AgentBasedModel
 
 !*/*.py
 
