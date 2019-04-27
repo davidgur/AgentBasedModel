@@ -132,7 +132,7 @@ void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {
 
 
         // If agent is susceptible, then they might get infected from the washroom
-        bool infect_from_wr = (rand() % 100) < (kPulmonaryVentilation * kAverageWashroomTime * school_washrooms[washroom_destination] * 100);
+        bool infect_from_wr = (rand() % 100) < (kWashroomInfectionRate * kPulmonaryVentilation * kAverageWashroomTime * school_washrooms[washroom_destination] * 100);
         if (infect_from_wr and this->susceptible)
             this->get_infected();
             
