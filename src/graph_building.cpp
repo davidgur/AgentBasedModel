@@ -33,18 +33,18 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
 
     std::random_device rd;
     std::default_random_engine generator(rd());
-    std::discrete_distribution<bool> beta_gen{1 - beta, beta};
+    std::bernoulli_distribution beta_gen(beta);
 
-    // Connect each agent to it's previous and next neighbour. This is a ring lattice
-    for (size_t i = 1; i < agent_vector.size() - 1; i++) {
-        agent_vector[i].add_to_connections(&agent_vector[i - 1]);
-        agent_vector[i].add_to_connections(&agent_vector[i + 1]);
-    }
+	// Connect each agent to it's previous and next neighbour. This is a ring lattice
+	for (size_t i = 1; i < agent_vector.size() - 1; i++) {
+	  agent_vector[i].add_to_connections(&agent_vector[i - 1]);
+	  agent_vector[i].add_to_connections(&agent_vector[i + 1]);
+	}
 
-    agent_vector[0].add_to_connections(&agent_vector.back());
-    agent_vector[0].add_to_connections(&agent_vector[1]);
+	agent_vector[0].add_to_connections(&agent_vector.back());
+	agent_vector[0].add_to_connections(&agent_vector[1]);
 
-    agent_vector[agent_vector.size() - 1].add_to_connections(&agent_vector[0]);
+	agent_vector[agent_vector.size() - 1].add_to_connections(&agent_vector[0]);
 
     // Create some random connections
     for (auto &source : agent_vector) {
@@ -54,7 +54,7 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
             bool source_is_target = &source == &target;
 
             bool generate_link = beta_gen(generator) && !source_is_target && !target_in_source;
-            if (generate_link) {
+            if (generate_link or source.connections.size() < 2 or target.connections.size() < 2) {
                 source.add_to_connections(&target);
                 target.add_to_connections(&source);
             }
