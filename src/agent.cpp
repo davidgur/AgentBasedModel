@@ -80,7 +80,7 @@ void Agent::generate_lunch_friends(std::map<std::string, std::array<std::vector<
     }
 
     // If the number of lunch friends is less than some threshold (kMinLunchFriends), get some random lunch people
-    while (this->lunch_friends.size() < kMinLunchFriends) {
+    for (int i = 0; i < kMinLunchFriends; i++) {
         auto agent = *random_element(classrooms[kLunchVar][this->lunch_period].begin(), classrooms[kLunchVar][this->lunch_period].end());
         this->lunch_friends.push_back(agent);
         agent->lunch_friends.push_back(this);

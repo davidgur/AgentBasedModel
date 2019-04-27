@@ -95,7 +95,7 @@ void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
         else if (lunch_period == 5)
             student.p5 = kLunchVar;
 
-        student.lunch_period = lunch_period;
+        student.lunch_period = lunch_period - 1;
     }
 
 }
