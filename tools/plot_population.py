@@ -45,7 +45,7 @@ G11_SVEIR = [G11S, G11V, G11E, G11I, G11R]
 G12_SVEIR = [G12S, G12V, G12E, G12I, G12R]
 
 vacc_rate = 100 * (G12V[0] / (G12S[0] + G12V[0] + G12E[0] + G12I[0] + G12R[0]))
-num_of_days = len(G12R) // (24 * 60)
+num_of_days = len(G12R) * 15 // (24 * 60)
 x_axis = np.linspace(0, num_of_days, len(G12R))
 # Plotting the data
 fig = plt.figure()

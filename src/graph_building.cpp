@@ -26,13 +26,10 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#include <random>
-#include <algorithm>
-#include "../include/graph_building.h"
-
+#include "../include/graph_building.hh"
 
 void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
-    const double beta = 3.0 / agent_vector.size();
+    const double beta = (kAverageNumOfFriends - 2.0) / agent_vector.size();
 
     std::random_device rd;
     std::default_random_engine generator(rd());
@@ -66,7 +63,7 @@ void watts_strogatz_in_vector(std::vector<Agent> &agent_vector) {
 }
 
 void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2) {
-    const double beta = 0.2 / (((double) agent_vector_1.size() + (double) agent_vector_2.size()) / 2);
+    const double beta = kProbabilityOfFriendsOutsideOfGrade / (((double) agent_vector_1.size() + (double) agent_vector_2.size()) / 2);
 
     std::random_device rd;
     std::default_random_engine generator(rd());

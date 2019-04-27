@@ -3,7 +3,7 @@ project(AgentBasedModel)
 
 
 # Search directory for all source code files and assets
-file(GLOB_RECURSE sources src/*.cpp include/*.h include/*.hpp)
+file(GLOB_RECURSE sources src/*.cpp include/*.h include/*.hh)
 file(GLOB_RECURSE util tools/*.py)
 # Add the data to the target
 add_executable(AgentBasedModel ${sources} ${data})

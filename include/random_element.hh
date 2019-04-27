@@ -26,23 +26,13 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#ifndef C_AGENTBASEDMODEL_RANDOM_ELEMENT_H
-#define C_AGENTBASEDMODEL_RANDOM_ELEMENT_H
-
-#include <random>
-
-template<typename Iter, typename RandomGenerator>
-Iter select_randomly(Iter start, Iter end, RandomGenerator &g) {
-    std::uniform_int_distribution<> dis(0, std::distance(start, end) - 1);
-    std::advance(start, dis(g));
-    return start;
-}
+#ifndef AGENTBASEDMODEL_INCLUDE_RANDOM_ELEMENT_HH
+#define AGENTBASEDMODEL_INCLUDE_RANDOM_ELEMENT_HH
 
 template<typename Iter>
 Iter random_element(Iter start, Iter end) {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    return select_randomly(start, end, gen);
+    std::advance(start, rand() % (std::distance(start, end) - 1));
+    return start;
 }
 
-#endif //C_AGENTBASEDMODEL_RANDOM_ELEMENT_H
+#endif // AGENTBASEDMODEL_INCLUDE_RANDOM_ELEMENT_HH

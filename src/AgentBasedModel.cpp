@@ -24,16 +24,9 @@
  * SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  *
  * Author: david@gurevich.ca (David Gurevich)
- *
- * NOTE: "vacc" is short for "vaccination"
  */
 
-#include "../include/simulation.h"
-
-#include <iostream>
-#include <vector>
-#include <thread>
-#include <sys/stat.h>
+#include "../include/simulation.hh"
 
 int main(int argc, char *argv[]) {
 	int num_of_simulations_per_rate = std::stoi(argv[1]);
@@ -72,11 +65,6 @@ int main(int argc, char *argv[]) {
 		}
 
 		for (auto &simulation : simulation_objects) {
-			simulation->set_day_limit(-1);
-			simulation->initialize_simulation();
-			simulation->create_vaccinated();
-			simulation->pick_random_sick();
-
 			simulation_threads.push_back(simulation->start_simulation_thread());
 		}
 

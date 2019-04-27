@@ -26,13 +26,13 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#ifndef C_AGENTBASEDMODEL_GRAPH_BUILDING_H
-#define C_AGENTBASEDMODEL_GRAPH_BUILDING_H
+#ifndef AGENTBASEDMODEL_CONFIGURE_AGENTS_HH
+#define AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH
 
-#include "agent.h"
+#include "agent.hh"
+#include "random_element.hh"
 
-void watts_strogatz_in_vector(std::vector<Agent> &agent_vector);
+void assign_student_timetables(std::vector<Agent> &agent_vector, int grade);
+void assign_lunch_friends(std::vector<Agent> &agent_vector, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms);
 
-void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2);
-
-#endif //C_AGENTBASEDMODEL_GRAPH_BUILDING_H
+#endif // AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH

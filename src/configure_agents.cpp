@@ -26,13 +26,9 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#include "../include/configure_agents.h"
-#include "../include/agent.h"
-#include "../include/random_element.h"
-
+#include "../include/configure_agents.hh"
 
 #include <random>
-#include <fstream>
 
 void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
 	std::vector<std::vector<std::vector<std::string>>> student_courses = {
@@ -89,16 +85,22 @@ void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
         lunch_period = *random_element(possible_lunch_periods.begin(), possible_lunch_periods.end());
 
         if (lunch_period == 1)
-            student.p1 = "LUNCH";
+            student.p1 = kLunchVar;
         else if (lunch_period == 2)
-            student.p2 = "LUNCH";
+            student.p2 = kLunchVar;
         else if (lunch_period == 3)
-            student.p3 = "LUNCH";
+            student.p3 = kLunchVar;
         else if (lunch_period == 4)
-            student.p4 = "LUNCH";
+            student.p4 = kLunchVar;
         else if (lunch_period == 5)
-            student.p5 = "LUNCH";
+            student.p5 = kLunchVar;
+
+        student.lunch_period = lunch_period;
     }
 
 }
 
+void assign_lunch_friends(std::vector<Agent>& agent_vector, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
+	for (auto& agent : agent_vector)
+		agent.generate_lunch_friends(classrooms);
+}

@@ -26,11 +26,18 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#ifndef C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H
-#define C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H
+#ifndef AGENTBASEDMODEL_INCLUDE_GRAPH_BUILDING_HH
+#define AGENTBASEDMODEL_INCLUDE_GRAPH_BUILDING_HH
 
-#include "agent.h"
+#include "agent.hh"
 
-void assign_student_timetables(std::vector<Agent> &agent_vector, int grade);
+#include <random>
+#include <algorithm>
 
-#endif //C_AGENTBASEDMODEL_CONFIGURE_AGENTS_H
+const int kAverageNumOfFriends = 5.0;
+const double kProbabilityOfFriendsOutsideOfGrade = 1.0 / 5.0;
+
+void watts_strogatz_in_vector(std::vector<Agent> &agent_vector);
+void random_connections_between_grades(std::vector<Agent> &agent_vector_1, std::vector<Agent> &agent_vector_2);
+
+#endif // AGENTBASEDMODEL_INCLUDE_GRAPH_BUILDING_HH

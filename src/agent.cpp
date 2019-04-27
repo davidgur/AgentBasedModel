@@ -26,27 +26,27 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
+#include "../include/agent.hh"
+#include "../include/random_element.hh"
+
 #include <iostream>
 #include <random>
 #include <iterator>
 
-#include "../include/agent.h"
-#include "../include/random_element.h"
-
-Agent::Agent(int id, int grade) {
+Agent::Agent(int id, int grade, bool ode_mode) {
     this->id = id;
     this->grade = grade;
+    this->ode_mode = ode_mode;
 
+    // SVEIR info; everyone starts out susceptible
     this->susceptible = true;
     this->vaccinated = false;
     this->exposed = false;
     this->infected = false;
     this->recovered = false;
 
+    // School info
     this->at_home = false;
-
-    this->exposed_minute_count = 0;
-    this->infected_minute_count = 0;
 
     this->p1 = "";
     this->p2 = "";
@@ -54,37 +54,69 @@ Agent::Agent(int id, int grade) {
     this->p4 = "";
     this->p5 = "";
 
+    // Random number generation
     this->mt = std::mt19937(std::random_device{}());
-    this->going_to_wr = std::discrete_distribution<bool>{1 - PROBABILITY_OF_WASHROOM, PROBABILITY_OF_WASHROOM};
-    this->washroom = std::uniform_int_distribution<int>(0, 6);
-    this->stoch_range = std::normal_distribution<>(0, 24 * 60);
-    this->infection_prob = std::discrete_distribution<bool>{1 - PROBABILITY_OF_INFECTION,
-                                                            PROBABILITY_OF_INFECTION};
+    
+    this->going_to_washroom = std::bernoulli_distribution(kWashroomProbability);
+    this->washroom_choice = std::uniform_int_distribution<int>(0, 6);
+
+    this->stoch_range = std::normal_distribution<>(0, kMinutesPerDay);
+    this->stoch_range_ode = std::exponential_distribution<double>(1.0 / 720.0); // mean (0, 24 * 60)
+    this->infection_prob = std::bernoulli_distribution(kTransmissionRate);
+    this->infection_prob_washroom = std::bernoulli_distribution(kWashroomInfectionRate);
 }
 
-void Agent::add_to_connections(Agent *new_agent) {
+void Agent::add_to_connections(Agent* new_agent) {
     this->connections.push_back(new_agent);
 }
 
+void Agent::generate_lunch_friends(std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
+    // First, look for any agents that are connections that have the same lunch
+    for (auto& agent : this->connections) {
+        if (agent->lunch_period == this->lunch_period){
+            this->lunch_friends.push_back(agent);
+            agent->lunch_friends.push_back(this);
+        }
+    }
+
+    // If the number of lunch friends is less than some threshold (kMinLunchFriends), get some random lunch people
+    while (this->lunch_friends.size() < kMinLunchFriends) {
+        auto agent = *random_element(classrooms[kLunchVar][this->lunch_period].begin(), classrooms[kLunchVar][this->lunch_period].end());
+        this->lunch_friends.push_back(agent);
+        agent->lunch_friends.push_back(this);
+    }
+}
+
 void Agent::individual_disease_progression() {
-    if (this->exposed && this->exposed_minute_count < (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
+    // Case 1: Agent is exposed, but hasn't met the threshold
+    if (this->exposed and this->exposed_minute_count < (kExposedDayCount * kMinutesPerDay)) {
         this->exposed_minute_count++;
+    }
 
-    } else if (this->exposed && this->exposed_minute_count == (EXPOSED_DAY_COUNT * MINUTES_PER_DAY)) {
-
+    // Case 2: Agent is exposed, and has met the threshold, so it becomes infected
+    else if (this->exposed and this->exposed_minute_count == (kExposedDayCount * kMinutesPerDay)) {
         this->exposed = false;
-        this->exposed_minute_count = 0;
         this->infected = true;
-        this->infected_minute_count = this->stoch_range(mt);
+        
+        if (this->ode_mode)
+            this->infected_minute_count = stoch_range_ode(mt);
+        else
+            this->infected_minute_count = stoch_range(mt);   
+    }
 
-    } else if (this->infected && this->infected_minute_count == (DAYS_UNTIL_SYMPTOMS * MINUTES_PER_DAY)) {
+    // Case 3: Agent is infected, but hasn't met the threshold
+    else if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
+        this->infected_minute_count++;
+    }
+
+    // Case 4: Agent is infected and is experiencing symptoms, so it stays home
+    else if (this->infected and this->infected_minute_count == (kSymptomsAbsenceDays * kMinutesPerDay)) {
         this->at_home = true;
         this->infected_minute_count++;
+    }
 
-    } else if (this->infected && this->infected_minute_count < (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
-        this->infected_minute_count++;
-
-    } else if (this->infected && this->infected_minute_count == (INFECTED_DAY_COUNT * MINUTES_PER_DAY)) {
+    // Case 5: Agent is infected, and has met the threshold, thus the agent recovers
+    else if (this->infected and this->infected_minute_count >= (kInfectedDayCount * kMinutesPerDay)) {
         this->infected = false;
         this->at_home = false;
         this->recovered = true;
@@ -92,38 +124,22 @@ void Agent::individual_disease_progression() {
     }
 }
 
-void Agent::interact(Agent &other_agent) {
-    bool should_infect = this->infection_prob(mt);
+void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {
+    // Is the student going to the washroom?
+    if (this->going_to_washroom(this->mt) and !this->at_home) {
+        // Pick a washroom:
+        int washroom_destination = this->washroom_choice(this->mt);
 
-    // Check if the other agent is infectious
-    if (other_agent.infected && this->susceptible && should_infect) {
-        this->susceptible = false;
-        this->exposed = true;
-        this->exposed_minute_count = this->stoch_range(mt);    // Random value to add some stochasticity
-    } else if (other_agent.susceptible && this->infected && should_infect) {
-        other_agent.susceptible = false;
-        other_agent.exposed = true;
-        other_agent.exposed_minute_count = this->stoch_range(mt); // Random value to add some stochasticity
-    }
-}
 
-void Agent::process_washroom_needs(std::vector<double> &school_washrooms) {
-    if (this->going_to_wr(mt) && !this->at_home) {
-        int wr_choice = this->washroom(mt);
+        // If agent is susceptible, then they might get infected from the washroom
+        bool infect_from_wr = (rand() % 100) < (kPulmonaryVentilation * kAverageWashroomTime * school_washrooms[washroom_destination] * 100);
+        if (infect_from_wr and this->susceptible)
+            this->get_infected();
+            
 
-        // If the student is infectious, they should infect the washroom a bit
-        if (this->infected) {
-            school_washrooms[wr_choice] += CONCENTRATION_INCREASE;
-        } else if (this->susceptible) {
-            std::discrete_distribution<bool> infect_from_wr{
-                    1 - (school_washrooms[wr_choice] * PULMINARY_VENTILATION * AVERAGE_WR_TIME),
-                    (school_washrooms[wr_choice] * PULMINARY_VENTILATION * AVERAGE_WR_TIME)};
-            bool infect_from_washroom = infect_from_wr(mt);
-            if (infect_from_washroom) {
-                this->susceptible = false;
-                this->exposed = true;
-                this->exposed_minute_count = stoch_range(mt);
-            }
+        // If the agent is infected, then they will further infect the washroom
+        else if (this->infected) {
+            school_washrooms[washroom_destination] += kWashroomConcentrationIncrease;
         }
     }
 }
@@ -132,60 +148,60 @@ void Agent::interact_with_friend_random() {
     this->interact(**random_element(this->connections.begin(), this->connections.end()));
 }
 
-void
-Agent::resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent *>, 5>> &classrooms) {
-    // TODO: Add special circumstances for more disease-prone classes, such as gym or lunch.
+void Agent::resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
     switch (current_period) {
         case 1:
-            if (this->p1 == "LUNCH")
-                this->interact(**random_element(this->connections.begin(), this->connections.end()));
-            else {
-                this->interact(
-                        **random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end())
-                );
-                break;
-            }
+            if (this->p1 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
+            else
+                this->interact(**random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end()));
+            break;
         case 2:
-            if (this->p2 == "LUNCH")
-                this->interact(**random_element(this->connections.begin(), this->connections.end()));
-            else {
-                this->interact(
-                        **random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end())
-                );
-                break;
-            }
+            if (this->p2 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
+            else
+                this->interact(**random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end()));
+            break;
         case 3:
-            if (this->p3 == "LUNCH")
-                this->interact(**random_element(this->connections.begin(), this->connections.end()));
-            else {
-                this->interact(
-                        **random_element(classrooms[this->p3][2].begin(), classrooms[this->p3][2].end())
-                );
-                break;
-            }
+            if (this->p3 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
+            else
+                this->interact(**random_element(classrooms[this->p3][2].begin(), classrooms[this->p3][2].end()));
+            break;
         case 4:
-            if (this->p4 == "LUNCH")
-                this->interact(**random_element(this->connections.begin(), this->connections.end()));
-            else {
-                this->interact(
-                        **random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end())
-                );
-                break;
-            }
+            if (this->p4 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
+            else
+                this->interact(**random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end()));
+            break;
         case 5:
-            if (this->p5 == "LUNCH")
-                this->interact(**random_element(this->connections.begin(), this->connections.end()));
-            else {
-                this->interact(
-                        **random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end())
-                );
-                break;
-            }
+            if (this->p5 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
+            else
+                this->interact(**random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end()));
+            break;
         default:
-            this->interact(**random_element(this->connections.begin(), this->connections.end()));
             break;
     }
 }
 
+void Agent::interact(Agent& other_agent) {
+    bool should_infect = this->infection_prob(this->mt);
 
-Agent::~Agent() = default;
+    // If the other agent is infectious
+    if (other_agent.infected and this->susceptible and should_infect) {
+        this->get_infected();
+    }
+    // If this agent is infectious
+    else if (other_agent.susceptible and this->infected and should_infect) {
+        other_agent.get_infected();
+    }
+}
+
+void Agent::get_infected() {
+    this->susceptible = false;
+    this->vaccinated = false;
+    this->exposed = true;
+    this->infected = false;
+    this->recovered = false;
+    
+    if (this->ode_mode)
+        this->exposed_minute_count = stoch_range_ode(mt);
+    else
+        this->exposed_minute_count = stoch_range(mt);
+}

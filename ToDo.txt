@@ -1,8 +1,0 @@
-1. Implement lunch friends system where agents only interact with people in the same lunch period.
-2. Add infection from gym
-3. Re-organize code
-4. Add ODE mode (exponential distribution for stochastic range in ODE mode)
-5. Determine some better interaction probabilities
-6. Probability of infection from washrooms?
-7. Get list of transmission rates to check
-
