@@ -37,7 +37,13 @@ build/
 *.out
 *.app
 
+# LaTeX files
+proofs/*/*.*
+!proofs/*/*.pdf
+!proofs/*/proof_latex.tex
+!proofs/*/references.bib
 
 !*/*.py
 
 compile_commands.json
+

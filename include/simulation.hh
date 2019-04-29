@@ -65,8 +65,8 @@ const int kPeriod5End = 920;
 const int kPostClass = 940;
 
 // Interaction probabilities
-const double kFriendsInteractionProbability = 1.5 / 20.0;
-const double kClassInteractionProbability = 6.0 / 75.0;
+const double kFriendsInteractionProbability = 2 / 20.0;
+const double kClassInteractionProbability = 3.0 / 75.0;
 
 // Washroom
 const double kConcentrationDecayRate = 0.62578;

@@ -1,0 +1,27 @@
+\documentclass[preview, border=12pt, varwidth]{standalone}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{natbib}
+
+\title{Determining constant \textit{kAverageWashroomTime}}
+\author{David Gurevich}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{proof}
+	Given $t_{FL} = 152.5, t_{FH} = 180.6, t_{ML} = 83.6, t_{MH} = 112.5$.\cite{rawls1988restroom} So,
+	\begin{align*}
+	t_{avg} &= \dfrac{t_{FL} + t_{FH} + t_{ML} + t_{MH}}{4} \\
+	&= \dfrac{529.2}{4} \\
+	&= 132.3 \text{ seconds} \\
+	\end{align*}
+	Conversion of $t_{avg}$ to minutes yields $\tau_{avg} = 2.205$ minutes
+\end{proof}
+
+\bibliography{references}
+\bibliographystyle{plain}
+\end{document}
+	 

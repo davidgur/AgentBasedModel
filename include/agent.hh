@@ -40,14 +40,14 @@ const int kMinutesPerDay = 24 * 60;
 const int kExposedDayCount = 11;    // } [1]
 const int kInfectedDayCount = 6;    // } [1]
 const int kSymptomsAbsenceDays = 4; // } [1]
-const int kAverageWashroomTime = 3;
 const int kMinLunchFriends = 3;
 
-const double kTransmissionRate = 0.52; // Calculated based on R0
-const double kWashroomInfectionRate = kTransmissionRate / 100.0;
+const double kTransmissionRate = 0.91; // [2]
+const double kWashroomInfectionRate = kTransmissionRate;
+const double kAverageWashroomTime = 2.2; // // See proofs
 const double kWashroomProbability = 0.0004; // Own calculations
-const double kWashroomConcentrationIncrease = 28.7878179;
-const double kPulmonaryVentilation = 0.00566;
+const double kWashroomConcentrationIncrease = kAverageWashroomTime * 144; // [3]
+const double kPulmonaryVentilation = 0.00566; // [3]
 
 const std::string kLunchVar = "LUNCH";
 
@@ -116,5 +116,9 @@ class Agent {
 [1] Heffernan, J. M., & Keeling, M. J. (2008). 
     An in-host model of acute infection: Measles as a case study. Theoretical population biology, 73(1), 134-147.
   
+[2] Centers for Disease Control and Prevention. (2011).
+    Epidemiology and Prevention of Vaccine-Preventable Diseases (The Pink Book).
 
+[3] Bloch, A. B., Orenstein, W. A., Ewing, W. M., Spain, W. H., Mallison, G. F., Herrmann, K. L., & Hinman, A. R. (1985).
+    Measles outbreak in a pediatric practice: airborne transmission in an office setting. Pediatrics, 75(4), 676-683.
 */
