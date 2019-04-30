@@ -67,7 +67,7 @@ Agent::Agent(int id, int grade, bool ode_mode) {
     this->infection_prob_washroom = std::bernoulli_distribution(kWashroomInfectionRate);
 
     // Absence days
-    this->symptoms_absence_days = this->stoch_range(mt);
+    this->symptoms_absence_days = 4 + this->generate_truncated_normal_distribution_value();
 }
 
 void Agent::add_to_connections(Agent* new_agent) {
@@ -105,7 +105,7 @@ void Agent::individual_disease_progression() {
         if (this->ode_mode)
             this->infected_minute_count = stoch_range_ode(mt);
         else
-            this->infected_minute_count = stoch_range(mt);   
+            this->infected_minute_count = this->generate_truncated_normal_distribution_value();   
     }
 
     // Case 3: Agent is infected, but hasn't met the threshold
@@ -199,6 +199,18 @@ void Agent::interact(Agent& other_agent) {
     }
 }
 
+int Agent::generate_truncated_normal_distribution_value() {
+    int return_value = 0;
+    
+    for (;;) {
+        return_value = this->stoch_range(mt);
+        if (-kMinutesPerDay <= return_value <= kMinutesPerDay)
+            break;
+    }
+
+    return static_cast<int>(return_value);
+}
+
 void Agent::get_infected() {
     this->susceptible = false;
     this->vaccinated = false;
@@ -209,5 +221,5 @@ void Agent::get_infected() {
     if (this->ode_mode)
         this->exposed_minute_count = stoch_range_ode(mt);
     else
-        this->exposed_minute_count = stoch_range(mt);
+        this->exposed_minute_count = this->generate_truncated_normal_distribution_value();
 }

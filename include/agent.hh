@@ -106,11 +106,12 @@ class Agent {
       // Infection RNG
     std::bernoulli_distribution infection_prob;
     std::bernoulli_distribution infection_prob_washroom;
-    std::normal_distribution<> stoch_range; // set reatriction
+    std::normal_distribution<> stoch_range; // Make this truncated
     std::exponential_distribution<> stoch_range_ode;
     
     // Functions (private)
     void interact(Agent& other_agent);
+    int generate_truncated_normal_distribution_value();
 
 };
 

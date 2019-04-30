@@ -82,7 +82,7 @@ void Simulation::run_simulation() {
         else if (this->day_state == 1) {
             this->individual_disease_progression_for_all();
             this->interaction_among_friends_for_all();
-            this->process_washroom_needs_for_all(); 		// TODO: FIX PROBLEM HERE
+            this->process_washroom_needs_for_all();
         }
 
         // Day State 2: In Class
