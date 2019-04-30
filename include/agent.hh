@@ -40,12 +40,12 @@ const int kMinutesPerDay = 24 * 60;
 const int kExposedDayCount = 11;    // } [1]
 const int kInfectedDayCount = 6;    // } [1]
 const int kSymptomsAbsenceDays = 4; // } [1]
-const int kMinLunchFriends = 3;
+const int kMinLunchFriends = 3;     // Anecdotal
 
 const double kTransmissionRate = 0.91; // [2]
 const double kWashroomInfectionRate = kTransmissionRate;
 const double kAverageWashroomTime = 2.2; // // See proofs
-const double kWashroomProbability = 0.0004; // Own calculations
+const double kWashroomProbability = 0.00047; // See proofs
 const double kWashroomConcentrationIncrease = kAverageWashroomTime * 144; // [3]
 const double kPulmonaryVentilation = 0.00566; // [3]
 
@@ -62,6 +62,8 @@ class Agent {
     int id;
     int grade;
     int lunch_period;
+
+    int secondary_infections;
 
     bool ode_mode = false;
 
@@ -94,6 +96,8 @@ class Agent {
     long long exposed_minute_count = 0;
     long long infected_minute_count = 0;
 
+    double symptoms_absence_days = 0;
+
     // Random number generation
     std::mt19937 mt;
       // Washroom RNG
@@ -102,7 +106,7 @@ class Agent {
       // Infection RNG
     std::bernoulli_distribution infection_prob;
     std::bernoulli_distribution infection_prob_washroom;
-    std::normal_distribution<> stoch_range;
+    std::normal_distribution<> stoch_range; // set reatriction
     std::exponential_distribution<> stoch_range_ode;
     
     // Functions (private)

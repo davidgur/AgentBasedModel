@@ -1,0 +1,52 @@
+\documentclass[preview, border=12pt, varwidth]{article}
+
+\usepackage{mathtools}
+\usepackage{amsthm}
+\usepackage{nccmath}
+\usepackage{natbib}
+
+\usepackage [english]{babel}
+\usepackage [autostyle, english = american]{csquotes}
+\MakeOuterQuote{"}
+
+\title{Determining constant \textit{kProbabilityOfWashroom}}
+\author{David Gurevich}
+\date{}
+
+\begin{document}
+\maketitle
+
+Given the lack of quantitative research on the subject of bathroom habits of high-school aged children, the probability that a high school student would go to the bathroom at any given minute has to be inferred from existing qualitative research.
+
+In the paper \textit{Perceptions of School Toilets as a Cause for Irregular Toilet Habits Among Schoolchildren Aged 6 to 16 Years} \cite{lundblad2005perceptions}, researchers surveyed students aged from 6 to 16 years on their bathroom habits and inquired on the frequency of their toilet use. 11\% of high school aged children answered that they urinate most days, 64\% some days, and 25\% said they never urinate in the school bathrooms. Considering that 80\% of high school aged children identified that they never defecate in the school bathrooms, these urination habits will be used to identify the frequency of overall toilet use.
+
+For the purpose of this calculation, we assume that there is a maximum of one bathroom visit per day. We will interpret "most days" to be 3 days per week, "some days" will be interpreted as 1 day per week, and "never" will be interpreted as 0.25 days per week, as we want to account for emergencies.
+
+To create an average number of bathroom visits per student per week, the following calculation was made:
+
+
+\begin{align}
+b &= (3 \cdot 11\%) + (1 \cdot 64\%) + (\frac{1}{4} \cdot 25\%) \nonumber \\
+  &= 1.0325
+\end{align}
+
+The probability that a student will go to the bathroom on any given day can therefore be calculated as the ratio between the average number of bathroom visits per week to the number of days per week that a student is in school (in North America, this is generally 5.)
+
+\begin{align}
+p_{\text{day}} &= \dfrac{b}{5} \nonumber \\ 
+&= 0.2065 \nonumber \\
+&= 20.65 \% 
+\end{align}
+\newpage
+As the agent based model progresses every minute, we need to determine the probability of a student going to the washroom at any given minute, we can take the probability of a student going to the bathroom at any given day (2) and divide that by the number of minutes that a student is in school for (in our case this is 440 minutes.) This calculation is as follows:
+\begin{align}
+p_{\text{minute}} &= \dfrac{p_{\text{day}}}{440} \nonumber \\
+&\approx 0.00047 \nonumber \\
+&\approx 0.047\%
+\end{align}
+
+Therefore, the probability of a student going to the washroom at any given minute in the simulation is 0.047\% (3).
+
+\bibliography{references}
+
+\end{document}

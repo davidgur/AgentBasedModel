@@ -104,8 +104,9 @@ void Simulation::run_simulation() {
         this->decay_washroom_concentration();
 
         // Things to do every 15 minutes:
-        if (this->minute_counter % 15 == 0)
+        if (this->minute_counter % 15 == 0) {
             this->print_population_sizes();
+		}
         
         // Things to do every day:
         if (this->minute_counter == kMinutesPerDay) {
@@ -113,6 +114,7 @@ void Simulation::run_simulation() {
             this->minute_counter = 0;
             
             this->clean_washrooms();
+			this->print_secondary_infections();
 
             // Check if the simulation reached a steady state
             if (this->check_for_steady()) break;
@@ -122,6 +124,7 @@ void Simulation::run_simulation() {
         }
     }
     this->population_out.close();
+	this->secondary_infection_out.close();
     std::cout << "Simulation " << this->sim_id << " completed successfully!\n";
 }
 
@@ -131,6 +134,7 @@ void Simulation::initialize_simulation() {
 
     mkdir(this->export_folder.c_str(), 0777);
     this->population_out.open(this->export_folder + "population_sizes.csv", std::ios::app);
+	this->secondary_infection_out.open(this->export_folder + "secondary_infections.csv", std::ios::app);
     this->prep_output_file();
 
     this->populate_agent_vector();
@@ -265,6 +269,10 @@ void Simulation::prep_output_file() {
     out.open(this->export_folder + "population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
     out << "TIME,G9S,G9V,G9E,G9I,G9R,G10S,G10V,G10E,G10I,G10R,G11S,G11V,G11E,G11I,G11R,G12S,G12V,G12E,G12I,G12R\n";
     out.close();
+
+	out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
+	out << "TIME,AGENT ID,SECONDARY_INFECTIONS\n"; 
+	out.close();
 }
 
 void Simulation::print_population_sizes() {
@@ -302,6 +310,25 @@ void Simulation::print_population_sizes() {
 	                     grade12_population_sizes[2] << "," <<
 	                     grade12_population_sizes[3] << "," <<
 	                     grade12_population_sizes[4] << "\n";
+}
+
+void Simulation::print_secondary_infections() {
+	// Create map of all R0
+	std::map<std::string, int> secondary_infections_map;
+	for (auto& agent : this->grade9_agents)
+		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
+	for (auto& agent : this->grade10_agents)
+		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
+	for (auto& agent : this->grade11_agents)
+		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
+	for (auto& agent : this->grade12_agents)
+		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
+
+	// Print all the data
+	for (auto const& entry : secondary_infections_map) {
+		this->secondary_infection_out << (this->day_counter * kMinutesPerDay) + this->minute_counter << "," 
+		<< entry.first << "," << entry.second << "\n";
+	}
 }
 
 void Simulation::export_agent_data(std::vector<Agent>& agent_vector, std::string file_name) {

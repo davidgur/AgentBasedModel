@@ -65,11 +65,11 @@ const int kPeriod5End = 920;
 const int kPostClass = 940;
 
 // Interaction probabilities
-const double kFriendsInteractionProbability = 2 / 20.0;
-const double kClassInteractionProbability = 3.0 / 75.0;
+const double kFriendsInteractionProbability = 2 / 20.0; // Ancedotal
+const double kClassInteractionProbability = 3.0 / 75.0; // Anecdotal
 
 // Washroom
-const double kConcentrationDecayRate = 0.62578;
+const double kConcentrationDecayRate = 0.62578; // NEED TO UPDATE THIS
 
 // ODE Mode
 const bool kODEMode = false;
@@ -107,6 +107,7 @@ private:
     // Export
     std::string export_folder;
     std::ofstream population_out;
+    std::ofstream secondary_infection_out;
 
     // Agent vectors
     std::vector<Agent> grade9_agents;
@@ -141,6 +142,7 @@ private:
     void log();
     void prep_output_file();
     void print_population_sizes();
+    void print_secondary_infections();
     void export_agent_data(std::vector<Agent> &agent_vector, std::string file_name);
     void determine_classroom_population();
     std::vector<int> get_population_sizes(std::vector<Agent> &agent_vector);

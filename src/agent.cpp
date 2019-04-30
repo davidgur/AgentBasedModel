@@ -37,6 +37,7 @@ Agent::Agent(int id, int grade, bool ode_mode) {
     this->id = id;
     this->grade = grade;
     this->ode_mode = ode_mode;
+    this->secondary_infections = 0;
 
     // SVEIR info; everyone starts out susceptible
     this->susceptible = true;
@@ -64,6 +65,9 @@ Agent::Agent(int id, int grade, bool ode_mode) {
     this->stoch_range_ode = std::exponential_distribution<double>(1.0 / 720.0); // mean (0, 24 * 60)
     this->infection_prob = std::bernoulli_distribution(kTransmissionRate);
     this->infection_prob_washroom = std::bernoulli_distribution(kWashroomInfectionRate);
+
+    // Absence days
+    this->symptoms_absence_days = this->stoch_range(mt);
 }
 
 void Agent::add_to_connections(Agent* new_agent) {
@@ -110,7 +114,7 @@ void Agent::individual_disease_progression() {
     }
 
     // Case 4: Agent is infected and is experiencing symptoms, so it stays home
-    else if (this->infected and this->infected_minute_count == (kSymptomsAbsenceDays * kMinutesPerDay)) {
+    else if (this->infected and this->infected_minute_count == (this->symptoms_absence_days * kMinutesPerDay)) {
         this->at_home = true;
         this->infected_minute_count++;
     }
@@ -186,10 +190,12 @@ void Agent::interact(Agent& other_agent) {
     // If the other agent is infectious
     if (other_agent.infected and this->susceptible and should_infect) {
         this->get_infected();
+        other_agent.secondary_infections += 1;
     }
     // If this agent is infectious
     else if (other_agent.susceptible and this->infected and should_infect) {
         other_agent.get_infected();
+        this->secondary_infections += 1;
     }
 }
 
