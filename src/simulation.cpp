@@ -518,7 +518,7 @@ unsigned short Simulation::determine_day_state() {
 	else if (between(kPeriod1End, kPeriod2Start))
 		return 3;
 	else if (between(kPeriod2Start, kPeriod2End))
-		return 1;
+		return 2;
 	else if (between(kPeriod2End, kPeriod3Start))
 		return 3;
 	else if (between(kPeriod3Start, kPeriod3End))
