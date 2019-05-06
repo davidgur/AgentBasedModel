@@ -98,7 +98,7 @@ void Agent::individual_disease_progression() {
     }
 
     // Case 2: Agent is exposed, and has met the threshold, so it becomes infected
-    else if (this->exposed and this->exposed_minute_count == (kExposedDayCount * kMinutesPerDay)) {
+    if (this->exposed and this->exposed_minute_count == (kExposedDayCount * kMinutesPerDay)) {
         this->exposed = false;
         this->infected = true;
         
@@ -109,19 +109,19 @@ void Agent::individual_disease_progression() {
     }
 
     // Case 3: Agent is infected and is experiencing symptoms, so it stays home
-    else if (this->infected and this->infected_minute_count == this->symptoms_absence_minutes) {
+    if (this->infected and this->infected_minute_count == this->symptoms_absence_minutes) {
         this->at_home = true;
         this->infected_minute_count++;
     }
 
 
     // Case 4: Agent is infected, but hasn't met the threshold
-    else if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
+    if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
         this->infected_minute_count++;
     }
 
     // Case 5: Agent is infected, and has met the threshold, thus the agent recovers
-    else if (this->infected and this->infected_minute_count >= (kInfectedDayCount * kMinutesPerDay)) {
+    if (this->infected and this->infected_minute_count >= (kInfectedDayCount * kMinutesPerDay)) {
         this->infected = false;
         this->at_home = false;
         this->recovered = true;
