@@ -5,9 +5,13 @@
 
 import os
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 
+import itertools
+
 from glob import glob
+from scipy.interpolate import make_interp_spline, BSpline
 
 # Step 1: Identify all population files
 population_files = {}
@@ -30,7 +34,16 @@ for _, population_file_list in population_files.items():
         if recovered_num > 1:
             at_home_data.append([sum(x) for x in zip(data['G9A'], data['G10A'], data['G11A'], data['G12A'])])
 
-# Get smallest at_home data
+# Plot the at_home_data with low opacity
 for data in at_home_data:
-    plt.plot(range(len(data) / 24 * 15), data)
+    plt.plot(np.linspace(0, len(data) * 15 // (24 * 60), len(data)), data, alpha=0.1)
+
+# Get the "average" at home plot
+avg_data = [np.nanmean(data_at_y) for data_at_y in itertools.zip_longest(*at_home_data, fillvalue=0)]
+plt.plot(np.linspace(0, len(avg_data) * 15 // (24*60), len(avg_data)), avg_data)
+
+plt.title("Number of people absent from school due to measles infection")
+plt.xlabel("Time (days)")
+plt.ylabel("# of people")
+
 plt.show()
