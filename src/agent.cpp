@@ -92,41 +92,42 @@ void Agent::generate_lunch_friends(std::map<std::string, std::array<std::vector<
 }
 
 void Agent::individual_disease_progression() {
-    // Case 1: Agent is exposed, but hasn't met the threshold
+    // Cases:
+    //  - Agent is susceptible --> Do nothing
+    //  - Agent is exposed but hasn't met threshold --> Increase counter
+    //  - Agent is exposed and has met threshold --> convert to infected
+    //  - Agent is infected but hasn't met the threshold to go home --> increase counter
+    //  - Agent is infected and has met the threshold to go home --> increase counter, agent is at home
+    //  - Agent is infected and has met the threshold to recover --> agent isn't at home, agent recovers
+
     if (this->exposed and this->exposed_minute_count < (kExposedDayCount * kMinutesPerDay)) {
         this->exposed_minute_count++;
     }
 
-    // Case 2: Agent is exposed, and has met the threshold, so it becomes infected
-    if (this->exposed and this->exposed_minute_count == (kExposedDayCount * kMinutesPerDay)) {
-        this->exposed = false;
+    else if (this->exposed and this->exposed_minute_count == (kExposedDayCount * kMinutesPerDay)) {
         this->infected = true;
-        
+        this->exposed = false;
         if (this->ode_mode)
             this->infected_minute_count = stoch_range_ode(mt);
         else
-            this->infected_minute_count = this->generate_truncated_normal_distribution_value();   
+            this->infected_minute_count = this->generate_truncated_normal_distribution_value();
     }
 
-    // Case 3: Agent is infected and is experiencing symptoms, so it stays home
-    if (this->infected and this->infected_minute_count == this->symptoms_absence_minutes) {
+    else if (this->infected and this->infected_minute_count == (kSymptomsAbsenceDays * kMinutesPerDay)) {
         this->at_home = true;
         this->infected_minute_count++;
     }
 
-
-    // Case 4: Agent is infected, but hasn't met the threshold
-    if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
+    else if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
         this->infected_minute_count++;
     }
 
-    // Case 5: Agent is infected, and has met the threshold, thus the agent recovers
-    if (this->infected and this->infected_minute_count >= (kInfectedDayCount * kMinutesPerDay)) {
-        this->infected = false;
+    else if (this->infected and this->infected_minute_count == (kInfectedDayCount * kMinutesPerDay)) {
         this->at_home = false;
         this->recovered = true;
-        this->infected_minute_count = 0;
+        this->infected = false;
     }
+    
 }
 
 void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {

@@ -284,12 +284,12 @@ void Simulation::print_population_sizes() {
     this->population_out << (this->day_counter * kMinutesPerDay) + this->minute_counter << ",";
 
 	// Grade 9
-	this->population_out << grade9_population_sizes[0] << "," <<
-	                     grade9_population_sizes[1] << "," <<
-	                     grade9_population_sizes[2] << "," <<
-	                     grade9_population_sizes[3] << "," <<
-	                     grade9_population_sizes[4] << "," <<
-                         grade9_population_sizes[5] << ",";
+	this->population_out << grade9_population_sizes[0] << "," << // S
+	                     grade9_population_sizes[1] << "," <<	 // V
+	                     grade9_population_sizes[2] << "," <<	 // E
+	                     grade9_population_sizes[3] << "," <<	 // I
+	                     grade9_population_sizes[4] << "," <<	 // A
+                         grade9_population_sizes[5] << ",";		 // R
 
 	// Grade 10
 	this->population_out << grade10_population_sizes[0] << "," <<
@@ -389,23 +389,23 @@ void Simulation::determine_classroom_population() {
 
 std::vector<int> Simulation::get_population_sizes(std::vector<Agent> &agent_vector) {
 	int susceptible = 0, vaccinated = 0, exposed = 0, infected = 0, at_home = 0, recovered = 0;
+
 	for (auto& agent : agent_vector) {
-		if (agent.susceptible) 
+		if (agent.susceptible)
 			susceptible++;
-		else if (agent.vaccinated) 
+		else if (agent.vaccinated)
 			vaccinated++;
-		else if (agent.exposed) 
+		else if (agent.exposed)
 			exposed++;
 		else if (agent.infected) {
-            infected++;
-            if (agent.at_home)
-                at_home++;
-            infected++;
-        }
-		else if (agent.recovered) 
+			infected++;
+			if (agent.at_home)
+				at_home++;
+		}
+		else if (agent.recovered)
 			recovered++;
-
 	}
+
 	return std::vector<int>{susceptible, vaccinated, exposed, infected, at_home, recovered};
 }
 
