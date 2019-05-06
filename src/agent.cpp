@@ -67,7 +67,7 @@ Agent::Agent(int id, int grade, bool ode_mode) {
     this->infection_prob_washroom = std::bernoulli_distribution(kWashroomInfectionRate);
 
     // Absence days
-    this->symptoms_absence_days = 4 + this->generate_truncated_normal_distribution_value();
+    this->symptoms_absence_minutes = this->generate_truncated_normal_distribution_value() + (4 * kMinutesPerDay);
 }
 
 void Agent::add_to_connections(Agent* new_agent) {
@@ -108,14 +108,15 @@ void Agent::individual_disease_progression() {
             this->infected_minute_count = this->generate_truncated_normal_distribution_value();   
     }
 
-    // Case 3: Agent is infected, but hasn't met the threshold
-    else if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
+    // Case 3: Agent is infected and is experiencing symptoms, so it stays home
+    else if (this->infected and this->infected_minute_count == this->symptoms_absence_minutes) {
+        this->at_home = true;
         this->infected_minute_count++;
     }
 
-    // Case 4: Agent is infected and is experiencing symptoms, so it stays home
-    else if (this->infected and this->infected_minute_count == (this->symptoms_absence_days * kMinutesPerDay)) {
-        this->at_home = true;
+
+    // Case 4: Agent is infected, but hasn't met the threshold
+    else if (this->infected and this->infected_minute_count < (kInfectedDayCount * kMinutesPerDay)) {
         this->infected_minute_count++;
     }
 

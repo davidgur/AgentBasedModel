@@ -96,7 +96,7 @@ class Agent {
     long long exposed_minute_count = 0;
     long long infected_minute_count = 0;
 
-    double symptoms_absence_days = 0;
+    long long symptoms_absence_minutes = 0;
 
     // Random number generation
     std::mt19937 mt;

@@ -267,7 +267,7 @@ void Simulation::log() {
 void Simulation::prep_output_file() {
     std::ofstream out;
     out.open(this->export_folder + "population_sizes.csv", std::ofstream::out | std::ofstream::trunc);
-    out << "TIME,G9S,G9V,G9E,G9I,G9R,G10S,G10V,G10E,G10I,G10R,G11S,G11V,G11E,G11I,G11R,G12S,G12V,G12E,G12I,G12R\n";
+    out << "TIME,G9S,G9V,G9E,G9I,G9A,G9R,G10S,G10V,G10E,G10I,G10A,G10R,G11S,G11V,G11E,G11I,G11A,G11R,G12S,G12V,G12E,G12I,G12A,G12R\n";
     out.close();
 
 	out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
@@ -288,28 +288,32 @@ void Simulation::print_population_sizes() {
 	                     grade9_population_sizes[1] << "," <<
 	                     grade9_population_sizes[2] << "," <<
 	                     grade9_population_sizes[3] << "," <<
-	                     grade9_population_sizes[4] << ",";
+	                     grade9_population_sizes[4] << "," <<
+                         grade9_population_sizes[5] << ",";
 
 	// Grade 10
 	this->population_out << grade10_population_sizes[0] << "," <<
 	                     grade10_population_sizes[1] << "," <<
 	                     grade10_population_sizes[2] << "," <<
 	                     grade10_population_sizes[3] << "," <<
-	                     grade10_population_sizes[4] << ",";
+	                     grade10_population_sizes[4] << "," <<
+                         grade10_population_sizes[5] << ",";
 
 	// Grade 11
 	this->population_out << grade11_population_sizes[0] << "," <<
 	                     grade11_population_sizes[1] << "," <<
 	                     grade11_population_sizes[2] << "," <<
 	                     grade11_population_sizes[3] << "," <<
-	                     grade11_population_sizes[4] << ",";
+	                     grade11_population_sizes[4] << "," <<
+                         grade11_population_sizes[5] << ",";
 
 	// Grade 12
 	this->population_out << grade12_population_sizes[0] << "," <<
 	                     grade12_population_sizes[1] << "," <<
 	                     grade12_population_sizes[2] << "," <<
 	                     grade12_population_sizes[3] << "," <<
-	                     grade12_population_sizes[4] << "\n";
+                         grade12_population_sizes[4] << "," <<
+	                     grade12_population_sizes[5] << "\n";
 }
 
 void Simulation::print_secondary_infections() {
@@ -384,7 +388,7 @@ void Simulation::determine_classroom_population() {
 }
 
 std::vector<int> Simulation::get_population_sizes(std::vector<Agent> &agent_vector) {
-	int susceptible = 0, vaccinated = 0, exposed = 0, infected = 0, recovered = 0;
+	int susceptible = 0, vaccinated = 0, exposed = 0, infected = 0, at_home = 0, recovered = 0;
 	for (auto& agent : agent_vector) {
 		if (agent.susceptible) 
 			susceptible++;
@@ -392,12 +396,17 @@ std::vector<int> Simulation::get_population_sizes(std::vector<Agent> &agent_vect
 			vaccinated++;
 		else if (agent.exposed) 
 			exposed++;
-		else if (agent.infected) 
-			infected++;
+		else if (agent.infected) {
+            infected++;
+            if (agent.at_home)
+                at_home++;
+            infected++;
+        }
 		else if (agent.recovered) 
 			recovered++;
+
 	}
-	return std::vector<int>{susceptible, vaccinated, exposed, infected, recovered};
+	return std::vector<int>{susceptible, vaccinated, exposed, infected, at_home, recovered};
 }
 
 // ===========
