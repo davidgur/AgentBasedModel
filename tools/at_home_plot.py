@@ -4,6 +4,7 @@
 # outbreak are used for the plot
 
 import os
+import sys
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -11,11 +12,11 @@ import matplotlib.pyplot as plt
 import itertools
 
 from glob import glob
-from scipy.interpolate import make_interp_spline, BSpline
+from scipy.signal import savgol_filter
 
 # Step 1: Identify all population files
 population_files = {}
-folders = glob('*/')
+folders = glob(sys.argv[1])
 
 for folder in folders:
     population_files[folder[:-1]] = []
@@ -39,7 +40,7 @@ for data in at_home_data:
     plt.plot(np.linspace(0, len(data) * 15 // (24 * 60), len(data)), data, alpha=0.1)
 
 # Get the "average" at home plot
-avg_data = [np.nanmean(data_at_y) for data_at_y in itertools.zip_longest(*at_home_data, fillvalue=0)]
+avg_data = savgol_filter([np.nanmedian(data_at_y) for data_at_y in itertools.zip_longest(*at_home_data, fillvalue=0)], 89, 3)
 plt.plot(np.linspace(0, len(avg_data) * 15 // (24*60), len(avg_data)), avg_data)
 
 plt.title("Number of people absent from school due to measles infection")
