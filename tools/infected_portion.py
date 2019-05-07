@@ -34,7 +34,7 @@ for _, population_file_list in population_files.items():
         if recovered_num > 1:
             susceptible_data.append([sum(x) for x in zip(data['G9S'], data['G10S'], data['G11S'], data['G12S'])])
 
-# Get initial susceptible population vs peak infected population
+# Get initial susceptible population vs final susceptible population
 proportions = []
 
 for data in susceptible_data:
