@@ -3,6 +3,9 @@
 # to display the values. Only simulations with an 
 # outbreak are used for the plot
 
+# David Gurevich
+# david (at) gurevich (dot) ca
+
 import os
 import sys
 import pandas as pd
