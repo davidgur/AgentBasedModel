@@ -484,8 +484,9 @@ void Simulation::pick_random_sick() {
         default: sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
     }
 
-    sick_agent->get_infected();
-    sick_agent->vaccinated = false;
+    sick_agent->susceptible = false;
+	sick_agent->vaccinated = false;
+	sick_agent->infected = true;
 }
 
 void Simulation::decay_washroom_concentration() {
