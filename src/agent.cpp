@@ -206,7 +206,7 @@ int Agent::generate_truncated_normal_distribution_value() {
     
     for (;;) {
         return_value = this->stoch_range(mt);
-        if (-kMinutesPerDay <= return_value <= kMinutesPerDay)
+        if (-kMinutesPerDay <= return_value or return_value <= kMinutesPerDay)
             break;
     }
 
