@@ -33,10 +33,6 @@ int main(int argc, char *argv[]) {
 	int sick_grade = std::stoi(argv[2]);
 	int num_of_vacc_rates = argc - 3;
 
-	std::cout << "Num of sims: " << num_of_simulations_per_rate << std::endl;
-	std::cout << "Sick Grade: " << sick_grade << std::endl;
-	std::cout << "Num of vacc rates:" << num_of_vacc_rates << std::endl;
-
 	std::vector<double> vacc_rates(num_of_vacc_rates);
 
 	// Add all vaccination rates to the vector
@@ -53,7 +49,7 @@ int main(int argc, char *argv[]) {
 		std::vector<Simulation *> simulation_objects;
 
 		// Remove any existing data.
-		system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str());
+		static_cast<void>(system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str()));
 
 		// Create new directory for data.
 		mkdir(("export/SIM_" + std::to_string(vacc_rate)).c_str(), 0777);

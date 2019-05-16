@@ -1,6 +1,5 @@
-# Agent Based Model of Measles in secondary schools
-
-This is an attempt at building an agent based model (ABM) of the spread of measles within secondary schools.
+# Agent based model of measles in secondary schools
+"Every student counts" is often heard in educational policy contexts, but it also has some epidemiological meaning. No two students are the same, in that every student has a different timetable that they have to follow, different friends (and differentnumber of friends), as well as different disease behaviour. Where the average duration of infection is six days, one student may be infected for five days, and another for seven days. Implementing these subtlties into a compartmental ordinary or partial differential equation model is difficult and cumbersome. As such, we introduce an agent based computer simulation that focuses not on the overall population, but rather, the individual and it's dynamics.
 
 ## License
 [MIT](https://choosealicense.com/licenses/mit/)
