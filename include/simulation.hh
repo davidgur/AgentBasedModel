@@ -45,10 +45,10 @@
 #include <sys/stat.h>
 
 // Population sizes (http://www.yrdsb.ca/AboutUs/DirectorsAnnualReport/Documents/2018-19-Sec.pdf)
-const int kGrade9Population = 292;
-const int kGrade10Population = 356;
-const int kGrade11Population = 372;
-const int kGrade12Population = 334;
+const int kGrade9Population = 288;
+const int kGrade10Population = 290;
+const int kGrade11Population = 308;
+const int kGrade12Population = 351;
 
 // Period times
 const int kPreClass = 500;
