@@ -114,7 +114,6 @@ void Simulation::run_simulation() {
             this->minute_counter = 0;
             
             this->clean_washrooms();
-			this->print_secondary_infections();
 
             // Check if the simulation reached a steady state
             if (this->check_for_steady()) break;
@@ -123,6 +122,8 @@ void Simulation::run_simulation() {
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
+	this->print_secondary_infections();
+
     this->population_out.close();
 	this->secondary_infection_out.close();
     std::cout << "Simulation " << this->sim_id << " completed successfully!\n";
@@ -234,9 +235,11 @@ void Simulation::individual_disease_progression(std::vector<Agent>& agent_vector
 }
 
 void Simulation::interaction_among_friends(std::vector<Agent>& agent_vector) {
+	int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
+
     for (auto& agent : agent_vector) {
         if (this->friends_distribution(mt) and !agent.at_home)
-            agent.interact_with_friend_random();
+            agent.interact_with_friend_random(current_time);
     }
 }
 
@@ -247,9 +250,11 @@ void Simulation::process_washroom_needs(std::vector<Agent>& agent_vector) {
 }
 
 void Simulation::resolve_classroom(std::vector<Agent>& agent_vector) {
+	int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
+
     for (auto& agent : agent_vector) {
         if (this->classroom_distribution(mt) and !agent.at_home)
-        agent.resolve_classroom(this->current_period, this->classrooms);
+        	agent.resolve_classroom(this->current_period, this->classrooms, current_time);
     }
 }
 
@@ -271,7 +276,7 @@ void Simulation::prep_output_file() {
     out.close();
 
 	out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
-	out << "TIME,AGENT ID,SECONDARY_INFECTIONS\n"; 
+	out << "AGENT_ID,TIME_OF_INFECTION,SECONDARY_INFECTIONS\n"; 
 	out.close();
 }
 
@@ -317,21 +322,59 @@ void Simulation::print_population_sizes() {
 }
 
 void Simulation::print_secondary_infections() {
-	// Create map of all R0
-	std::map<std::string, int> secondary_infections_map;
-	for (auto& agent : this->grade9_agents)
-		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
-	for (auto& agent : this->grade10_agents)
-		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
-	for (auto& agent : this->grade11_agents)
-		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
-	for (auto& agent : this->grade12_agents)
-		secondary_infections_map[std::to_string(agent.grade) + std::to_string(agent.id)] = agent.secondary_infections;
+	struct agent_infection_info {
+		std::string agent_id;
+		int time_of_infection;
+		int secondary_infections;
+	};
 
-	// Print all the data
-	for (auto const& entry : secondary_infections_map) {
-		this->secondary_infection_out << (this->day_counter * kMinutesPerDay) + this->minute_counter << "," 
-		<< entry.first << "," << entry.second << "\n";
+	std::vector<agent_infection_info> secondary_infections;
+
+	// (1) Fill vector with values
+	for (auto& agent : grade9_agents) {
+		secondary_infections.push_back((agent_infection_info) {
+			std::to_string(agent.grade) + std::to_string(agent.id),
+			agent.time_of_infection,
+			agent.secondary_infections
+		});
+	}
+
+	for (auto& agent : grade10_agents) {
+		secondary_infections.push_back((agent_infection_info) {
+			std::to_string(agent.grade) + std::to_string(agent.id),
+			agent.time_of_infection,
+			agent.secondary_infections
+		});
+	}
+
+	for (auto& agent : grade11_agents) {
+		secondary_infections.push_back((agent_infection_info) {
+			std::to_string(agent.grade) + std::to_string(agent.id),
+			agent.time_of_infection,
+			agent.secondary_infections
+		});
+	}
+
+	for (auto& agent : grade12_agents) {
+		secondary_infections.push_back((agent_infection_info) {
+			std::to_string(agent.grade) + std::to_string(agent.id),
+			agent.time_of_infection,
+			agent.secondary_infections
+		});
+	}
+
+	// (2) Sort the vector based on time of infection
+	auto comp = [] (const agent_infection_info& agent_one, const agent_infection_info& agent_two) {
+		return agent_one.time_of_infection < agent_two.time_of_infection and agent_one.time_of_infection != -1;
+	};
+
+	std::sort(secondary_infections.begin(), secondary_infections.end(), comp);
+
+	// (3) Print the vector
+	for (auto& entry : secondary_infections) {
+		if (entry.time_of_infection != -1) {
+			secondary_infection_out << entry.agent_id << "," << entry.time_of_infection << "," << entry.secondary_infections << "\n";
+		}
 	}
 }
 
@@ -487,6 +530,7 @@ void Simulation::pick_random_sick() {
     sick_agent->susceptible = false;
 	sick_agent->vaccinated = false;
 	sick_agent->infected = true;
+	sick_agent->time_of_infection = 0;
 }
 
 void Simulation::decay_washroom_concentration() {

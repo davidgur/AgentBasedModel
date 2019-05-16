@@ -35,8 +35,10 @@
 #include "random_element.hh"
 
 #include <iostream>
+#include <functional>
 #include <chrono>
 #include <map>
+#include <set>
 #include <algorithm>
 #include <array>
 #include <vector>

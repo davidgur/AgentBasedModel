@@ -74,7 +74,7 @@ void Agent::add_to_connections(Agent* new_agent) {
     this->connections.push_back(new_agent);
 }
 
-void Agent::generate_lunch_friends(std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
+void Agent::generate_lunch_friends(class_map& classrooms) {
     // First, look for any agents that are connections that have the same lunch
     for (auto& agent : this->connections) {
         if (agent->lunch_period == this->lunch_period){
@@ -150,53 +150,45 @@ void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {
     }
 }
 
-void Agent::interact_with_friend_random() {
-    this->interact(**random_element(this->connections.begin(), this->connections.end()));
+void Agent::interact_with_friend_random(int sim_time) {
+    this->interact(**random_element(this->connections.begin(), this->connections.end()), sim_time);
 }
 
-void Agent::resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
+void Agent::resolve_classroom(int current_period, class_map& classrooms, int sim_time) {
     switch (current_period) {
         case 1:
-            if (this->p1 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
-            else
-                this->interact(**random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end()));
+            this->interact(**random_element(classrooms[this->p1][0].begin(), classrooms[this->p1][0].end()), sim_time);
             break;
         case 2:
-            if (this->p2 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
-            else
-                this->interact(**random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end()));
+            this->interact(**random_element(classrooms[this->p2][1].begin(), classrooms[this->p2][1].end()), sim_time);
             break;
         case 3:
-            if (this->p3 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
-            else
-                this->interact(**random_element(classrooms[this->p3][2].begin(), classrooms[this->p3][2].end()));
+            this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()), sim_time);
             break;
         case 4:
-            if (this->p4 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
-            else
-                this->interact(**random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end()));
+            this->interact(**random_element(classrooms[this->p4][3].begin(), classrooms[this->p4][3].end()), sim_time);
             break;
         case 5:
-            if (this->p5 == kLunchVar) this->interact(**random_element(this->lunch_friends.begin(), this->lunch_friends.end()));
-            else
-                this->interact(**random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end()));
+            this->interact(**random_element(classrooms[this->p5][4].begin(), classrooms[this->p5][4].end()), sim_time);
             break;
         default:
             break;
     }
 }
 
-void Agent::interact(Agent& other_agent) {
+void Agent::interact(Agent& other_agent, int sim_time) {
     bool should_infect = this->infection_prob(this->mt);
 
     // If the other agent is infectious
     if (other_agent.infected and this->susceptible and should_infect) {
         this->get_infected();
+        this->time_of_infection = sim_time;
         other_agent.secondary_infections += 1;
     }
     // If this agent is infectious
     else if (other_agent.susceptible and this->infected and should_infect) {
         other_agent.get_infected();
+        other_agent.time_of_infection = sim_time;
         this->secondary_infections += 1;
     }
 }

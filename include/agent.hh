@@ -63,9 +63,13 @@ class Agent {
     int grade;
     int lunch_period;
 
-    int secondary_infections;
+    int secondary_infections = 0;
+    int time_of_infection = -1;
 
     bool ode_mode = false;
+
+    // Classroom Size
+    typedef std::map<std::string, std::array<std::vector<Agent*>, 5>> class_map;
 
     // SVEIR information
     bool susceptible = false;
@@ -84,11 +88,11 @@ class Agent {
 
     // Functions (public)
     void add_to_connections(Agent* new_agent);
-    void generate_lunch_friends(std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms);
+    void generate_lunch_friends(class_map& classrooms);
     void individual_disease_progression();
     void process_washroom_needs(std::vector<double>& school_washrooms);
-    void interact_with_friend_random();
-    void resolve_classroom(int current_period, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms);
+    void interact_with_friend_random(int sim_time);
+    void resolve_classroom(int current_period, class_map& classrooms, int sim_time);
     void get_infected();
 
   private:
@@ -110,7 +114,7 @@ class Agent {
     std::exponential_distribution<> stoch_range_ode;
     
     // Functions (private)
-    void interact(Agent& other_agent);
+    void interact(Agent& other_agent, int sim_time);
     int generate_truncated_normal_distribution_value();
 
 };
