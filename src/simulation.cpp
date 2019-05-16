@@ -29,9 +29,10 @@
 #include "../include/simulation.hh"
 
 // Constructor
-Simulation::Simulation(int sim_id, double vacc_rate) {
+Simulation::Simulation(int sim_id, double vacc_rate, int sick_grade) {
     this->sim_id = sim_id;
     this->vacc_rate = vacc_rate;
+	this->sick_grade = sick_grade;
     this->export_folder = "export/SIM_" + std::to_string(this->vacc_rate) + "/" + std::to_string(this->sim_id) + "/";
 
     this->day_counter = 0;
@@ -515,7 +516,7 @@ void Simulation::create_vaccinated() {
 void Simulation::pick_random_sick() {
     Agent *sick_agent = nullptr;
 
-    switch (this->random_sick_grade(mt)) {
+    switch (this->sick_grade) {
 		case 0: sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
 			break;
 		case 1: sick_agent = &(*random_element(this->grade10_agents.begin(), this->grade10_agents.end()));

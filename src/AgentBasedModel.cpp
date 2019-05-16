@@ -30,7 +30,14 @@
 
 int main(int argc, char *argv[]) {
 	int num_of_simulations_per_rate = std::stoi(argv[1]);
-	int num_of_vacc_rates = argc - 2;
+	int sick_grade = std::stoi(argv[2]);
+
+	std::cout << argv[0] << std::endl;
+	std::cout << argv[1] << std::endl;
+	std::cout << argv[2] << std::endl;
+	std::cout << argv[3] << std::endl;
+
+	int num_of_vacc_rates = argc - 1;
 
 	std::vector<double> vacc_rates(num_of_vacc_rates);
 
@@ -61,7 +68,7 @@ int main(int argc, char *argv[]) {
 
 		// Start making threads.
 		for (int sim_id = 1; sim_id <= num_of_simulations_per_rate; sim_id++) {
-			simulation_objects.push_back(new Simulation(sim_id, vacc_rate));
+			simulation_objects.push_back(new Simulation(sim_id, vacc_rate, sick_grade));
 		}
 
 		for (auto &simulation : simulation_objects) {

@@ -82,12 +82,13 @@ const std::array<std::string, 7> kWeek = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sa
 class Simulation {
 public:
     // Constructor / Destructor
-    Simulation(int sim_id, double vacc_rate);
+    Simulation(int sim_id, double vacc_rate, int sick_grade);
     ~Simulation()=default;
 
     // Critical simulation information
     int sim_id;
     double vacc_rate;
+    int sick_grade;
 
     // Classroom management
     std::map<std::string, std::array<std::vector<Agent*>, 5>> classrooms;
