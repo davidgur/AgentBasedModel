@@ -31,20 +31,18 @@
 int main(int argc, char *argv[]) {
 	int num_of_simulations_per_rate = std::stoi(argv[1]);
 	int sick_grade = std::stoi(argv[2]);
+	int num_of_vacc_rates = argc - 3;
 
-	std::cout << argv[0] << std::endl;
-	std::cout << argv[1] << std::endl;
-	std::cout << argv[2] << std::endl;
-	std::cout << argv[3] << std::endl;
-
-	int num_of_vacc_rates = argc - 1;
+	std::cout << "Num of sims: " << num_of_simulations_per_rate << std::endl;
+	std::cout << "Sick Grade: " << sick_grade << std::endl;
+	std::cout << "Num of vacc rates:" << num_of_vacc_rates << std::endl;
 
 	std::vector<double> vacc_rates(num_of_vacc_rates);
 
 	// Add all vaccination rates to the vector
 	int vacc_rate_arg_count;
 	for (vacc_rate_arg_count = 0; vacc_rate_arg_count < num_of_vacc_rates; vacc_rate_arg_count++)
-		vacc_rates[vacc_rate_arg_count] = std::stod(argv[2 + vacc_rate_arg_count]);
+		vacc_rates[vacc_rate_arg_count] = std::stod(argv[3 + vacc_rate_arg_count]);
 
 	// Every vaccination rate has some number of simulations.
 	// Here, we iterate over all of the different vaccination
