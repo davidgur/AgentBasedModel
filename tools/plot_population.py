@@ -1,97 +1,135 @@
-"""
-@file plot_population.py
+# Creates an average plot for a given folder
+# based on the population sizes at any given
+# time point.
 
-@brief Utility to plot output file of simulation
+# David Gurevich
+# david (at) gurevich (dot) ca
 
-@author David Gurevich
-Contact: david(at)gurevich.ca
-"""
-
-import matplotlib as mpl
-import matplotlib.pyplot as plt
-import numpy as np
+import os
+import sys
+import itertools
 import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
 
-# Get all csv values and organize them
-population_df = pd.read_csv('population_sizes.csv', delimiter=',')
+from glob import glob
+from scipy.ndimage.filters import gaussian_filter1d as gauss
+from matplotlib.lines import Line2D
 
-G9S = population_df['G9S'].tolist()
-G9V = population_df['G9V'].tolist()
-G9E = population_df['G9E'].tolist()
-G9I = population_df['G9I'].tolist()
-G9R = population_df['G9R'].tolist()
+# (1) Identity all population files
+population_files = {}
+folders = glob(sys.argv[1])
 
-G10S = population_df['G10S'].tolist()
-G10V = population_df['G10V'].tolist()
-G10E = population_df['G10E'].tolist()
-G10I = population_df['G10I'].tolist()
-G10R = population_df['G10R'].tolist()
+for folder in folders:
+    population_files[folder[:-1]] = []
 
-G11S = population_df['G11S'].tolist()
-G11V = population_df['G11V'].tolist()
-G11E = population_df['G11E'].tolist()
-G11I = population_df['G11I'].tolist()
-G11R = population_df['G11R'].tolist()
+    for i, (par_dir, _, _) in enumerate(os.walk(os.getcwd() + '/' + folder)):
+        if i != 0:
+            population_files[folder[:-1]].append(par_dir + '/population_sizes.csv')
 
-G12S = population_df['G12S'].tolist()
-G12V = population_df['G12V'].tolist()
-G12E = population_df['G12E'].tolist()
-G12I = population_df['G12I'].tolist()
-G12R = population_df['G12R'].tolist()
+# (2) Extract data from all population files
+by_grade_data = {9: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
+                10: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
+                11: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
+                12: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}}
 
-G9_SVEIR = [G9S, G9V, G9E, G9I, G9R]
-G10_SVEIR = [G10S, G10V, G10E, G10I, G10R]
-G11_SVEIR = [G11S, G11V, G11E, G11I, G11R]
-G12_SVEIR = [G12S, G12V, G12E, G12I, G12R]
+for _, population_file_list in population_files.items():
+    for population_file in population_file_list:
+        data = pd.read_csv(population_file)
 
-vacc_rate = 100 * (G12V[0] / (G12S[0] + G12V[0] + G12E[0] + G12I[0] + G12R[0]))
-num_of_days = len(G12R) * 15 // (24 * 60)
-x_axis = np.linspace(0, num_of_days, len(G12R))
-# Plotting the data
+        by_grade_data[9]['S'].append(data['G9S'])
+        by_grade_data[9]['V'].append(data['G9V'])
+        by_grade_data[9]['E'].append(data['G9E'])
+        by_grade_data[9]['I'].append(data['G9I'])
+        by_grade_data[9]['R'].append(data['G9R'])
+
+        by_grade_data[10]['S'].append(data['G10S'])
+        by_grade_data[10]['V'].append(data['G10V'])
+        by_grade_data[10]['E'].append(data['G10E'])
+        by_grade_data[10]['I'].append(data['G10I'])
+        by_grade_data[10]['R'].append(data['G10R'])
+
+        by_grade_data[11]['S'].append(data['G11S'])
+        by_grade_data[11]['V'].append(data['G11V'])
+        by_grade_data[11]['E'].append(data['G11E'])
+        by_grade_data[11]['I'].append(data['G11I'])
+        by_grade_data[11]['R'].append(data['G11R'])
+
+        by_grade_data[12]['S'].append(data['G12S'])
+        by_grade_data[12]['V'].append(data['G12V'])
+        by_grade_data[12]['E'].append(data['G12E'])
+        by_grade_data[12]['I'].append(data['G12I'])
+        by_grade_data[12]['R'].append(data['G12R'])
+
+# (3) Plotting
+vacc_rate = 100 * (by_grade_data[9]['V'][0][0] / (by_grade_data[9]['S'][0][0] + by_grade_data[9]['V'][0][0] + 1))
+a = 0.02 # Alpha
+
 fig = plt.figure()
-
-grade9_ax = fig.add_subplot(221)
+grade9_ax  = fig.add_subplot(221)
 grade10_ax = fig.add_subplot(222)
 grade11_ax = fig.add_subplot(223)
 grade12_ax = fig.add_subplot(224)
 
-for data in G9_SVEIR:
-    grade9_ax.plot(x_axis, np.array(data))
-    grade9_ax.legend(['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'], loc=7)
+subplots = [grade9_ax, grade10_ax, grade11_ax, grade12_ax]
 
-for data in G10_SVEIR:
-    grade10_ax.plot(x_axis, np.array(data))
-    grade10_ax.legend(['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'], loc=7)
+for grade in range(9, 13):
+    for data in by_grade_data[grade]['S']: 
+        num_of_days = len(data) * 15 // (24 * 60)
+        x_axis = np.linspace(0, num_of_days, len(data))
+        subplots[grade - 9].plot(x_axis, data, alpha=a, color='b')
+    for data in by_grade_data[grade]['V']:
+        num_of_days = len(data) * 15 // (24 * 60)
+        x_axis = np.linspace(0, num_of_days, len(data))
+        subplots[grade - 9].plot(x_axis, data, alpha=a, color='r')
+    for data in by_grade_data[grade]['E']:
+        num_of_days = len(data) * 15 // (24 * 60)
+        x_axis = np.linspace(0, num_of_days, len(data))
+        subplots[grade - 9].plot(x_axis, data, alpha=a, color='y')
+    for data in by_grade_data[grade]['I']:
+        num_of_days = len(data) * 15 // (24 * 60)
+        x_axis = np.linspace(0, num_of_days, len(data))
+        subplots[grade - 9].plot(x_axis, data, alpha=a, color='m')
+    for data in by_grade_data[grade]['R']:
+        num_of_days = len(data) * 15 // (24 * 60)
+        x_axis = np.linspace(0, num_of_days, len(data))
+        subplots[grade - 9].plot(x_axis, data, alpha=a, color='g')
+    
+    sigma = 4
 
-for data in G11_SVEIR:
-    grade11_ax.plot(x_axis, np.array(data))
-    grade11_ax.legend(['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'], loc=7)
+    avg_last_s = np.mean([list(by_grade_data[grade]['S'][x])[-1] for x in range(len(by_grade_data[grade]['S']))])
+    avg_last_v = np.mean([list(by_grade_data[grade]['V'][x])[-1] for x in range(len(by_grade_data[grade]['V']))])
+    avg_last_e = np.mean([list(by_grade_data[grade]['E'][x])[-1] for x in range(len(by_grade_data[grade]['E']))])
+    avg_last_i = np.mean([list(by_grade_data[grade]['I'][x])[-1] for x in range(len(by_grade_data[grade]['I']))])
+    avg_last_r = np.mean([list(by_grade_data[grade]['R'][x])[-1] for x in range(len(by_grade_data[grade]['R']))])
 
-for data in G12_SVEIR:
-    grade12_ax.plot(x_axis, np.array(data))
-    grade12_ax.legend(['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'], loc=7)
+    avg_s = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['S'], fillvalue=avg_last_s)]
+    avg_v = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['V'], fillvalue=avg_last_v)]
+    avg_e = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['E'], fillvalue=avg_last_e)]
+    avg_i = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['I'], fillvalue=avg_last_i)]
+    avg_r = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['R'], fillvalue=avg_last_r)]
 
-grade9_ax.set_ylabel("# of people")
-grade10_ax.set_ylabel("# of people")
-grade11_ax.set_ylabel("# of people")
-grade12_ax.set_ylabel("# of people")
+    num_of_days = max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]) * 15 // (24 * 60)
+    x_axis = np.linspace(0, num_of_days, max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]))
 
-grade9_ax.set_xlabel("Time (days)")
-grade10_ax.set_xlabel("Time (days)")
-grade11_ax.set_xlabel("Time (days)")
-grade12_ax.set_xlabel("Time (days)")
+    subplots[grade - 9].plot(x_axis, avg_s, color='b')
+    subplots[grade - 9].plot(x_axis, avg_v, color='r')
+    subplots[grade - 9].plot(x_axis, avg_e, color='y')
+    subplots[grade - 9].plot(x_axis, avg_i, color='m')
+    subplots[grade - 9].plot(x_axis, avg_r, color='g')
 
-grade9_ax.set_title("Grade 9")
-grade10_ax.set_title("Grade 10")
-grade11_ax.set_title("Grade 11")
-grade12_ax.set_title("Grade 12")
+    legend_lines = [Line2D([0], [0], color='b'),
+                    Line2D([0], [0], color='r'),
+                    Line2D([0], [0], color='y'),
+                    Line2D([0], [0], color='m'),
+                    Line2D([0], [0], color='g')]
+    subplots[grade - 9].legend(legend_lines, ['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'])
+
+    subplots[grade - 9].set_ylabel('# of people')
+    subplots[grade - 9].set_xlabel('Time (days)')
+    subplots[grade - 9].set_title('Grade ' + str(grade))
 
 fig.suptitle(
-    'Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(
-        round(vacc_rate, 2)) + '%)')
-mpl.rcParams['figure.figsize'] = [10.0, 8.0]
-mpl.rcParams['figure.dpi'] = 100
-mpl.rcParams['savefig.dpi'] = 120
-mpl.rcParams['image.cmap'] = 'jet'
-
+    'Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(round(vacc_rate, 2)) + '%)')
+    
 plt.show()
