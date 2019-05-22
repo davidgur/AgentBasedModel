@@ -26,15 +26,23 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#ifndef AGENTBASEDMODEL_CONFIGURE_AGENTS_HH
-#define AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH
+#include "../include/classroom.hh"
 
-#include "agent.hh"
-#include "random_element.hh"
+Classroom::Classroom(int id, int grade, int period) {
+    this->id = id;
+    this->grade = grade;
+    this->period = period;
+}
 
-const int kAverageClassroomSize = 21;
+int Classroom::population() {
+    return this->classroom_population.size();
+}
 
-void assign_student_timetables(std::vector<Agent> &agent_vector, int grade);
-void assign_lunch_friends(std::vector<Agent> &agent_vector, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms);
+void Classroom::add_to_class(Agent* new_agent) {
+    if (new_agent->grade == this->grade)
+        this->classroom_population.push_back(new_agent);
+}
 
-#endif // AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH
+std::string Classroom::get_name() {
+    return "C" + std::to_string(this->grade) + "_" + std::to_string(this->period) + "_" + std::to_string(this->id);
+}

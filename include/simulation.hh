@@ -71,7 +71,7 @@ const double kFriendsInteractionProbability = 2 / 20.0; // Ancedotal
 const double kClassInteractionProbability = 3.0 / 75.0; // Anecdotal
 
 // Washroom
-const double kConcentrationDecayRate = 0.62578; // NEED TO UPDATE THIS
+const double kConcentrationDecayRate = 0.8421; // e^(-2.2 * 5 / 64)
 
 // ODE Mode
 const bool kODEMode = false;

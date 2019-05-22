@@ -46,7 +46,7 @@ const double kTransmissionRate = 0.91; // [2]
 const double kWashroomInfectionRate = kTransmissionRate;
 const double kAverageWashroomTime = 2.2; // // See proofs
 const double kWashroomProbability = 0.00047; // See proofs
-const double kWashroomConcentrationIncrease = kAverageWashroomTime * 144; // [3]
+const double kWashroomConcentrationIncrease = 28.728; // [3]
 const double kPulmonaryVentilation = 0.00566; // [3]
 
 const std::string kLunchVar = "LUNCH";

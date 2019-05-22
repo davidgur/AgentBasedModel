@@ -82,13 +82,6 @@ void Agent::generate_lunch_friends(class_map& classrooms) {
             agent->lunch_friends.push_back(this);
         }
     }
-
-    // If the number of lunch friends is less than some threshold (kMinLunchFriends), get some random lunch people
-    for (int i = 0; i < kMinLunchFriends; i++) {
-        auto agent = *random_element(classrooms[kLunchVar][this->lunch_period].begin(), classrooms[kLunchVar][this->lunch_period].end());
-        this->lunch_friends.push_back(agent);
-        agent->lunch_friends.push_back(this);
-    }
 }
 
 void Agent::individual_disease_progression() {

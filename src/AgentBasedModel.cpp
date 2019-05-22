@@ -29,7 +29,8 @@
 #include "../include/simulation.hh"
 
 int main(int argc, char *argv[]) {
-	int num_of_simulations_per_rate = std::stoi(argv[1]);
+	// ./AgentBasedModel [NUM OF SIMULATIONS] [STARTING GRADE] [VACCINATION RATES]
+	int num_of_simulations_per_rate = std::stoi(argv[1]);	
 	int sick_grade = std::stoi(argv[2]);
 	int num_of_vacc_rates = argc - 3;
 

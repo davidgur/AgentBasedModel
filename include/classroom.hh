@@ -26,15 +26,28 @@
  * Author: david@gurevich.ca (David Gurevich)
  */
 
-#ifndef AGENTBASEDMODEL_CONFIGURE_AGENTS_HH
-#define AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH
+#ifndef AGENTBASEDMODEL_INCLUDE_CLASSROOM_HH
+#define AGENTBASEDMODEL_INCLUDE_CLASSROOM_HH
 
 #include "agent.hh"
-#include "random_element.hh"
 
-const int kAverageClassroomSize = 21;
+class Classroom {
+  public:
+    // Constructor / Destructor
+    Classroom(int id, int grade, int period);
+    ~Classroom()=default;
 
-void assign_student_timetables(std::vector<Agent> &agent_vector, int grade);
-void assign_lunch_friends(std::vector<Agent> &agent_vector, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms);
+    // Important info
+    int id;
+    int grade;
+    int period;
 
-#endif // AGENTBASEDMODEL_CONFIUGRE_AGENTS_HH
+    std::vector<Agent*> classroom_population;
+
+    // Functions
+    int population();
+    void add_to_class(Agent* new_agent);
+    std::string get_name();
+};
+
+#endif // AGENTBASEDMODEL_INCLUDE_CLASSROOM_HH
