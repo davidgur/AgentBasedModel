@@ -28,6 +28,7 @@ R0_data = []
 for _, r0_file_list in r0_files.items():
     for r0_file in r0_file_list:
         data = pd.read_csv(r0_file)
+        data.sort_values(by='SECONDARY_INFECTIONS') 
         R0_data.append(data['SECONDARY_INFECTIONS'].head())
 
 # Print average
