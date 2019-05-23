@@ -10,6 +10,7 @@ import os
 import sys
 import pandas as pd
 import numpy as np
+import pickle as pl
 import matplotlib.pyplot as plt
 
 import itertools
@@ -45,9 +46,10 @@ for data in infected_data:
 # Get the "average" at home plot
 avg_data = savgol_filter([np.nanmedian(data_at_y) for data_at_y in itertools.zip_longest(*infected_data, fillvalue=0)], 89, 3)
 plt.plot(np.linspace(0, len(avg_data) * 15 // (24*60), len(avg_data)), avg_data)
-
-plt.title("Number of people infected with measles due to measles outbreak")
 plt.xlabel("Time (days)")
 plt.ylabel("# of people")
 
-plt.show()
+fig = plt.gcf()
+
+# Pickle
+pl.dump(fig, open(sys.argv[2], 'wb+'))

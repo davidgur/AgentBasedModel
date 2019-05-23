@@ -8,6 +8,7 @@
 
 import os
 import sys
+import pickle as pl
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -39,15 +40,18 @@ for _, population_file_list in population_files.items():
             at_home_data.append([sum(x) for x in zip(data['G9A'], data['G10A'], data['G11A'], data['G12A'])])
 
 # Plot the at_home_data with low opacity
+fig = plt.figure(figsize=(18.5, 10.5))
+ax = fig.gca()
+
 for data in at_home_data:
-    plt.plot(np.linspace(0, len(data) * 15 // (24 * 60), len(data)), data, alpha=0.1)
+    ax.plot(np.linspace(0, len(data) * 15 // (24 * 60), len(data)), data, alpha=0.1)
 
 # Get the "average" at home plot
 avg_data = savgol_filter([np.nanmedian(data_at_y) for data_at_y in itertools.zip_longest(*at_home_data, fillvalue=0)], 89, 3)
-plt.plot(np.linspace(0, len(avg_data) * 15 // (24*60), len(avg_data)), avg_data)
+ax.plot(np.linspace(0, len(avg_data) * 15 // (24*60), len(avg_data)), avg_data)
 
-plt.title("Number of people absent from school due to measles infection")
 plt.xlabel("Time (days)")
 plt.ylabel("# of people")
 
-plt.show()
+# Pickle
+pl.dump(fig, open(sys.argv[2], 'wb+'))

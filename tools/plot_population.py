@@ -9,6 +9,7 @@ import os
 import sys
 import itertools
 import pandas as pd
+import pickle as pl
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -65,7 +66,7 @@ for _, population_file_list in population_files.items():
 vacc_rate = 100 * (by_grade_data[9]['V'][0][0] / (by_grade_data[9]['S'][0][0] + by_grade_data[9]['V'][0][0] + 1))
 a = 0.02 # Alpha
 
-fig = plt.figure()
+fig = plt.figure(figsize=(20,10), dpi=100)
 grade9_ax  = fig.add_subplot(221)
 grade10_ax = fig.add_subplot(222)
 grade11_ax = fig.add_subplot(223)
@@ -131,5 +132,7 @@ for grade in range(9, 13):
 
 fig.suptitle(
     'Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(round(vacc_rate, 2)) + '%)')
-    
-plt.show()
+
+
+# Pickle
+pl.dump(fig, open(sys.argv[2], 'wb+'))
