@@ -29,57 +29,57 @@
 #include "../include/simulation.hh"
 
 int main(int argc, char *argv[]) {
-	// ./AgentBasedModel [NUM OF SIMULATIONS] [STARTING GRADE] [VACCINATION RATES]
-	int num_of_simulations_per_rate = std::stoi(argv[1]);	
-	int sick_grade = std::stoi(argv[2]);
-	int num_of_vacc_rates = argc - 3;
+    // ./AgentBasedModel [NUM OF SIMULATIONS] [STARTING GRADE] [VACCINATION RATES]
+    int num_of_simulations_per_rate = std::stoi(argv[1]);	
+    int sick_grade = std::stoi(argv[2]);
+    int num_of_vacc_rates = argc - 3;
 
-	std::vector<double> vacc_rates(num_of_vacc_rates);
+    std::vector<double> vacc_rates(num_of_vacc_rates);
 
-	// Add all vaccination rates to the vector
-	int vacc_rate_arg_count;
-	for (vacc_rate_arg_count = 0; vacc_rate_arg_count < num_of_vacc_rates; vacc_rate_arg_count++)
-		vacc_rates[vacc_rate_arg_count] = std::stod(argv[3 + vacc_rate_arg_count]);
+    // Add all vaccination rates to the vector
+    int vacc_rate_arg_count;
+    for (vacc_rate_arg_count = 0; vacc_rate_arg_count < num_of_vacc_rates; vacc_rate_arg_count++)
+        vacc_rates[vacc_rate_arg_count] = std::stod(argv[3 + vacc_rate_arg_count]);
 
-	// Every vaccination rate has some number of simulations.
-	// Here, we iterate over all of the different vaccination
-	// rates, and then we will run independent simulations
-	// inside this loop.
-	for (auto &vacc_rate : vacc_rates) {
-		std::vector<std::thread> simulation_threads;
-		std::vector<Simulation *> simulation_objects;
+    // Every vaccination rate has some number of simulations.
+    // Here, we iterate over all of the different vaccination
+    // rates, and then we will run independent simulations
+    // inside this loop.
+    for (auto &vacc_rate : vacc_rates) {
+        std::vector<std::thread> simulation_threads;
+        std::vector<Simulation *> simulation_objects;
 
-		// Remove any existing data.
-		static_cast<void>(system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str()));
+        // Remove any existing data.
+        static_cast<void>(system(("rm -rf export/SIM_" + std::to_string(vacc_rate)).c_str()));
 
-		// Create new directory for data.
-		mkdir(("export/SIM_" + std::to_string(vacc_rate)).c_str(), 0777);
+        // Create new directory for data.
+        mkdir(("export/SIM_" + std::to_string(vacc_rate)).c_str(), 0777);
 
-		// Message to indicate new simulation
-		std::cout << "===============" << std::endl;
-		std::cout << "Starting " << num_of_simulations_per_rate << " simulations with "
-		          << vacc_rate << " vaccination rate." << std::endl;
-		std::cout << "===============" << std::endl;
+        // Message to indicate new simulation
+        std::cout << "===============" << std::endl;
+        std::cout << "Starting " << num_of_simulations_per_rate << " simulations with "
+                  << vacc_rate << " vaccination rate." << std::endl;
+        std::cout << "===============" << std::endl;
 
-		// Start making threads.
-		for (int sim_id = 1; sim_id <= num_of_simulations_per_rate; sim_id++) {
-			simulation_objects.push_back(new Simulation(sim_id, vacc_rate, sick_grade));
-		}
+        // Start making threads.
+        for (int sim_id = 1; sim_id <= num_of_simulations_per_rate; sim_id++) {
+            simulation_objects.push_back(new Simulation(sim_id, vacc_rate, sick_grade));
+        }
 
-		for (auto &simulation : simulation_objects) {
-			simulation_threads.push_back(simulation->start_simulation_thread());
-		}
+        for (auto &simulation : simulation_objects) {
+            simulation_threads.push_back(simulation->start_simulation_thread());
+        }
 
-		// Join all threads before proceeding with next "job"
-		for (auto &thread : simulation_threads)
-			thread.join();
+        // Join all threads before proceeding with next "job"
+        for (auto &thread : simulation_threads)
+            thread.join();
 
-		for (auto &simulation : simulation_objects)
-			delete simulation;
-		// Clear the vector
-		simulation_objects.clear();
-		simulation_threads.clear();
-	}
+        for (auto &simulation : simulation_objects)
+            delete simulation;
+        // Clear the vector
+        simulation_objects.clear();
+        simulation_threads.clear();
+    }
 
-	return 0;
+    return 0;
 }

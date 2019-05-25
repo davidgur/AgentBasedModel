@@ -32,7 +32,7 @@
 Simulation::Simulation(int sim_id, double vacc_rate, int sick_grade) {
     this->sim_id = sim_id;
     this->vacc_rate = vacc_rate;
-	this->sick_grade = sick_grade;
+    this->sick_grade = sick_grade;
     this->export_folder = "export/SIM_" + std::to_string(this->vacc_rate) + "/" + std::to_string(this->sim_id) + "/";
 
     this->day_counter = 0;
@@ -107,11 +107,11 @@ void Simulation::run_simulation() {
         // Things to do every 15 minutes:
         if (this->minute_counter % 15 == 0) {
             this->print_population_sizes();
-		}
+        }
         
         // Things to do every day:
         if (this->minute_counter == kMinutesPerDay) {
-		    this->day_counter++;
+            this->day_counter++;
             this->minute_counter = 0;
             
             this->clean_washrooms();
@@ -123,10 +123,10 @@ void Simulation::run_simulation() {
             this->last_day = std::chrono::high_resolution_clock::now();
         }
     }
-	this->print_secondary_infections();
+    this->print_secondary_infections();
 
     this->population_out.close();
-	this->secondary_infection_out.close();
+    this->secondary_infection_out.close();
     std::cout << "Simulation " << this->sim_id << " completed successfully!\n";
 }
 
@@ -136,7 +136,7 @@ void Simulation::initialize_simulation() {
 
     mkdir(this->export_folder.c_str(), 0777);
     this->population_out.open(this->export_folder + "population_sizes.csv", std::ios::app);
-	this->secondary_infection_out.open(this->export_folder + "secondary_infections.csv", std::ios::app);
+    this->secondary_infection_out.open(this->export_folder + "secondary_infections.csv", std::ios::app);
     this->prep_output_file();
 
     this->populate_agent_vector();
@@ -146,14 +146,14 @@ void Simulation::initialize_simulation() {
     watts_strogatz_in_vector(this->grade11_agents);
     watts_strogatz_in_vector(this->grade12_agents);
 
-	random_connections_between_grades(this->grade9_agents, this->grade10_agents);
-	random_connections_between_grades(this->grade10_agents, this->grade11_agents);
-	random_connections_between_grades(this->grade11_agents, this->grade12_agents);
+    random_connections_between_grades(this->grade9_agents, this->grade10_agents);
+    random_connections_between_grades(this->grade10_agents, this->grade11_agents);
+    random_connections_between_grades(this->grade11_agents, this->grade12_agents);
 
     assign_student_timetables(this->grade9_agents, 0);
-	assign_student_timetables(this->grade10_agents, 1);
-	assign_student_timetables(this->grade11_agents, 2);
-	assign_student_timetables(this->grade12_agents, 3);
+    assign_student_timetables(this->grade10_agents, 1);
+    assign_student_timetables(this->grade11_agents, 2);
+    assign_student_timetables(this->grade12_agents, 3);
 
     this->determine_classroom_population();
 
@@ -165,10 +165,10 @@ void Simulation::initialize_simulation() {
     this->create_vaccinated();
     this->pick_random_sick();
 
-	this->export_agent_data(this->grade9_agents, "grade9.txt");
-	this->export_agent_data(this->grade10_agents, "grade10.txt");
-	this->export_agent_data(this->grade11_agents, "grade11.txt");
-	this->export_agent_data(this->grade12_agents, "grade12.txt");
+    this->export_agent_data(this->grade9_agents, "grade9.txt");
+    this->export_agent_data(this->grade10_agents, "grade10.txt");
+    this->export_agent_data(this->grade11_agents, "grade11.txt");
+    this->export_agent_data(this->grade12_agents, "grade12.txt");
 }
 
 void Simulation::populate_agent_vector() {
@@ -236,7 +236,7 @@ void Simulation::individual_disease_progression(std::vector<Agent>& agent_vector
 }
 
 void Simulation::interaction_among_friends(std::vector<Agent>& agent_vector) {
-	int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
+    int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
 
     for (auto& agent : agent_vector) {
         if (this->friends_distribution(mt) and !agent.at_home)
@@ -251,11 +251,11 @@ void Simulation::process_washroom_needs(std::vector<Agent>& agent_vector) {
 }
 
 void Simulation::resolve_classroom(std::vector<Agent>& agent_vector) {
-	int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
+    int current_time = this->minute_counter + (this->day_counter * kMinutesPerDay);
 
     for (auto& agent : agent_vector) {
         if (this->classroom_distribution(mt) and !agent.at_home)
-        	agent.resolve_classroom(this->current_period, this->classrooms, current_time);
+            agent.resolve_classroom(this->current_period, this->classrooms, current_time);
     }
 }
 
@@ -276,181 +276,181 @@ void Simulation::prep_output_file() {
     out << "TIME,G9S,G9V,G9E,G9I,G9A,G9R,G10S,G10V,G10E,G10I,G10A,G10R,G11S,G11V,G11E,G11I,G11A,G11R,G12S,G12V,G12E,G12I,G12A,G12R\n";
     out.close();
 
-	out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
-	out << "AGENT_ID,TIME_OF_INFECTION,SECONDARY_INFECTIONS\n"; 
-	out.close();
+    out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
+    out << "AGENT_ID,TIME_OF_INFECTION,SECONDARY_INFECTIONS\n"; 
+    out.close();
 }
 
 void Simulation::print_population_sizes() {
-	std::vector<int> grade9_population_sizes = get_population_sizes(this->grade9_agents);
-	std::vector<int> grade10_population_sizes = get_population_sizes(this->grade10_agents);
-	std::vector<int> grade11_population_sizes = get_population_sizes(this->grade11_agents);
-	std::vector<int> grade12_population_sizes = get_population_sizes(this->grade12_agents); 
+    std::vector<int> grade9_population_sizes = get_population_sizes(this->grade9_agents);
+    std::vector<int> grade10_population_sizes = get_population_sizes(this->grade10_agents);
+    std::vector<int> grade11_population_sizes = get_population_sizes(this->grade11_agents);
+    std::vector<int> grade12_population_sizes = get_population_sizes(this->grade12_agents); 
 
     this->population_out << (this->day_counter * kMinutesPerDay) + this->minute_counter << ",";
 
-	// Grade 9
-	this->population_out << grade9_population_sizes[0] << "," << // S
-	                     grade9_population_sizes[1] << "," <<	 // V
-	                     grade9_population_sizes[2] << "," <<	 // E
-	                     grade9_population_sizes[3] << "," <<	 // I
-	                     grade9_population_sizes[4] << "," <<	 // A
+    // Grade 9
+    this->population_out << grade9_population_sizes[0] << "," << // S
+                         grade9_population_sizes[1] << "," <<	 // V
+                         grade9_population_sizes[2] << "," <<	 // E
+                         grade9_population_sizes[3] << "," <<	 // I
+                         grade9_population_sizes[4] << "," <<	 // A
                          grade9_population_sizes[5] << ",";		 // R
 
-	// Grade 10
-	this->population_out << grade10_population_sizes[0] << "," <<
-	                     grade10_population_sizes[1] << "," <<
-	                     grade10_population_sizes[2] << "," <<
-	                     grade10_population_sizes[3] << "," <<
-	                     grade10_population_sizes[4] << "," <<
+    // Grade 10
+    this->population_out << grade10_population_sizes[0] << "," <<
+                         grade10_population_sizes[1] << "," <<
+                         grade10_population_sizes[2] << "," <<
+                         grade10_population_sizes[3] << "," <<
+                         grade10_population_sizes[4] << "," <<
                          grade10_population_sizes[5] << ",";
 
-	// Grade 11
-	this->population_out << grade11_population_sizes[0] << "," <<
-	                     grade11_population_sizes[1] << "," <<
-	                     grade11_population_sizes[2] << "," <<
-	                     grade11_population_sizes[3] << "," <<
-	                     grade11_population_sizes[4] << "," <<
+    // Grade 11
+    this->population_out << grade11_population_sizes[0] << "," <<
+                         grade11_population_sizes[1] << "," <<
+                         grade11_population_sizes[2] << "," <<
+                         grade11_population_sizes[3] << "," <<
+                         grade11_population_sizes[4] << "," <<
                          grade11_population_sizes[5] << ",";
 
-	// Grade 12
-	this->population_out << grade12_population_sizes[0] << "," <<
-	                     grade12_population_sizes[1] << "," <<
-	                     grade12_population_sizes[2] << "," <<
-	                     grade12_population_sizes[3] << "," <<
+    // Grade 12
+    this->population_out << grade12_population_sizes[0] << "," <<
+                         grade12_population_sizes[1] << "," <<
+                         grade12_population_sizes[2] << "," <<
+                         grade12_population_sizes[3] << "," <<
                          grade12_population_sizes[4] << "," <<
-	                     grade12_population_sizes[5] << "\n";
+                         grade12_population_sizes[5] << "\n";
 }
 
 void Simulation::print_secondary_infections() {
-	struct agent_infection_info {
-		std::string agent_id;
-		int time_of_infection;
-		int secondary_infections;
-	};
+    struct agent_infection_info {
+        std::string agent_id;
+        int time_of_infection;
+        int secondary_infections;
+    };
 
-	std::vector<agent_infection_info> secondary_infections;
+    std::vector<agent_infection_info> secondary_infections;
 
-	// (1) Fill vector with values
-	for (auto& agent : grade9_agents) {
-		secondary_infections.push_back((agent_infection_info) {
-			std::to_string(agent.grade) + std::to_string(agent.id),
-			agent.time_of_infection,
-			agent.secondary_infections
-		});
-	}
+    // (1) Fill vector with values
+    for (auto& agent : grade9_agents) {
+        secondary_infections.push_back((agent_infection_info) {
+            std::to_string(agent.grade) + std::to_string(agent.id),
+            agent.time_of_infection,
+            agent.secondary_infections
+        });
+    }
 
-	for (auto& agent : grade10_agents) {
-		secondary_infections.push_back((agent_infection_info) {
-			std::to_string(agent.grade) + std::to_string(agent.id),
-			agent.time_of_infection,
-			agent.secondary_infections
-		});
-	}
+    for (auto& agent : grade10_agents) {
+        secondary_infections.push_back((agent_infection_info) {
+            std::to_string(agent.grade) + std::to_string(agent.id),
+            agent.time_of_infection,
+            agent.secondary_infections
+        });
+    }
 
-	for (auto& agent : grade11_agents) {
-		secondary_infections.push_back((agent_infection_info) {
-			std::to_string(agent.grade) + std::to_string(agent.id),
-			agent.time_of_infection,
-			agent.secondary_infections
-		});
-	}
+    for (auto& agent : grade11_agents) {
+        secondary_infections.push_back((agent_infection_info) {
+            std::to_string(agent.grade) + std::to_string(agent.id),
+            agent.time_of_infection,
+            agent.secondary_infections
+        });
+    }
 
-	for (auto& agent : grade12_agents) {
-		secondary_infections.push_back((agent_infection_info) {
-			std::to_string(agent.grade) + std::to_string(agent.id),
-			agent.time_of_infection,
-			agent.secondary_infections
-		});
-	}
+    for (auto& agent : grade12_agents) {
+        secondary_infections.push_back((agent_infection_info) {
+            std::to_string(agent.grade) + std::to_string(agent.id),
+            agent.time_of_infection,
+            agent.secondary_infections
+        });
+    }
 
-	// (2) Sort the vector based on time of infection
-	auto comp = [] (const agent_infection_info& agent_one, const agent_infection_info& agent_two) {
-		return agent_one.time_of_infection < agent_two.time_of_infection and agent_one.time_of_infection != -1;
-	};
+    // (2) Sort the vector based on time of infection
+    auto comp = [] (const agent_infection_info& agent_one, const agent_infection_info& agent_two) {
+        return agent_one.time_of_infection < agent_two.time_of_infection and agent_one.time_of_infection != -1;
+    };
 
-	std::sort(secondary_infections.begin(), secondary_infections.end(), comp);
+    std::sort(secondary_infections.begin(), secondary_infections.end(), comp);
 
-	// (3) Print the vector
-	for (auto& entry : secondary_infections) {
-		if (entry.time_of_infection != -1) {
-			secondary_infection_out << entry.agent_id << "," << entry.time_of_infection << "," << entry.secondary_infections << "\n";
-		}
-	}
+    // (3) Print the vector
+    for (auto& entry : secondary_infections) {
+        if (entry.time_of_infection != -1) {
+            secondary_infection_out << entry.agent_id << "," << entry.time_of_infection << "," << entry.secondary_infections << "\n";
+        }
+    }
 }
 
 void Simulation::export_agent_data(std::vector<Agent>& agent_vector, std::string file_name) {
-	std::ofstream export_file;
-	export_file.open(this->export_folder + file_name);
-	for (auto &student : agent_vector) {
-		export_file << "[AGENT " << student.grade << student.id << "]" << "\n";
-		export_file << "\t" << student.p1 << "\n";
-		export_file << "\t" << student.p2 << "\n";
-		export_file << "\t" << student.p3 << "\n";
-		export_file << "\t" << student.p4 << "\n";
-		export_file << "\t" << student.p5 << "\n";
+    std::ofstream export_file;
+    export_file.open(this->export_folder + file_name);
+    for (auto &student : agent_vector) {
+        export_file << "[AGENT " << student.grade << student.id << "]" << "\n";
+        export_file << "\t" << student.p1 << "\n";
+        export_file << "\t" << student.p2 << "\n";
+        export_file << "\t" << student.p3 << "\n";
+        export_file << "\t" << student.p4 << "\n";
+        export_file << "\t" << student.p5 << "\n";
 
-		export_file << "\t->connections" << "\n";
-		for (auto &connection : student.connections) {
-			export_file << "\t" << connection->grade << connection->id << "\n";
-		}
-	}
+        export_file << "\t->connections" << "\n";
+        for (auto &connection : student.connections) {
+            export_file << "\t" << connection->grade << connection->id << "\n";
+        }
+    }
 }
 
 void Simulation::determine_classroom_population() {
-	for (auto &agent : this->grade9_agents) {
-		this->classrooms[agent.p1][0].push_back(&agent);
-		this->classrooms[agent.p2][1].push_back(&agent);
-		this->classrooms[agent.p3][2].push_back(&agent);
-		this->classrooms[agent.p4][3].push_back(&agent);
-		this->classrooms[agent.p5][4].push_back(&agent);
-	}
+    for (auto &agent : this->grade9_agents) {
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
+    }
 
-	for (auto &agent : this->grade10_agents) {
-		this->classrooms[agent.p1][0].push_back(&agent);
-		this->classrooms[agent.p2][1].push_back(&agent);
-		this->classrooms[agent.p3][2].push_back(&agent);
-		this->classrooms[agent.p4][3].push_back(&agent);
-		this->classrooms[agent.p5][4].push_back(&agent);
-	}
+    for (auto &agent : this->grade10_agents) {
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
+    }
 
-	for (auto &agent : this->grade11_agents) {
-		this->classrooms[agent.p1][0].push_back(&agent);
-		this->classrooms[agent.p2][1].push_back(&agent);
-		this->classrooms[agent.p3][2].push_back(&agent);
-		this->classrooms[agent.p4][3].push_back(&agent);
-		this->classrooms[agent.p5][4].push_back(&agent);
-	}
+    for (auto &agent : this->grade11_agents) {
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
+    }
 
-	for (auto &agent : this->grade12_agents) {
-		this->classrooms[agent.p1][0].push_back(&agent);
-		this->classrooms[agent.p2][1].push_back(&agent);
-		this->classrooms[agent.p3][2].push_back(&agent);
-		this->classrooms[agent.p4][3].push_back(&agent);
-		this->classrooms[agent.p5][4].push_back(&agent);
-	}
+    for (auto &agent : this->grade12_agents) {
+        this->classrooms[agent.p1][0].push_back(&agent);
+        this->classrooms[agent.p2][1].push_back(&agent);
+        this->classrooms[agent.p3][2].push_back(&agent);
+        this->classrooms[agent.p4][3].push_back(&agent);
+        this->classrooms[agent.p5][4].push_back(&agent);
+    }
 }
 
 std::vector<int> Simulation::get_population_sizes(std::vector<Agent> &agent_vector) {
-	int susceptible = 0, vaccinated = 0, exposed = 0, infected = 0, at_home = 0, recovered = 0;
+    int susceptible = 0, vaccinated = 0, exposed = 0, infected = 0, at_home = 0, recovered = 0;
 
-	for (auto& agent : agent_vector) {
-		if (agent.susceptible)
-			susceptible++;
-		else if (agent.vaccinated)
-			vaccinated++;
-		else if (agent.exposed)
-			exposed++;
-		else if (agent.infected) {
-			infected++;
-			if (agent.at_home)
-				at_home++;
-		}
-		else if (agent.recovered)
-			recovered++;
-	}
+    for (auto& agent : agent_vector) {
+        if (agent.susceptible)
+            susceptible++;
+        else if (agent.vaccinated)
+            vaccinated++;
+        else if (agent.exposed)
+            exposed++;
+        else if (agent.infected) {
+            infected++;
+            if (agent.at_home)
+                at_home++;
+        }
+        else if (agent.recovered)
+            recovered++;
+    }
 
-	return std::vector<int>{susceptible, vaccinated, exposed, infected, at_home, recovered};
+    return std::vector<int>{susceptible, vaccinated, exposed, infected, at_home, recovered};
 }
 
 // ===========
@@ -458,58 +458,58 @@ std::vector<int> Simulation::get_population_sizes(std::vector<Agent> &agent_vect
 // ===========
 
 void Simulation::create_vaccinated() {
-	int grade9_vacc_population = (int) std::round(kGrade9Population * this->vacc_rate);
-	int grade10_vacc_population = (int) std::round(kGrade10Population * this->vacc_rate);
-	int grade11_vacc_population = (int) std::round(kGrade11Population * this->vacc_rate);
-	int grade12_vacc_population = (int) std::round(kGrade12Population * this->vacc_rate);
+    int grade9_vacc_population = (int) std::round(kGrade9Population * this->vacc_rate);
+    int grade10_vacc_population = (int) std::round(kGrade10Population * this->vacc_rate);
+    int grade11_vacc_population = (int) std::round(kGrade11Population * this->vacc_rate);
+    int grade12_vacc_population = (int) std::round(kGrade12Population * this->vacc_rate);
 
-	// grade 9
-	for (int i = 0; i < grade9_vacc_population; i++) {
-		Agent *student = nullptr;
-		while (true) {
-			student = &(*random_element(grade9_agents.begin(), grade9_agents.end()));
-			if (!student->vaccinated)
-				break;
-		}
-		student->vaccinated = true;
-		student->susceptible = false;
-	}
+    // grade 9
+    for (int i = 0; i < grade9_vacc_population; i++) {
+        Agent *student = nullptr;
+        while (true) {
+            student = &(*random_element(grade9_agents.begin(), grade9_agents.end()));
+            if (!student->vaccinated)
+                break;
+        }
+        student->vaccinated = true;
+        student->susceptible = false;
+    }
 
-	// grade 10
-	for (int i = 0; i < grade10_vacc_population; i++) {
-		Agent *student = nullptr;
-		while (true) {
-			student = &(*random_element(grade10_agents.begin(), grade10_agents.end()));
-			if (!student->vaccinated)
-				break;
-		}
-		student->vaccinated = true;
-		student->susceptible = false;
-	}
+    // grade 10
+    for (int i = 0; i < grade10_vacc_population; i++) {
+        Agent *student = nullptr;
+        while (true) {
+            student = &(*random_element(grade10_agents.begin(), grade10_agents.end()));
+            if (!student->vaccinated)
+                break;
+        }
+        student->vaccinated = true;
+        student->susceptible = false;
+    }
 
-	// grade 11
-	for (int i = 0; i < grade11_vacc_population; i++) {
-		Agent *student = nullptr;
-		while (true) {
-			student = &(*random_element(grade11_agents.begin(), grade11_agents.end()));
-			if (!student->vaccinated)
-				break;
-		}
-		student->vaccinated = true;
-		student->susceptible = false;
-	}
+    // grade 11
+    for (int i = 0; i < grade11_vacc_population; i++) {
+        Agent *student = nullptr;
+        while (true) {
+            student = &(*random_element(grade11_agents.begin(), grade11_agents.end()));
+            if (!student->vaccinated)
+                break;
+        }
+        student->vaccinated = true;
+        student->susceptible = false;
+    }
 
-	// grade 12
-	for (int i = 0; i < grade12_vacc_population; i++) {
-		Agent *student = nullptr;
-		while (true) {
-			student = &(*random_element(grade12_agents.begin(), grade12_agents.end()));
-			if (!student->vaccinated)
-				break;
-		}
-		student->vaccinated = true;
-		student->susceptible = false;
-	}
+    // grade 12
+    for (int i = 0; i < grade12_vacc_population; i++) {
+        Agent *student = nullptr;
+        while (true) {
+            student = &(*random_element(grade12_agents.begin(), grade12_agents.end()));
+            if (!student->vaccinated)
+                break;
+        }
+        student->vaccinated = true;
+        student->susceptible = false;
+    }
 
 }
 
@@ -517,44 +517,44 @@ void Simulation::pick_random_sick() {
     Agent *sick_agent = nullptr;
 
     switch (this->sick_grade) {
-		case 0: sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
-			break;
-		case 1: sick_agent = &(*random_element(this->grade10_agents.begin(), this->grade10_agents.end()));
-			break;
-		case 2: sick_agent = &(*random_element(this->grade11_agents.begin(), this->grade11_agents.end()));
-			break;
-		case 3: sick_agent = &(*random_element(this->grade12_agents.begin(), this->grade12_agents.end()));
-			break;
+        case 0: sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
+            break;
+        case 1: sick_agent = &(*random_element(this->grade10_agents.begin(), this->grade10_agents.end()));
+            break;
+        case 2: sick_agent = &(*random_element(this->grade11_agents.begin(), this->grade11_agents.end()));
+            break;
+        case 3: sick_agent = &(*random_element(this->grade12_agents.begin(), this->grade12_agents.end()));
+            break;
         default: sick_agent = &(*random_element(this->grade9_agents.begin(), this->grade9_agents.end()));
     }
 
     sick_agent->susceptible = false;
-	sick_agent->vaccinated = false;
-	sick_agent->infected = true;
-	sick_agent->time_of_infection = 0;
+    sick_agent->vaccinated = false;
+    sick_agent->infected = true;
+    sick_agent->time_of_infection = 0;
 }
 
 void Simulation::decay_washroom_concentration() {
-	for (auto &washroom : this->school_washrooms) {
-		washroom *= kConcentrationDecayRate;
-	}
+    for (auto &washroom : this->school_washrooms) {
+        washroom *= kConcentrationDecayRate;
+    }
 }
 
 void Simulation::clean_washrooms() {
-	for (auto &washroom : this->school_washrooms) {
-		washroom = 0;
-	}
+    for (auto &washroom : this->school_washrooms) {
+        washroom = 0;
+    }
 }
 
 bool Simulation::check_for_steady() {
     auto not_sick = [](Agent &agent) { return agent.exposed || agent.infected; };
 
-	bool grade9_steady = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(), not_sick) == 0;
+    bool grade9_steady = std::count_if(this->grade9_agents.begin(), this->grade9_agents.end(), not_sick) == 0;
     bool grade10_steady = std::count_if(this->grade10_agents.begin(), this->grade10_agents.end(), not_sick) == 0;
-	bool grade11_steady = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(), not_sick) == 0;
-	bool grade12_steady = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(), not_sick) == 0;
+    bool grade11_steady = std::count_if(this->grade11_agents.begin(), this->grade11_agents.end(), not_sick) == 0;
+    bool grade12_steady = std::count_if(this->grade12_agents.begin(), this->grade12_agents.end(), not_sick) == 0;
 
-	return grade9_steady && grade10_steady && grade11_steady && grade12_steady;
+    return grade9_steady && grade10_steady && grade11_steady && grade12_steady;
 }
 
 // ================
@@ -562,52 +562,52 @@ bool Simulation::check_for_steady() {
 // ================
 
 unsigned short Simulation::determine_day_state() {
-	auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
-	if (between(0, kPreClass))
-		return 0;
-	else if (between(kPreClass, kPeriod1Start))
-		return 1;
-	else if (between(kPeriod1Start, kPeriod1End))
-		return 2;
-	else if (between(kPeriod1End, kPeriod2Start))
-		return 3;
-	else if (between(kPeriod2Start, kPeriod2End))
-		return 2;
-	else if (between(kPeriod2End, kPeriod3Start))
-		return 3;
-	else if (between(kPeriod3Start, kPeriod3End))
-		return 2;
-	else if (between(kPeriod3End, kPeriod4Start))
-		return 3;
-	else if (between(kPeriod4Start, kPeriod4End))
-		return 2;
-	else if (between(kPeriod1End, kPeriod5Start))
-		return 3;
-	else if (between(kPeriod5Start, kPeriod5End))
-		return 2;
-	else if (between(kPeriod5End, kPostClass))
-		return 1;
-	else if (between(kPostClass, kMinutesPerDay))
-		return 0;
-	else
-		return 0;
+    if (between(0, kPreClass))
+        return 0;
+    else if (between(kPreClass, kPeriod1Start))
+        return 1;
+    else if (between(kPeriod1Start, kPeriod1End))
+        return 2;
+    else if (between(kPeriod1End, kPeriod2Start))
+        return 3;
+    else if (between(kPeriod2Start, kPeriod2End))
+        return 2;
+    else if (between(kPeriod2End, kPeriod3Start))
+        return 3;
+    else if (between(kPeriod3Start, kPeriod3End))
+        return 2;
+    else if (between(kPeriod3End, kPeriod4Start))
+        return 3;
+    else if (between(kPeriod4Start, kPeriod4End))
+        return 2;
+    else if (between(kPeriod1End, kPeriod5Start))
+        return 3;
+    else if (between(kPeriod5Start, kPeriod5End))
+        return 2;
+    else if (between(kPeriod5End, kPostClass))
+        return 1;
+    else if (between(kPostClass, kMinutesPerDay))
+        return 0;
+    else
+        return 0;
 }
 
 unsigned short Simulation::determine_period() {
-	auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
+    auto between = [this](int lower, int upper) { return (this->minute_counter - lower) < (upper - lower); };
 
-	if (between(kPeriod1Start, kPeriod1End))
-		return 1;
-	else if (between(kPeriod2Start, kPeriod2End))
-		return 2;
-	else if (between(kPeriod3Start, kPeriod3End))
-		return 3;
-	else if (between(kPeriod4Start, kPeriod4End))
-		return 4;
-	else if (between(kPeriod5Start, kPeriod5End))
-		return 5;
-	else
-		return 0;
+    if (between(kPeriod1Start, kPeriod1End))
+        return 1;
+    else if (between(kPeriod2Start, kPeriod2End))
+        return 2;
+    else if (between(kPeriod3Start, kPeriod3End))
+        return 3;
+    else if (between(kPeriod4Start, kPeriod4End))
+        return 4;
+    else if (between(kPeriod5Start, kPeriod5End))
+        return 5;
+    else
+        return 0;
 }
 

@@ -32,30 +32,30 @@
 #include <random>
 
 void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
-	// How many classrooms do we need?
-	int num_of_classes = agent_vector.size() / kAverageClassroomSize;
+    // How many classrooms do we need?
+    int num_of_classes = agent_vector.size() / kAverageClassroomSize;
 
-	// Make some classes
-	std::vector<std::vector<Classroom>> student_courses(5);
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < num_of_classes; j++) {
-			student_courses[i].push_back(Classroom(j, grade, i));
-		}
-	}
+    // Make some classes
+    std::vector<std::vector<Classroom>> student_courses(5);
+    for (int i = 0; i < 5; i++) {
+        for (int j = 0; j < num_of_classes; j++) {
+            student_courses[i].push_back(Classroom(j, grade, i));
+        }
+    }
     for (auto &student : agent_vector) {
         // Assign the student to some classes
-	    student.p1 = random_element(student_courses[0].begin(), student_courses[0].end())->get_name();
-	    student.p2 = random_element(student_courses[1].begin(), student_courses[1].end())->get_name();
-	    student.p3 = random_element(student_courses[2].begin(), student_courses[2].end())->get_name();
-	    student.p4 = random_element(student_courses[3].begin(), student_courses[3].end())->get_name();
-	    student.p5 = random_element(student_courses[4].begin(), student_courses[4].end())->get_name();
+        student.p1 = random_element(student_courses[0].begin(), student_courses[0].end())->get_name();
+        student.p2 = random_element(student_courses[1].begin(), student_courses[1].end())->get_name();
+        student.p3 = random_element(student_courses[2].begin(), student_courses[2].end())->get_name();
+        student.p4 = random_element(student_courses[3].begin(), student_courses[3].end())->get_name();
+        student.p5 = random_element(student_courses[4].begin(), student_courses[4].end())->get_name();
 
         // Give the student a lunch
         //      If the student is in grade 9 or 11, give them a lunch in P3
-		//		If the student is in grade 10 or 12, give them a lunch in P4
+        //		If the student is in grade 10 or 12, give them a lunch in P4
         int lunch_period;
 
-	    if (grade == 0 or grade == 2)
+        if (grade == 0 or grade == 2)
             lunch_period = 3;
         else
             lunch_period = 4;
@@ -77,6 +77,6 @@ void assign_student_timetables(std::vector<Agent> &agent_vector, int grade) {
 }
 
 void assign_lunch_friends(std::vector<Agent>& agent_vector, std::map<std::string, std::array<std::vector<Agent*>, 5>>& classrooms) {
-	for (auto& agent : agent_vector)
-		agent.generate_lunch_friends(classrooms);
+    for (auto& agent : agent_vector)
+        agent.generate_lunch_friends(classrooms);
 }
