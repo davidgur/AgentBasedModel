@@ -120,7 +120,7 @@ void Agent::individual_disease_progression() {
         this->recovered = true;
         this->infected = false;
     }
-    
+
 }
 
 void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {
@@ -134,7 +134,7 @@ void Agent::process_washroom_needs(std::vector<double>& school_washrooms) {
         bool infect_from_wr = (rand() % 100) < (kWashroomInfectionRate * kPulmonaryVentilation * kAverageWashroomTime * school_washrooms[washroom_destination] * 100);
         if (infect_from_wr and this->susceptible)
             this->get_infected();
-            
+
 
         // If the agent is infected, then they will further infect the washroom
         else if (this->infected) {
@@ -188,7 +188,7 @@ void Agent::interact(Agent& other_agent, int sim_time) {
 
 int Agent::generate_truncated_normal_distribution_value() {
     int return_value = 0;
-    
+
     for (;;) {
         return_value = this->stoch_range(mt);
         if (-kMinutesPerDay <= return_value or return_value <= kMinutesPerDay)
@@ -204,7 +204,7 @@ void Agent::get_infected() {
     this->exposed = true;
     this->infected = false;
     this->recovered = false;
-    
+
     if (this->ode_mode)
         this->exposed_minute_count = stoch_range_ode(mt);
     else

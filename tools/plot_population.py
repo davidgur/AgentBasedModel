@@ -11,6 +11,7 @@ import itertools
 import pandas as pd
 import pickle as pl
 import numpy as np
+import random
 import matplotlib.pyplot as plt
 
 from glob import glob
@@ -64,7 +65,7 @@ for _, population_file_list in population_files.items():
 
 # (3) Plotting
 vacc_rate = 100 * (by_grade_data[9]['V'][0][0] / (by_grade_data[9]['S'][0][0] + by_grade_data[9]['V'][0][0] + 1))
-a = 0.02 # Alpha
+a = 0.1 # Alpha
 
 fig = plt.figure(figsize=(20,10), dpi=100)
 grade9_ax  = fig.add_subplot(221)
@@ -75,34 +76,41 @@ grade12_ax = fig.add_subplot(224)
 subplots = [grade9_ax, grade10_ax, grade11_ax, grade12_ax]
 
 for grade in range(9, 13):
-    for data in by_grade_data[grade]['S']: 
+    # Pick 15 random simulations to pick from:
+    s_selection = random.sample(by_grade_data[grade]['S'], 15)
+    v_selection = random.sample(by_grade_data[grade]['V'], 15)
+    e_selection = random.sample(by_grade_data[grade]['E'], 15)
+    i_selection = random.sample(by_grade_data[grade]['I'], 15)
+    r_selection = random.sample(by_grade_data[grade]['R'], 15)
+
+    for data in s_selection: 
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots[grade - 9].plot(x_axis, data, alpha=a, color='b')
-    for data in by_grade_data[grade]['V']:
+    for data in v_selection:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots[grade - 9].plot(x_axis, data, alpha=a, color='r')
-    for data in by_grade_data[grade]['E']:
+    for data in e_selection:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots[grade - 9].plot(x_axis, data, alpha=a, color='y')
-    for data in by_grade_data[grade]['I']:
+    for data in i_selection:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots[grade - 9].plot(x_axis, data, alpha=a, color='m')
-    for data in by_grade_data[grade]['R']:
+    for data in r_selection:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots[grade - 9].plot(x_axis, data, alpha=a, color='g')
     
     sigma = 4
 
-    avg_last_s = np.mean([list(by_grade_data[grade]['S'][x])[-1] for x in range(len(by_grade_data[grade]['S']))])
-    avg_last_v = np.mean([list(by_grade_data[grade]['V'][x])[-1] for x in range(len(by_grade_data[grade]['V']))])
-    avg_last_e = np.mean([list(by_grade_data[grade]['E'][x])[-1] for x in range(len(by_grade_data[grade]['E']))])
-    avg_last_i = np.mean([list(by_grade_data[grade]['I'][x])[-1] for x in range(len(by_grade_data[grade]['I']))])
-    avg_last_r = np.mean([list(by_grade_data[grade]['R'][x])[-1] for x in range(len(by_grade_data[grade]['R']))])
+    avg_last_s = np.mean([list(s_selection[x])[-1] for x in range(len(s_selection))])
+    avg_last_v = np.mean([list(v_selection[x])[-1] for x in range(len(v_selection))])
+    avg_last_e = np.mean([list(e_selection[x])[-1] for x in range(len(e_selection))])
+    avg_last_i = np.mean([list(i_selection[x])[-1] for x in range(len(i_selection))])
+    avg_last_r = np.mean([list(r_selection[x])[-1] for x in range(len(r_selection))])
 
     avg_s = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['S'], fillvalue=avg_last_s)]
     avg_v = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['V'], fillvalue=avg_last_v)]
