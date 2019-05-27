@@ -11,7 +11,6 @@ import itertools
 import pandas as pd
 import pickle as pl
 import numpy as np
-import random
 import matplotlib.pyplot as plt
 
 from glob import glob
@@ -67,50 +66,72 @@ for _, population_file_list in population_files.items():
 vacc_rate = 100 * (by_grade_data[9]['V'][0][0] / (by_grade_data[9]['S'][0][0] + by_grade_data[9]['V'][0][0] + 1))
 a = 0.1 # Alpha
 
-fig = plt.figure(figsize=(20,10), dpi=100)
-grade9_ax  = fig.add_subplot(221)
-grade10_ax = fig.add_subplot(222)
-grade11_ax = fig.add_subplot(223)
-grade12_ax = fig.add_subplot(224)
+S_fig = plt.figure(figsize=(20, 10), dpi=1000)
+V_fig = plt.figure(figsize=(20, 10), dpi=1000)
+E_fig = plt.figure(figsize=(20, 10), dpi=1000)
+I_fig = plt.figure(figsize=(20, 10), dpi=1000)
+R_fig = plt.figure(figsize=(20, 10), dpi=1000)
 
-subplots = [grade9_ax, grade10_ax, grade11_ax, grade12_ax]
+grade9_ax_s  = S_fig.add_subplot(221)
+grade10_ax_s = S_fig.add_subplot(222)
+grade11_ax_s = S_fig.add_subplot(223)
+grade12_ax_s = S_fig.add_subplot(224)
+
+grade9_ax_v  = V_fig.add_subplot(221)
+grade10_ax_v = V_fig.add_subplot(222)
+grade11_ax_v = V_fig.add_subplot(223)
+grade12_ax_v = V_fig.add_subplot(224)
+
+grade9_ax_e  = E_fig.add_subplot(221)
+grade10_ax_e = E_fig.add_subplot(222)
+grade11_ax_e = E_fig.add_subplot(223)
+grade12_ax_e = E_fig.add_subplot(224)
+
+grade9_ax_i  = I_fig.add_subplot(221)
+grade10_ax_i = I_fig.add_subplot(222)
+grade11_ax_i = I_fig.add_subplot(223)
+grade12_ax_i = I_fig.add_subplot(224)
+
+grade9_ax_r  = R_fig.add_subplot(221)
+grade10_ax_r = R_fig.add_subplot(222)
+grade11_ax_r = R_fig.add_subplot(223)
+grade12_ax_r = R_fig.add_subplot(224)
+
+subplots_s = [grade9_ax_s, grade10_ax_s, grade11_ax_s, grade12_ax_s]
+subplots_v = [grade9_ax_v, grade10_ax_v, grade11_ax_v, grade12_ax_v]
+subplots_e = [grade9_ax_e, grade10_ax_e, grade11_ax_e, grade12_ax_e]
+subplots_i = [grade9_ax_i, grade10_ax_i, grade11_ax_i, grade12_ax_i]
+subplots_r = [grade9_ax_r, grade10_ax_r, grade11_ax_r, grade12_ax_r]
 
 for grade in range(9, 13):
-    # Pick 15 random simulations to pick from:
-    s_selection = random.sample(by_grade_data[grade]['S'], 15)
-    v_selection = random.sample(by_grade_data[grade]['V'], 15)
-    e_selection = random.sample(by_grade_data[grade]['E'], 15)
-    i_selection = random.sample(by_grade_data[grade]['I'], 15)
-    r_selection = random.sample(by_grade_data[grade]['R'], 15)
-
-    for data in s_selection: 
+    for data in by_grade_data[grade]['S']: 
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
-        subplots[grade - 9].plot(x_axis, data, alpha=a, color='b')
-    for data in v_selection:
+        subplots_s[grade - 9].plot(x_axis, data, alpha=a, color='b')
+    for data in by_grade_data[grade]['V']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
-        subplots[grade - 9].plot(x_axis, data, alpha=a, color='r')
-    for data in e_selection:
+        subplots_v[grade - 9].plot(x_axis, data, alpha=a, color='r')
+    for data in by_grade_data[grade]['E']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
-        subplots[grade - 9].plot(x_axis, data, alpha=a, color='y')
-    for data in i_selection:
+        subplots_e[grade - 9].plot(x_axis, data, alpha=a, color='y')
+    for data in by_grade_data[grade]['I']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
-        subplots[grade - 9].plot(x_axis, data, alpha=a, color='m')
-    for data in r_selection:
+        subplots_i[grade - 9].plot(x_axis, data, alpha=a, color='m')
+    for data in by_grade_data[grade]['R']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
-        subplots[grade - 9].plot(x_axis, data, alpha=a, color='g')
+        subplots_r[grade - 9].plot(x_axis, data, alpha=a, color='g')
     
     sigma = 4
 
-    avg_last_s = np.mean([list(s_selection[x])[-1] for x in range(len(s_selection))])
-    avg_last_v = np.mean([list(v_selection[x])[-1] for x in range(len(v_selection))])
-    avg_last_e = np.mean([list(e_selection[x])[-1] for x in range(len(e_selection))])
-    avg_last_i = np.mean([list(i_selection[x])[-1] for x in range(len(i_selection))])
-    avg_last_r = np.mean([list(r_selection[x])[-1] for x in range(len(r_selection))])
+    avg_last_s = np.mean([list(by_grade_data[grade]['S'][x])[-1] for x in range(len(by_grade_data[grade]['S']))])
+    avg_last_v = np.mean([list(by_grade_data[grade]['V'][x])[-1] for x in range(len(by_grade_data[grade]['V']))])
+    avg_last_e = np.mean([list(by_grade_data[grade]['E'][x])[-1] for x in range(len(by_grade_data[grade]['E']))])
+    avg_last_i = np.mean([list(by_grade_data[grade]['I'][x])[-1] for x in range(len(by_grade_data[grade]['I']))])
+    avg_last_r = np.mean([list(by_grade_data[grade]['R'][x])[-1] for x in range(len(by_grade_data[grade]['R']))])
 
     avg_s = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['S'], fillvalue=avg_last_s)]
     avg_v = [np.nanmean(y) for y in itertools.zip_longest(*by_grade_data[grade]['V'], fillvalue=avg_last_v)]
@@ -121,26 +142,42 @@ for grade in range(9, 13):
     num_of_days = max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]) * 15 // (24 * 60)
     x_axis = np.linspace(0, num_of_days, max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]))
 
-    subplots[grade - 9].plot(x_axis, avg_s, color='b')
-    subplots[grade - 9].plot(x_axis, avg_v, color='r')
-    subplots[grade - 9].plot(x_axis, avg_e, color='y')
-    subplots[grade - 9].plot(x_axis, avg_i, color='m')
-    subplots[grade - 9].plot(x_axis, avg_r, color='g')
+    subplots_s[grade - 9].plot(x_axis, avg_s, color='b')
+    subplots_v[grade - 9].plot(x_axis, avg_v, color='r')
+    subplots_e[grade - 9].plot(x_axis, avg_e, color='y')
+    subplots_i[grade - 9].plot(x_axis, avg_i, color='m')
+    subplots_r[grade - 9].plot(x_axis, avg_r, color='g')
 
     legend_lines = [Line2D([0], [0], color='b'),
                     Line2D([0], [0], color='r'),
                     Line2D([0], [0], color='y'),
                     Line2D([0], [0], color='m'),
                     Line2D([0], [0], color='g')]
-    subplots[grade - 9].legend(legend_lines, ['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'])
 
-    subplots[grade - 9].set_ylabel('# of people')
-    subplots[grade - 9].set_xlabel('Time (days)')
-    subplots[grade - 9].set_title('Grade ' + str(grade))
+    subplots_s[grade - 9].set_ylabel('# of people')
+    subplots_s[grade - 9].set_xlabel('Time (days)')
+    subplots_s[grade - 9].set_title('Grade ' + str(grade) + ' Susceptible population')
 
-fig.suptitle(
-    'Compartmentalization of students in different grades within a secondary school during a measles outbreak\n (Vaccination rate: ' + str(round(vacc_rate, 2)) + '%)')
+    subplots_v[grade - 9].set_ylabel('# of people')
+    subplots_v[grade - 9].set_xlabel('Time (days)')
+    subplots_v[grade - 9].set_title('Grade ' + str(grade) + ' Vaccinated population')
+
+    subplots_e[grade - 9].set_ylabel('# of people')
+    subplots_e[grade - 9].set_xlabel('Time (days)')
+    subplots_e[grade - 9].set_title('Grade ' + str(grade) + ' Exposed population')
+
+    subplots_i[grade - 9].set_ylabel('# of people')
+    subplots_i[grade - 9].set_xlabel('Time (days)')
+    subplots_i[grade - 9].set_title('Grade ' + str(grade) + ' Infected population')
+
+    subplots_r[grade - 9].set_ylabel('# of people')
+    subplots_r[grade - 9].set_xlabel('Time (days)')
+    subplots_r[grade - 9].set_title('Grade ' + str(grade) + ' Recovered population')
 
 
 # Pickle
-pl.dump(fig, open(sys.argv[2], 'wb+'))
+S_fig.savefig(sys.argv[2] + "S.pdf", format='pdf', dpi=1000)
+V_fig.savefig(sys.argv[2] + "V.pdf", format='pdf', dpi=1000)
+E_fig.savefig(sys.argv[2] + "E.pdf", format='pdf', dpi=1000)
+I_fig.savefig(sys.argv[2] + "I.pdf", format='pdf', dpi=1000)
+R_fig.savefig(sys.argv[2] + "R.pdf", format='pdf', dpi=1000)

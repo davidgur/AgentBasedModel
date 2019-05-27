@@ -16,7 +16,7 @@ for vacc_folder in vacc_folders:
             population_files[vacc_folder[:-1]].append(par_dir+"/population_sizes.csv")
 
 for sim_id, population_file_list in population_files.items():
-    if len(population_file_list) != 0:
+    try:
         outbreak_simulations_1 = 0
         outbreak_simulations_2 = 0
         outbreak_simulations_5 = 0
@@ -38,5 +38,5 @@ for sim_id, population_file_list in population_files.items():
         outbreak_simulations_5 /= len(population_file_list)
         outbreak_simulations_10 /= len(population_file_list)
         print(sim_id[4:], outbreak_simulations_1, outbreak_simulations_2, outbreak_simulations_5, outbreak_simulations_10, sep=",")
-    else:
+    except FileNotFoundError:
         print(sim_id, " is not available.")

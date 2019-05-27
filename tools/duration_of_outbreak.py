@@ -41,5 +41,7 @@ durs = []
 for data in infected_data:
     durs.append(sum(15 for infected_pop in data if infected_pop > 1))
 
-print('Average Duration (minutes):', sum(durs) // len(durs))
-print('Average Duration (days):', sum(durs) // (len(durs) * (24*60)))
+print('\n\tMin Duration (days):', min(durs) // (24 * 60))
+print('\tAverage Duration (days):', sum(durs) // (len(durs) * (24*60)))
+print('\tMax Duration (days):', max(durs) // (24 * 60))
+print('\tSTD (days):', np.std(durs) // 1440)

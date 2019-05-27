@@ -52,4 +52,4 @@ plt.ylabel("# of people")
 fig = plt.gcf()
 
 # Pickle
-pl.dump(fig, open(sys.argv[2], 'wb+'))
+plt.savefig(sys.argv[2] + ".pdf", format='pdf', dpi=1000)

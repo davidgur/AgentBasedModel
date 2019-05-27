@@ -39,5 +39,7 @@ peak_times = []
 for data in infected_data:
     peak_times.append(15 * data.index(max(data)))
 
-print("Average peak time (minutes):", np.mean(peak_times))
-print("Average peak time (days):", np.mean(peak_times) // (24*60))
+print("\n\tMin peak time (days):", min(peak_times) // (24 * 60))
+print("\tAverage peak time (days):", np.mean(peak_times) // (24*60))
+print("\tMax peak time (days):", max(peak_times) // (24 * 60))
+print("\tSTD (days):", np.std(peak_times) // (24*60))
