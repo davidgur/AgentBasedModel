@@ -64,13 +64,15 @@ for _, population_file_list in population_files.items():
 
 # (3) Plotting
 vacc_rate = 100 * (by_grade_data[9]['V'][0][0] / (by_grade_data[9]['S'][0][0] + by_grade_data[9]['V'][0][0] + 1))
-a = 0.1 # Alpha
+a = 0.02 # Alpha
 
 S_fig = plt.figure(figsize=(20, 10), dpi=1000)
 V_fig = plt.figure(figsize=(20, 10), dpi=1000)
 E_fig = plt.figure(figsize=(20, 10), dpi=1000)
 I_fig = plt.figure(figsize=(20, 10), dpi=1000)
 R_fig = plt.figure(figsize=(20, 10), dpi=1000)
+
+SVEIR_fig = plt.figure(figsize=(20, 10), dpi=1000)
 
 grade9_ax_s  = S_fig.add_subplot(221)
 grade10_ax_s = S_fig.add_subplot(222)
@@ -97,33 +99,44 @@ grade10_ax_r = R_fig.add_subplot(222)
 grade11_ax_r = R_fig.add_subplot(223)
 grade12_ax_r = R_fig.add_subplot(224)
 
+grade9_ax_SVEIR = SVEIR_fig.add_subplot(221)
+grade10_ax_SVEIR = SVEIR_fig.add_subplot(222)
+grade11_ax_SVEIR = SVEIR_fig.add_subplot(223)
+grade12_ax_SVEIR = SVEIR_fig.add_subplot(224)
+
 subplots_s = [grade9_ax_s, grade10_ax_s, grade11_ax_s, grade12_ax_s]
 subplots_v = [grade9_ax_v, grade10_ax_v, grade11_ax_v, grade12_ax_v]
 subplots_e = [grade9_ax_e, grade10_ax_e, grade11_ax_e, grade12_ax_e]
 subplots_i = [grade9_ax_i, grade10_ax_i, grade11_ax_i, grade12_ax_i]
 subplots_r = [grade9_ax_r, grade10_ax_r, grade11_ax_r, grade12_ax_r]
+subplots_SVEIR = [grade9_ax_SVEIR, grade10_ax_SVEIR, grade11_ax_SVEIR, grade12_ax_SVEIR]
 
 for grade in range(9, 13):
     for data in by_grade_data[grade]['S']: 
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_s[grade - 9].plot(x_axis, data, alpha=a, color='b')
+        subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='b')
     for data in by_grade_data[grade]['V']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_v[grade - 9].plot(x_axis, data, alpha=a, color='r')
+        subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='r')
     for data in by_grade_data[grade]['E']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_e[grade - 9].plot(x_axis, data, alpha=a, color='y')
+        subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='y')
     for data in by_grade_data[grade]['I']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_i[grade - 9].plot(x_axis, data, alpha=a, color='m')
+        subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='m')
     for data in by_grade_data[grade]['R']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_r[grade - 9].plot(x_axis, data, alpha=a, color='g')
+        subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='g')
     
     sigma = 4
 
@@ -142,11 +155,17 @@ for grade in range(9, 13):
     num_of_days = max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]) * 15 // (24 * 60)
     x_axis = np.linspace(0, num_of_days, max([len(avg_s), len(avg_v), len(avg_e), len(avg_i), len(avg_r)]))
 
-    subplots_s[grade - 9].plot(x_axis, avg_s, color='b')
-    subplots_v[grade - 9].plot(x_axis, avg_v, color='r')
-    subplots_e[grade - 9].plot(x_axis, avg_e, color='y')
-    subplots_i[grade - 9].plot(x_axis, avg_i, color='m')
-    subplots_r[grade - 9].plot(x_axis, avg_r, color='g')
+    subplots_s[grade - 9].plot(x_axis, avg_s, color='b', linewidth=3.0)
+    subplots_v[grade - 9].plot(x_axis, avg_v, color='r', linewidth=3.0)
+    subplots_e[grade - 9].plot(x_axis, avg_e, color='y', linewidth=3.0)
+    subplots_i[grade - 9].plot(x_axis, avg_i, color='m', linewidth=3.0)
+    subplots_r[grade - 9].plot(x_axis, avg_r, color='g', linewidth=3.0)
+
+    subplots_SVEIR[grade - 9].plot(x_axis, avg_s, color='b', linewidth=3.0)
+    subplots_SVEIR[grade - 9].plot(x_axis, avg_v, color='r', linewidth=3.0)
+    subplots_SVEIR[grade - 9].plot(x_axis, avg_e, color='y', linewidth=3.0)
+    subplots_SVEIR[grade - 9].plot(x_axis, avg_i, color='m', linewidth=3.0)
+    subplots_SVEIR[grade - 9].plot(x_axis, avg_r, color='g', linewidth=3.0)
 
     legend_lines = [Line2D([0], [0], color='b'),
                     Line2D([0], [0], color='r'),
@@ -174,6 +193,16 @@ for grade in range(9, 13):
     subplots_r[grade - 9].set_xlabel('Time (days)')
     subplots_r[grade - 9].set_title('Grade ' + str(grade) + ' Recovered population')
 
+    legend_lines = [Line2D([0], [0], color='b'),
+                    Line2D([0], [0], color='r'),
+                    Line2D([0], [0], color='y'),
+                    Line2D([0], [0], color='m'),
+                    Line2D([0], [0], color='g')]
+    subplots_SVEIR[grade - 9].legend(legend_lines, ['Susceptible', 'Vaccinated', 'Exposed', 'Infected', 'Recovered'])
+
+    subplots_SVEIR[grade - 9].set_ylabel('# of people')
+    subplots_SVEIR[grade - 9].set_xlabel('Time (days)')
+    subplots_SVEIR[grade - 9].set_title('Grade ' + str(grade))
 
 # Pickle
 S_fig.savefig(sys.argv[2] + "S.pdf", format='pdf', dpi=1000)
@@ -181,3 +210,4 @@ V_fig.savefig(sys.argv[2] + "V.pdf", format='pdf', dpi=1000)
 E_fig.savefig(sys.argv[2] + "E.pdf", format='pdf', dpi=1000)
 I_fig.savefig(sys.argv[2] + "I.pdf", format='pdf', dpi=1000)
 R_fig.savefig(sys.argv[2] + "R.pdf", format='pdf', dpi=1000)
+SVEIR_fig.savefig(sys.argv[2] + "SVEIR.pdf", format='pdf', dpi=1000)
