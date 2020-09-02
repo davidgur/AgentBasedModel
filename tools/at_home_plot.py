@@ -1,6 +1,6 @@
 # Plots the number of students that are at home at
 # any given point in time. Uses shaded error bars
-# to display the values. Only simulations with an 
+# to display the values. Only simulations with an
 # outbreak are used for the plot
 
 # David Gurevich
@@ -28,7 +28,7 @@ for folder in folders:
         if i != 0:
             population_files[folder[:-1]].append(par_dir + '/population_sizes.csv')
 
-# Get the 'at-home' data from every population file 
+# Get the 'at-home' data from every population file
 at_home_data = []
 
 for _, population_file_list in population_files.items():

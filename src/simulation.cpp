@@ -61,7 +61,7 @@ std::thread Simulation::start_simulation_thread() {
 
 // Loop that runs the simulation
 void Simulation::run_simulation() {
-    
+
     // Get ready for the first day
     this->log();
     this->last_day = std::chrono::high_resolution_clock::now();
@@ -78,7 +78,7 @@ void Simulation::run_simulation() {
         // Day State 0: Agents are at home
         if (this->day_state == 0 or is_weekend)
             this->individual_disease_progression_for_all();
-        
+
         // Day State 1: Before / After class
         else if (this->day_state == 1) {
             this->individual_disease_progression_for_all();
@@ -108,12 +108,12 @@ void Simulation::run_simulation() {
         if (this->minute_counter % 15 == 0) {
             this->print_population_sizes();
         }
-        
+
         // Things to do every day:
         if (this->minute_counter == kMinutesPerDay) {
             this->day_counter++;
             this->minute_counter = 0;
-            
+
             this->clean_washrooms();
 
             // Check if the simulation reached a steady state
@@ -277,7 +277,7 @@ void Simulation::prep_output_file() {
     out.close();
 
     out.open(this->export_folder + "secondary_infections.csv", std::ofstream::out | std::ofstream::trunc);
-    out << "AGENT_ID,TIME_OF_INFECTION,SECONDARY_INFECTIONS\n"; 
+    out << "AGENT_ID,TIME_OF_INFECTION,SECONDARY_INFECTIONS\n";
     out.close();
 }
 
@@ -285,7 +285,7 @@ void Simulation::print_population_sizes() {
     std::vector<int> grade9_population_sizes = get_population_sizes(this->grade9_agents);
     std::vector<int> grade10_population_sizes = get_population_sizes(this->grade10_agents);
     std::vector<int> grade11_population_sizes = get_population_sizes(this->grade11_agents);
-    std::vector<int> grade12_population_sizes = get_population_sizes(this->grade12_agents); 
+    std::vector<int> grade12_population_sizes = get_population_sizes(this->grade12_agents);
 
     this->population_out << (this->day_counter * kMinutesPerDay) + this->minute_counter << ",";
 

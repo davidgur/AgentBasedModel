@@ -29,9 +29,9 @@ for folder in folders:
             population_files[folder[:-1]].append(par_dir + '/population_sizes.csv')
 
 # (2) Extract data from all population files
-by_grade_data = {9: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
-                10: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
-                11: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}, 
+by_grade_data = {9: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]},
+                10: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]},
+                11: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]},
                 12: {'S':[], 'V':[], 'E':[], 'I':[], 'R':[]}}
 
 for _, population_file_list in population_files.items():
@@ -112,7 +112,7 @@ subplots_r = [grade9_ax_r, grade10_ax_r, grade11_ax_r, grade12_ax_r]
 subplots_SVEIR = [grade9_ax_SVEIR, grade10_ax_SVEIR, grade11_ax_SVEIR, grade12_ax_SVEIR]
 
 for grade in range(9, 13):
-    for data in by_grade_data[grade]['S']: 
+    for data in by_grade_data[grade]['S']:
         num_of_days = len(data) * 15 // (24 * 60)
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_s[grade - 9].plot(x_axis, data, alpha=a, color='b')
@@ -137,7 +137,7 @@ for grade in range(9, 13):
         x_axis = np.linspace(0, num_of_days, len(data))
         subplots_r[grade - 9].plot(x_axis, data, alpha=a, color='g')
         subplots_SVEIR[grade - 9].plot(x_axis, data, alpha=a, color='g')
-    
+
     sigma = 4
 
     avg_last_s = np.mean([list(by_grade_data[grade]['S'][x])[-1] for x in range(len(by_grade_data[grade]['S']))])

@@ -25,7 +25,7 @@ for folder in folders:
         if i != 0:
             population_files[folder[:-1]].append(par_dir + '/population_sizes.csv')
 
-# Get the 'infected' data from every population file 
+# Get the 'infected' data from every population file
 infected_data = []
 
 for _, population_file_list in population_files.items():

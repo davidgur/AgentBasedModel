@@ -57,7 +57,7 @@ Agent::Agent(int id, int grade, bool ode_mode) {
 
     // Random number generation
     this->mt = std::mt19937(std::random_device{}());
-    
+
     this->going_to_washroom = std::bernoulli_distribution(kWashroomProbability);
     this->washroom_choice = std::uniform_int_distribution<int>(0, 6);
 

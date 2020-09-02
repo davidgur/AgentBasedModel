@@ -44,8 +44,8 @@ const int kMinLunchFriends = 3;     // Anecdotal
 
 const double kTransmissionRate = 0.91; // [2]
 const double kWashroomInfectionRate = kTransmissionRate;
-const double kAverageWashroomTime = 2.2; // // See proofs
-const double kWashroomProbability = 0.00047; // See proofs
+const double kAverageWashroomTime = 2.2; // // See appendix
+const double kWashroomProbability = 0.00047; // See appendix
 const double kWashroomConcentrationIncrease = 28.728; // [3]
 const double kPulmonaryVentilation = 0.00566; // [3]
 
@@ -112,7 +112,7 @@ class Agent {
     std::bernoulli_distribution infection_prob_washroom;
     std::normal_distribution<> stoch_range; // Make this truncated
     std::exponential_distribution<> stoch_range_ode;
-    
+
     // Functions (private)
     void interact(Agent& other_agent, int sim_time);
     int generate_truncated_normal_distribution_value();
@@ -122,9 +122,9 @@ class Agent {
 #endif
 
 /*
-[1] Heffernan, J. M., & Keeling, M. J. (2008). 
+[1] Heffernan, J. M., & Keeling, M. J. (2008).
     An in-host model of acute infection: Measles as a case study. Theoretical population biology, 73(1), 134-147.
-  
+
 [2] Centers for Disease Control and Prevention. (2011).
     Epidemiology and Prevention of Vaccine-Preventable Diseases (The Pink Book).
 
